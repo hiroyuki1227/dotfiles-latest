@@ -11,6 +11,7 @@ return {
         "shfmt",
         "tailwindcss-language-server",
         "typescript-language-server",
+        "dockerfile-language-server",
         "prisma-language-server",
         "css-lsp",
       })

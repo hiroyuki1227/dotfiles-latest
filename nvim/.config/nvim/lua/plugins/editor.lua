@@ -220,44 +220,18 @@ return {
         function()
           require("close_buffers").delete({ type = "hidden" })
         end,
-        "Close Hidden Buffers",
+        { desc = { "Close Hidden Buffers" } },
       },
       {
         "<leader>tu",
         function()
           require("close_buffers").delete({ type = "nameless" })
         end,
-        "Close Nameless Buffers",
+        { desc = { "Close Nameless Buffers" } },
       },
     },
   },
 
-  {
-    "saghen/blink.cmp",
-    opts = {
-
-      sources = {
-        compat = { "codeium" },
-        providers = {
-          codeium = {
-            kind = "Codeium",
-            score_offset = 100,
-            async = true,
-          },
-        },
-      },
-      completion = {
-        menu = {
-          winblend = vim.o.pumblend,
-        },
-      },
-      signature = {
-        window = {
-          winblend = vim.o.pumblend,
-        },
-      },
-    },
-  },
   {
     "crnvl96/lazydocker.nvim",
     event = "VeryLazy",

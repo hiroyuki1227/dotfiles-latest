@@ -1,6 +1,6 @@
 {
   "neodev": {
-    "library": {
+    "ibrary": {
       "enabled": true,
       "plugins": true
     }
