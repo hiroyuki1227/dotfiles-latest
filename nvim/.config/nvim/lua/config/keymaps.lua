@@ -1,3 +1,5 @@
+require("config.mapping")
+-- vcmd("set foldmethod=syntax")
 -- add yours here
 local map = vim.keymap.set
 local opts = { noremap = true, silent = true }
@@ -17,8 +19,8 @@ map("v", "<Leader>d", '"_d')
 map("v", "<Leader>D", '"_D')
 
 -- increment/decrement numbers
-map("n", "+", "<C-a>", { desc = "Increment number" }) -- increment
-map("n", "-", "<C-x>", { desc = "Decrement number" }) -- decrement
+map("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- increment
+map("n", "<leader>-", "<C-x>", { desc = "Decrement number" }) -- decrement
 
 -- Delete a word backwards
 map("n", "dw", 'vb"_d')
@@ -52,6 +54,15 @@ map("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" }) -- c
 map("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
 map("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
 map("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
+
+-- buffer management
+map("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Delete buffer" }) -- delete buffer
+map("n", "<leader>bD", "<cmd>%bdelete<CR>", { desc = "Delete all buffers" }) -- delete all buffers
+map("n", "<leader>ba", "<cmd>%bd<CR>", { desc = "Delete all buffers except current" }) -- delete all buffers except current
+map("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "Go to next buffer" }) -- go to next buffer
+map("n", "<leader>bp", "<cmd>bprevious<CR>", { desc = "Go to previous buffer" }) -- go to previous buffer
+map("n", "<Tab>", ":bnext<CR>", opts)
+map("n", "<S-Tab>", ":bprevious<CR>", opts)
 
 -- Move Window
 map("n", "<C-h>", "<C-w>h", opts)
