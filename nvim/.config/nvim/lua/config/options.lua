@@ -3,6 +3,7 @@ local opt = vim.opt
 
 opt.encoding = "utf-8"
 opt.fileencoding = "utf-8"
+-- opt.scriptencoding = "utf-8"
 opt.spelllang = { "en", "cjk" }
 
 opt.timeout = true
@@ -38,6 +39,7 @@ opt.wildignore:append({ "*/node_modules/*" })
 opt.mouse = "a" -- enable mouse support
 opt.whichwrap:remove({ "b", "s", "h", "l" })
 opt.wrap = false -- display lines as one long line(default: truet)
+opt.signcolumn = "yes"
 
 opt.linebreak = true -- Companion to wrap, don't split words (default: false)
 
@@ -56,7 +58,7 @@ opt.signcolumn = "yes" -- show sign column so that text doesn't shift
 opt.backspace = "indent,eol,start" -- allow backspace on indent, end of line or insert mode start position
 
 -- clipboard
-opt.clipboard:append("unnamedplus") -- use system clipboard as default register
+opt.clipboard = "unnamedplus" -- use system clipboard as default register
 
 -- split windows
 opt.splitright = true -- split vertical window to the right
@@ -86,11 +88,13 @@ vim.cmd([[
 
 -- カーソル行の強調表示を有効にする
 opt.cursorline = true
+-- "number" : 行番号だけ
+-- "both" : 行全体
+opt.cursorlineopt = "both" -- to enable cursorline!
 opt.colorcolumn = "80"
 -- opt.cursorcolumn = true
 opt.ruler = true
-opt.cursorlineopt = "both" -- to enable cursorline!
-opt.helplang = "ja,en"
+opt.helplang = { "ja", "en" }
 -- opt.whichwrap:append("b,s,h,l,<,>,[,],~")
 
 -- folding options
