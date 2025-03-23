@@ -213,7 +213,7 @@ return {
 		"nvim-lualine/lualine.nvim",
 		opts = function(_, opts)
 			local LazyVim = require("lazyvim.util")
-			table.insert(opts.sections.lualine_x, 2, LazyVim.lualine.cmp_source("codeium"))
+			-- table.insert(opts.sections.lualine_x, 2, LazyVim.lualine.cmp_source("codeium"))
 			table.insert(
 				opts.sections.lualine_x,
 				4,
