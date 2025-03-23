@@ -1,6 +1,5 @@
-require("config.mapping")
--- vcmd("set foldmethod=syntax")
--- add yours here
+require("config.keymaps-add")
+
 local map = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
@@ -78,7 +77,7 @@ map("n", "<C-w><Right>", "<C-w>>", { desc = "Resize window right" })
 
 -- Diagnostics
 map("n", "<C-j>", function()
-  vim.diagnostic.goto_next()
+	vim.diagnostic.goto_next()
 end, opts)
 
 -- require("craftzdog.hsl").replaceHexWithHSL()
@@ -89,5 +88,5 @@ require("user.lsp").toggleInlayHints()
 map("n", "<leader>i", function() end)
 
 vim.api.nvim_create_user_command("ToggleAutoformat", function()
-  require("user.lsp").toggleAutoformat()
+	require("user.lsp").toggleAutoformat()
 end, {})

@@ -86,9 +86,9 @@ show_always = false
 format = ' [$duration](bold yellow)'
 
 [directory]
-truncation_length = 2
+truncation_length = 3
 truncate_to_repo = false
-fish_style_pwd_dir_length = 2
+fish_style_pwd_dir_length = 3
 use_logical_path = true
 format = "at [$path]($style)[$read_only]($read_only_style) "
 repo_root_format = "at [$before_root_path ]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) "

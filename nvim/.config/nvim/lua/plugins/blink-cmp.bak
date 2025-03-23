@@ -1,0 +1,163 @@
+local trigger_text = ";"
+return {
+	{
+		"hrsh7th/nvim-cmp",
+		enabled = false,
+	},
+
+	{
+		"saghen/blink.cmp",
+		{ "saghen/blink.compat", opts = { impersonate_nvim_cmp = true } },
+		{
+			"Exafunction/codeium.nvim",
+			cmd = "Codeium",
+			event = "InsertEnter",
+			build = ":Codeium Auth",
+			opts = {
+				enable_cmp_source = vim.g.ai_cmp,
+				virtual_text = {
+					enabled = not vim.g.ai_cmp,
+					key_bindings = {
+						accept = false, -- handled by nvim-cmp / blink.cmp
+						next = "<M-]>",
+						prev = "<M-[>",
+					},
+				},
+			},
+		},
+		opts = function(_, opts)
+			opts.enabled = function()
+				-- Get the current buffer's filetype
+				local filetype = vim.bo[0].filetype
+				-- Disable for Telescope buffers
+				if filetype == "TelescopePrompt" or filetype == "minifiles" or filetype == "snacks_picker_input" then
+					return false
+				end
+				return true
+			end
+
+			-- NOTE: The new way to enable LuaSnip
+			-- Merge custom sources with the existing ones from lazyvim
+			-- NOTE: by default lazyvim already includes the lazydev source, so not adding it here again
+			opts.sources = vim.tbl_deep_extend("force", opts.sources or {}, {
+				default = { "lsp", "path", "snippets", "codeium", "buffer", "cmdline" },
+				providers = {
+					codeium = {
+						name = "codeium", -- IMPORTANT: use the same name as you would for nvim-cmp
+						module = "blink.compat.source",
+						score_offset = 3,
+					},
+					cmdline = {
+						module = "blink.cmp.sources.cmdline",
+					},
+				},
+			})
+			opts.snippets = { preset = "luasnip" }
+			opts.cmdline = {
+				enabled = true,
+				keymap = { preset = "cmdline" },
+				sources = function()
+					local type = vim.fn.getcmdtype()
+					--           -- Search forward and backward
+					if type == "/" or type == "?" then
+						return { "buffer" }
+					end
+					--           -- Commands
+					if type == ":" or type == "@" then
+						return { "cmdline" }
+					end
+					return {}
+				end,
+				completion = {
+					trigger = {
+						show_on_blocked_trigger_characters = {},
+						show_on_x_blocked_trigger_characters = {},
+					},
+					list = {
+						selection = {
+							-- When `true`, will automatically select the first item in the completion list
+							preselect = true,
+							-- When `true`, inserts the completion item automatically when selecting it
+							auto_insert = true,
+						},
+					},
+					-- Whether to automatically show the window when new completion items are available
+					menu = { auto_show = true },
+					-- Displays a preview of the selected item on the current line
+					ghost_text = { enabled = true },
+				},
+			}
+
+			opts.completion = {
+				--   keyword = {
+				--     -- 'prefix' will fuzzy match on the text before the cursor
+				--     -- 'full' will fuzzy match on the text before *and* after the cursor
+				--     -- example: 'foo_|_bar' will match 'foo_' for 'prefix' and 'foo__bar' for 'full'
+				--     range = "full",
+				--   },
+				menu = {
+					border = "single",
+				},
+				documentation = {
+					auto_show = true,
+					window = {
+						border = "single",
+					},
+				},
+				-- Displays a preview of the selected item on the current line
+				ghost_text = {
+					enabled = true,
+				},
+			}
+
+			-- opts.fuzzy = {
+			--   -- Disabling this matches the behavior of fzf
+			--   use_typo_resistance = false,
+			--   -- Frecency tracks the most recently/frequently used items and boosts the score of the item
+			--   use_frecency = true,
+			--   -- Proximity bonus boosts the score of items matching nearby words
+			--   use_proximity = false,
+			-- }
+
+			-- opts.snippets = {
+			--   preset = "luasnip", -- Choose LuaSnip as the snippet engine
+			-- }
+
+			-- -- To specify the options for snippets
+			-- opts.sources.providers.snippets.opts = {
+			--   use_show_condition = true, -- Enable filtering of snippets dynamically
+			--   show_autosnippets = true, -- Display autosnippets in the completion menu
+			-- }
+
+			-- The default preset used by lazyvim accepts completions with enter
+			-- I don't like using enter because if on markdown and typing
+			-- something, but you want to go to the line below, if you press enter,
+			-- the completion will be accepted
+			-- https://cmp.saghen.dev/configuration/keymap.html#default
+			-- The recommended way of getting completions from this plugin. Only requires being enabled with no additional configuration, assuming you have general LSP completions.
+
+			require("render-markdown").setup({
+				completions = { blink = { enabled = true } },
+			})
+
+			opts.keymap = {
+				preset = "default",
+				["<Tab>"] = { "snippet_forward", "fallback" },
+				["<S-Tab>"] = { "snippet_backward", "fallback" },
+
+				["<Up>"] = { "select_prev", "fallback" },
+				["<Down>"] = { "select_next", "fallback" },
+				["<C-p>"] = { "select_prev", "fallback" },
+				["<C-n>"] = { "select_next", "fallback" },
+
+				["<S-k>"] = { "scroll_documentation_up", "fallback" },
+				["<S-j>"] = { "scroll_documentation_down", "fallback" },
+
+				["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+				["<C-e>"] = { "hide", "fallback" },
+			}
+
+			return opts
+		end,
+	},
+}

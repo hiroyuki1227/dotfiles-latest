@@ -1,35 +1,21 @@
--- Filename: ~/github/dotfiles-latest/neovim/neobean/lua/plugins/blink-cmp.lua
--- ~/github/dotfiles-latest/neovim/neobean/lua/plugins/blink-cmp.lua
-
--- HACK: blink.cmp updates | Remove LuaSnip | Emoji and Dictionary Sources | Fix Jump Autosave Issue
--- https://youtu.be/JrgfpWap_Pg
-
--- completion plugin with support for LSPs and external sources that updates
--- on every keystroke with minimal overhead
-
--- https://www.lazyvim.org/extras/coding/blink
--- https://github.com/saghen/blink.cmp
--- Documentation site: https://cmp.saghen.dev/
-
--- NOTE: Specify the trigger character(s) used for luasnip
 local trigger_text = ";"
 
 return {
   "saghen/blink.cmp",
   enabled = true,
-  -- In case there are breaking changes and you want to go back to the last
-  -- working release
-  -- https://github.com/Saghen/blink.cmp/releases
-  -- version = "v0.9.3",
   dependencies = {
     "moyiz/blink-emoji.nvim",
     "Kaiser-Yang/blink-cmp-dictionary",
+    -- add blink.compat to dependencies
+    { "saghen/blink.compat", opts = { impersonate_nvim_cmp = true } },
+    {
+      "Exafunction/codeium.nvim",
+      cmd = "Codeium",
+      build = ":Codeium Auth",
+      opts = { virtual_text = { enabled = true } },
+    },
   },
   opts = function(_, opts)
-    -- I noticed that telescope was extremeley slow and taking too long to open,
-    -- assumed related to blink, so disabled blink and in fact it was related
-    -- :lua print(vim.bo[0].filetype)
-    -- So I'm disabling blink.cmp for Telescope
     opts.enabled = function()
       -- Get the current buffer's filetype
       local filetype = vim.bo[0].filetype
@@ -44,31 +30,29 @@ return {
     -- Merge custom sources with the existing ones from lazyvim
     -- NOTE: by default lazyvim already includes the lazydev source, so not adding it here again
     opts.sources = vim.tbl_deep_extend("force", opts.sources or {}, {
-      default = { "lsp", "path", "snippets", "buffer", "emoji", "dictionary" },
+      default = { "lsp", "path", "snippets", "codeinum", "buffer", "cmdline", "emoji", "dictionary" },
       providers = {
+        codeium = {
+          name = "codeium", -- IMPORTANT: use the same name as you would for nvim-cmp
+          module = "blink.compat.source",
+          score_offset = 3,
+          opts = {
+            cache_digraphs_on_start = true,
+          },
+        },
         lsp = {
           name = "lsp",
           enabled = true,
           module = "blink.cmp.sources.lsp",
           kind = "LSP",
           min_keyword_length = 2,
-          -- When linking markdown notes, I would get snippets and text in the
-          -- suggestions, I want those to show only if there are no LSP
-          -- suggestions
-          --
-          -- Enabled fallbacks as this seems to be working now
-          -- Disabling fallbacks as my snippets wouldn't show up when editing
-          -- lua files
-          -- fallbacks = { "snippets", "buffer" },
           score_offset = 90, -- the higher the number, the higher the priority
+          opts = { tailwind_color_icon = "██" },
         },
         path = {
           name = "Path",
           module = "blink.cmp.sources.path",
           score_offset = 25,
-          -- When typing a path, I would get snippets and text in the
-          -- suggestions, I want those to show only if there are no path
-          -- suggestions
           fallbacks = { "snippets", "buffer" },
           -- min_keyword_length = 2,
           opts = {
@@ -95,19 +79,12 @@ return {
           min_keyword_length = 2,
           module = "blink.cmp.sources.snippets",
           score_offset = 85, -- the higher the number, the higher the priority
-          -- Only show snippets if I type the trigger_text characters, so
-          -- to expand the "bash" snippet, if the trigger_text is ";" I have to
           should_show_items = function()
             local col = vim.api.nvim_win_get_cursor(0)[2]
             local before_cursor = vim.api.nvim_get_current_line():sub(1, col)
             -- NOTE: remember that `trigger_text` is modified at the top of the file
             return before_cursor:match(trigger_text .. "%w*$") ~= nil
           end,
-          -- After accepting the completion, delete the trigger_text characters
-          -- from the final inserted text
-          -- Modified transform_items function based on suggestion by `synic` so
-          -- that the luasnip source is not reloaded after each transformation
-          -- https://github.com/linkarzu/dotfiles-latest/discussions/7#discussion-7849902
           transform_items = function(_, items)
             local col = vim.api.nvim_win_get_cursor(0)[2]
             local before_cursor = vim.api.nvim_get_current_line():sub(1, col)
@@ -130,15 +107,9 @@ return {
             return items
           end,
         },
-        -- Example on how to configure dadbod found in the main repo
-        -- -- https://github.com/kristijanhusak/vim-dadbod-completion
-        -- dadbod = {
-        --   name = "Dadbod",
-        --   module = "vim_dadbod_completion.blink",
-        --   min_keyword_length = 2,
-        --   score_offset = 85, -- the higher the number, the higher the priority
-        -- },
-        -- https://github.com/moyiz/blink-emoji.nvim
+        cmdline = {
+          module = "blink.cmp.sources.cmdline",
+        },
         emoji = {
           module = "blink-emoji",
           name = "Emoji",
@@ -146,12 +117,6 @@ return {
           min_keyword_length = 2,
           opts = { insert = true }, -- Insert emoji (default) or complete its name
         },
-        -- https://github.com/Kaiser-Yang/blink-cmp-dictionary
-        -- In macOS to get started with a dictionary:
-        -- cp /usr/share/dict/words ~/github/dotfiles-latest/dictionaries/words.txt
-        --
-        -- NOTE: For the word definitions make sure "wn" is installed
-        -- brew install wordnet
         dictionary = {
           module = "blink-cmp-dictionary",
           name = "Dict",
@@ -161,55 +126,12 @@ return {
           max_items = 8,
           min_keyword_length = 3,
           opts = {
-            -- -- The dictionary by default now uses fzf, make sure to have it
-            -- -- installed
-            -- -- https://github.com/Kaiser-Yang/blink-cmp-dictionary/issues/2
-            --
-            -- Do not specify a file, just the path, and in the path you need to
-            -- have your .txt files
-            -- dictionary_directories = { vim.fn.expand("~/github/dotfiles-latest/dictionaries") },
             dictionary_directories = { vim.fn.expand("~/dotfiles/dictionaries") },
-            -- Notice I'm also adding the words I add to the spell dictionary
             dictionary_files = {
               vim.fn.expand("~/.config/nvim/spell/en.utf-8.add"),
-              -- vim.fn.expand("~/github/dotfiles-latest/neovim/neobean/spell/en.utf-8.add"),
-              -- vim.fn.expand("~/github/dotfiles-latest/neovim/neobean/spell/es.utf-8.add"),
             },
-            -- --  NOTE: To disable the definitions uncomment this section below
-            --
-            -- separate_output = function(output)
-            --   local items = {}
-            --   for line in output:gmatch("[^\r\n]+") do
-            --     table.insert(items, {
-            --       label = line,
-            --       insert_text = line,
-            --       documentation = nil,
-            --     })
-            --   end
-            --   return items
-            -- end,
           },
         },
-        -- Third class citizen mf always talking shit
-        -- codeium = {
-        --   name = "codeium",
-        --   enabled = true,
-        --   module = "blink.cmp.codeium",
-        --   codeuim = {
-        --     kind = "Codeium",
-        --     score_offset = 100,
-        --     async = true,
-        --   },
-        -- },
-        -- copilot = {
-        --   name = "copilot",
-        --   enabled = true,
-        --   module = "blink-cmp-copilot",
-        --   kind = "Copilot",
-        --   min_keyword_length = 6,
-        --   score_offset = -100, -- the higher the number, the higher the priority
-        --   async = true,
-        -- },
       },
     })
 
@@ -228,19 +150,24 @@ return {
         end
         return {}
       end,
-      --         completion = {
-      --           trigger = {
-      --             show_on_blocked_trigger_characters = {},
-      --             show_on_x_blocked_trigger_characters = {},
-      --           },
-      --           list = {
-      --             selection = {
-      --               -- When `true`, will automatically select the first item in the completion list
-      --               preselect = true,
-      --               -- When `true`, inserts the completion item automatically when selecting it
-      --               auto_insert = true,
-      --             },
-      --           },
+      completion = {
+        trigger = {
+          show_on_blocked_trigger_characters = {},
+          show_on_x_blocked_trigger_characters = {},
+        },
+        list = {
+          selection = {
+            -- When `true`, will automatically select the first item in the completion list
+            preselect = true,
+            -- When `true`, inserts the completion item automatically when selecting it
+            auto_insert = true,
+          },
+        },
+        -- Whether to automatically show the window when new completion items are available
+        menu = { auto_show = true },
+        -- Displays a preview of the selected item on the current line
+        ghost_text = { enabled = true },
+      },
     }
 
     opts.completion = {
@@ -289,6 +216,12 @@ return {
     -- something, but you want to go to the line below, if you press enter,
     -- the completion will be accepted
     -- https://cmp.saghen.dev/configuration/keymap.html#default
+    -- The recommended way of getting completions from this plugin. Only requires being enabled with no additional configuration, assuming you have general LSP completions.
+
+    require("render-markdown").setup({
+      completions = { blink = { enabled = true } },
+    })
+
     opts.keymap = {
       preset = "default",
       ["<Tab>"] = { "snippet_forward", "fallback" },
