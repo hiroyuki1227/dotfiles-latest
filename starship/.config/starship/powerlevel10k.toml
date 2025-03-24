@@ -86,7 +86,7 @@ show_always = false
 format = ' [$duration](bold yellow)'
 
 [directory]
-truncation_length = 3
+truncation_length = 2
 truncate_to_repo = false
 fish_style_pwd_dir_length = 3
 use_logical_path = true

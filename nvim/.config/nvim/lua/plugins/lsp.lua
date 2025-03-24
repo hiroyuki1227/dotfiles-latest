@@ -15,6 +15,10 @@ return {
 				"dockerfile-language-server",
 				"prisma-language-server",
 				"css-lsp",
+				"emmet-ls",
+				"html-lsp",
+				"lua-language-server",
+				"svelte-language-server",
 			})
 		end,
 	},
@@ -27,9 +31,11 @@ return {
 			inlay_hints = { enabled = false },
 			---@type lspconfig.options
 			servers = {
+				svelte = {},
 				dockerls = {},
 				prismals = {},
 				cssls = {},
+				emmet_ls = {},
 				tailwindcss = {
 					root_dir = function(...)
 						return require("lspconfig.util").root_pattern(".git")(...)
@@ -166,7 +172,7 @@ return {
 	{
 		"simrat39/symbols-outline.nvim",
 		cmd = "SymbolsOutline",
-		keys = { { "<leader>cs", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" } },
+		keys = { { "<leader>so", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" } },
 		opts = {
 			-- add your options that should be passed to the setup() function here
 			position = "right",
