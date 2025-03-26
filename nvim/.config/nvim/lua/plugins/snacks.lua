@@ -524,6 +524,24 @@ return {
       },
     },
     opts = {
+      animate = {
+        enabled = true,
+        duration = 20,
+        fps = 60,
+        easing = "linear",
+      },
+      debug = { enabled = true },
+      dim = {
+        enabled = true,
+        scope = {
+          min_size = 5,
+          max_size = 50,
+          siblings = true,
+        },
+      },
+      git = { enabled = true },
+      lazygit = { enabled = true },
+      gitbrowse = { enabled = true },
       -- Documentation for the picker
       -- https://github.com/folke/snacks.nvim/blob/main/docs/picker.md
       picker = {

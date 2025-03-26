@@ -209,27 +209,29 @@ return {
   },
 
   -- statusline
-  {
-    "nvim-lualine/lualine.nvim",
-    opts = function(_, opts)
-      local LazyVim = require("lazyvim.util")
-      -- table.insert(opts.sections.lualine_x, 2, LazyVim.lualine.cmp_source("codeium"))
-      table.insert(
-        opts.sections.lualine_x,
-        4,
-        LazyVim.lualine.pretty_path({
-          length = 0,
-          relative = "cwd",
-          modified_hl = "MatchParen",
-          directory_hl = "",
-          filename_hl = "Bold",
-          modified_sign = "",
-          readonly_icon = " 󰌾 ",
-        })
-      )
-    end,
-  },
-
+  -- {
+  --   "nvim-lualine/lualine.nvim",
+  --   opts = function(_, opts)
+  --     -- local custom_theme = require("lualine.themes.solarized-osaka")
+  --     -- custom_theme.normal.c.bg = nil
+  --     local LazyVim = require("lazyvim.util")
+  --     -- table.insert(opts.sections.lualine_x, 2, LazyVim.lualine.cmp_source("codeium"))
+  --     table.insert(
+  --       opts.sections.lualine_x,
+  --       4,
+  --       LazyVim.lualine.pretty_path({
+  --         length = 0,
+  --         relative = "cwd",
+  --         modified_hl = "MatchParen",
+  --         directory_hl = "",
+  --         filename_hl = "Bold",
+  --         modified_sign = "",
+  --         readonly_icon = " 󰌾 ",
+  --       })
+  --     )
+  --   end,
+  -- },
+  --
   {
     "folke/zen-mode.nvim",
     cmd = "ZenMode",
@@ -241,5 +243,36 @@ return {
       },
     },
     keys = { { "<leader>z", "<cmd>ZenMode<cr>", desc = "Zen Mode" } },
+  },
+  {
+    "tris203/precognition.nvim",
+    event = "VeryLazy",
+    lazy = true,
+    opts = {
+      startVisible = true,
+      showBlankVirtLine = true,
+      highlightColor = { link = "Comment" },
+      hints = {
+        Caret = { text = "^", prio = 2 },
+        Dollar = { text = "$", prio = 1 },
+        MatchingPair = { text = "%", prio = 5 },
+        Zero = { text = "0", prio = 1 },
+        w = { text = "w", prio = 10 },
+        b = { text = "b", prio = 9 },
+        e = { text = "e", prio = 8 },
+        W = { text = "W", prio = 7 },
+        B = { text = "B", prio = 6 },
+        E = { text = "E", prio = 5 },
+      },
+      gutterHints = {
+        G = { text = "G", prio = 10 },
+        gg = { text = "gg", prio = 9 },
+        PrevParagraph = { text = "{", prio = 8 },
+        NextParagraph = { text = "}", prio = 8 },
+      },
+      disabled_fts = {
+        "startify",
+      },
+    },
   },
 }

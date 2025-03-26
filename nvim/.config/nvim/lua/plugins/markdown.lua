@@ -14,13 +14,13 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     -- config = function()
-    --     vim.cmd([[highlight MarkviewHeading1 guibg=#E67E80 guifg=white]])
-    --     vim.cmd([[highlight MarkviewHeading2 guibg=#EB9C5F guifg=white]])
-    --     vim.cmd([[highlight MarkviewHeading3 guibg=#83C092 guifg=white]])
-    --     vim.cmd([[highlight MarkviewHeading4 guibg=#7FBBB3 guifg=white]])
-    --     vim.cmd([[highlight MarkviewHeading5 guibg=#D3C6AA guifg=white]])
-    --     vim.cmd([[highlight MarkviewHeading6 guibg=#384B55 guifg=white]])
-    --     vim.cmd([[highlight MarkviewCode guibg=#1e2326]])
+    --   vim.cmd([[highlight MarkviewHeading1 guibg=#E67E80 guifg=white]])
+    --   vim.cmd([[highlight MarkviewHeading2 guibg=#EB9C5F guifg=white]])
+    --   vim.cmd([[highlight MarkviewHeading3 guibg=#83C092 guifg=white]])
+    --   vim.cmd([[highlight MarkviewHeading4 guibg=#7FBBB3 guifg=white]])
+    --   vim.cmd([[highlight MarkviewHeading5 guibg=#D3C6AA guifg=white]])
+    --   vim.cmd([[highlight MarkviewHeading6 guibg=#384B55 guifg=white]])
+    --   vim.cmd([[highlight MarkviewCode guibg=#1e2326]])
     -- end,
   },
   {
