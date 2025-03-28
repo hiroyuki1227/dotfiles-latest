@@ -99,29 +99,6 @@ opt.ruler = true
 opt.helplang = { "ja", "en" }
 -- opt.whichwrap:append("b,s,h,l,<,>,[,],~")
 
-opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-
-if vim.fn.has("nvim-0.10") == 1 then
-  opt.smoothscroll = true
-  opt.foldexpr = "v:lua.require'lazyvim.util'.ui.foldexpr()"
-  opt.foldmethod = "expr"
-  opt.foldtext = ""
-else
-  opt.foldmethod = "indent"
-  opt.foldtext = "v:lua.require'lazyvim.util'.ui.foldtext()"
-end
-
-if vim.fn.has("nvim-0.8") == 1 then
-  vim.opt.cmdheight = 0
-end
-
--- File types
-vim.filetype.add({
-  extension = {
-    mdx = "mdx",
-  },
-})
-
 -- set to `true` to follow the main branch
 -- you need to have a working rust toolchain to build the plugin
 -- in this case.

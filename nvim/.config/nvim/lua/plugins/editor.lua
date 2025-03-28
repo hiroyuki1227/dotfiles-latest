@@ -269,4 +269,25 @@ return {
       },
     },
   },
+  {
+    "simrat39/symbols-outline.nvim",
+    cmd = "SymbolsOutline",
+    keys = { { "<leader>co", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" } },
+    opts = {
+      -- add your options that should be passed to the setup() function here
+      position = "right",
+    },
+  },
+  {
+    "mfussenegger/nvim-lint",
+    optional = true,
+    opts = {
+      linters = {
+        -- https://github.com/LazyVim/LazyVim/discussions/4094#discussioncomment-10178217
+        ["markdownlint-cli2"] = {
+          args = { "--config", os.getenv("HOME") .. "~/dotfiles/.markdownlint.yaml", "--" },
+        },
+      },
+    },
+  },
 }

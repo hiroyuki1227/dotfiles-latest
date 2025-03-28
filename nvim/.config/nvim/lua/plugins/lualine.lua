@@ -105,7 +105,7 @@ return {
             "o:encoding", -- option component same as &encoding in viml
             fmt = string.upper, -- I'm not sure why it's upper case either ;)
             cond = conditions.hide_in_width,
-            color = { fg = Snacks.util.color("green"), gui = "bold" },
+            -- color = { fg = Snacks.util.color("Constant"), gui = "bold" },
           },
           -- {
           --   "fileformat",
@@ -120,16 +120,27 @@ return {
             -- icon = { align = "right" },
             separator = "",
             padding = { left = 1, right = 1 },
+            -- color = { fg = Snacks.util.color("Constant"), gui = "bold" },
           },
         },
         lualine_y = {
-          { "progress", separator = " ", padding = { left = 1, right = 0 } },
-          { "location", padding = { left = 0, right = 1 } },
+          {
+            "progress",
+            separator = " ",
+            padding = { left = 1, right = 0 },
+
+            -- color = { fg = "#a5afc2", bg = "#0D1116", gui = "bold" },
+          },
+          {
+            "location",
+            padding = { left = 0, right = 1 },
+            -- color = { fg = "#a5afc2", bg = "#0D1116", gui = "bold" },
+          },
         },
         lualine_z = {
-          function()
-            return " " .. os.date("%R")
-          end,
+          -- function()
+          --   return " " .. os.date("%R")
+          -- end,
         },
       },
       extensions = { "neo-tree", "lazy", "fzf" },

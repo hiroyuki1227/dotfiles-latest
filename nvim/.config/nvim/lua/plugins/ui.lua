@@ -83,7 +83,7 @@ return {
         command_palette = true, -- position the cmdline and popupmenu together
         long_message_to_split = true, -- long messages will be sent to a split
         inc_rename = true, -- enables an input dialog for inc-rename.nvim
-        lsp_doc_border = false, -- add a border to hover docs and signature help
+        lsp_doc_border = true, -- add a border to hover docs and signature help
       }
       opts.lsp = {
         messages = {
@@ -103,10 +103,10 @@ return {
             row = "40%",
             col = "50%",
           },
-          -- size = {
-          -- 	width = 60,
-          -- 	height = "auto",
-          -- },
+          size = {
+            width = 60,
+            height = "auto",
+          },
         },
         popupmenu = {
           relative = "editor",
@@ -137,6 +137,63 @@ return {
       }
     end,
   },
+
+  -- {
+  --   "folke/noice.nvim",
+  --   opts = function(_, opts)
+  --     table.insert(opts.routes, {
+  --       filter = {
+  --         event = "notify",
+  --         find = "No information available",
+  --       },
+  --       opts = { skip = true },
+  --     })
+  --     local focused = true
+  --     vim.api.nvim_create_autocmd("FocusGained", {
+  --       callback = function()
+  --         focused = true
+  --       end,
+  --     })
+  --     vim.api.nvim_create_autocmd("FocusLost", {
+  --       callback = function()
+  --         focused = false
+  --       end,
+  --     })
+  --     table.insert(opts.routes, 1, {
+  --       filter = {
+  --         cond = function()
+  --           return not focused
+  --         end,
+  --       },
+  --       view = "notify_send",
+  --       opts = { stop = false },
+  --     })
+  --
+  --     opts.commands = {
+  --       all = {
+  --         -- options for the message history that you get with `:Noice`
+  --         view = "split",
+  --         opts = { enter = true, format = "details" },
+  --         filter = {},
+  --       },
+  --     }
+  --     opts.presets = {
+  --       bottom_search = false, -- use a classic bottom cmdline for search
+  --     }
+  --
+  --     vim.api.nvim_create_autocmd("FileType", {
+  --       pattern = "markdown",
+  --       callback = function(event)
+  --         vim.schedule(function()
+  --           require("noice.text.markdown").keys(event.buf)
+  --         end)
+  --       end,
+  --     })
+  --
+  --     opts.presets.lsp_doc_border = true
+  --   end,
+  -- },
+  --
   {
     "rcarriga/nvim-notify",
     opts = {
@@ -207,31 +264,6 @@ return {
       })
     end,
   },
-
-  -- statusline
-  -- {
-  --   "nvim-lualine/lualine.nvim",
-  --   opts = function(_, opts)
-  --     -- local custom_theme = require("lualine.themes.solarized-osaka")
-  --     -- custom_theme.normal.c.bg = nil
-  --     local LazyVim = require("lazyvim.util")
-  --     -- table.insert(opts.sections.lualine_x, 2, LazyVim.lualine.cmp_source("codeium"))
-  --     table.insert(
-  --       opts.sections.lualine_x,
-  --       4,
-  --       LazyVim.lualine.pretty_path({
-  --         length = 0,
-  --         relative = "cwd",
-  --         modified_hl = "MatchParen",
-  --         directory_hl = "",
-  --         filename_hl = "Bold",
-  --         modified_sign = "",
-  --         readonly_icon = " 󰌾 ",
-  --       })
-  --     )
-  --   end,
-  -- },
-  --
   {
     "folke/zen-mode.nvim",
     cmd = "ZenMode",
@@ -244,35 +276,35 @@ return {
     },
     keys = { { "<leader>z", "<cmd>ZenMode<cr>", desc = "Zen Mode" } },
   },
-  {
-    "tris203/precognition.nvim",
-    event = "VeryLazy",
-    lazy = true,
-    opts = {
-      startVisible = true,
-      showBlankVirtLine = true,
-      highlightColor = { link = "Comment" },
-      hints = {
-        Caret = { text = "^", prio = 2 },
-        Dollar = { text = "$", prio = 1 },
-        MatchingPair = { text = "%", prio = 5 },
-        Zero = { text = "0", prio = 1 },
-        w = { text = "w", prio = 10 },
-        b = { text = "b", prio = 9 },
-        e = { text = "e", prio = 8 },
-        W = { text = "W", prio = 7 },
-        B = { text = "B", prio = 6 },
-        E = { text = "E", prio = 5 },
-      },
-      gutterHints = {
-        G = { text = "G", prio = 10 },
-        gg = { text = "gg", prio = 9 },
-        PrevParagraph = { text = "{", prio = 8 },
-        NextParagraph = { text = "}", prio = 8 },
-      },
-      disabled_fts = {
-        "startify",
-      },
-    },
-  },
+  -- {
+  --   "tris203/precognition.nvim",
+  --   event = "VeryLazy",
+  --   lazy = true,
+  --   opts = {
+  --     startVisible = true,
+  --     showBlankVirtLine = true,
+  --     highlightColor = { link = "Comment" },
+  --     hints = {
+  --       Caret = { text = "^", prio = 2 },
+  --       Dollar = { text = "$", prio = 1 },
+  --       MatchingPair = { text = "%", prio = 5 },
+  --       Zero = { text = "0", prio = 1 },
+  --       w = { text = "w", prio = 10 },
+  --       b = { text = "b", prio = 9 },
+  --       e = { text = "e", prio = 8 },
+  --       W = { text = "W", prio = 7 },
+  --       B = { text = "B", prio = 6 },
+  --       E = { text = "E", prio = 5 },
+  --     },
+  --     gutterHints = {
+  --       G = { text = "G", prio = 10 },
+  --       gg = { text = "gg", prio = 9 },
+  --       PrevParagraph = { text = "{", prio = 8 },
+  --       NextParagraph = { text = "}", prio = 8 },
+  --     },
+  --     disabled_fts = {
+  --       "startify",
+  --     },
+  --   },
+  -- },
 }

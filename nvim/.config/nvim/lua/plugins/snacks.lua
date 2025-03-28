@@ -540,7 +540,6 @@ return {
         },
       },
       git = { enabled = true },
-      lazygit = { enabled = true },
       gitbrowse = { enabled = true },
       -- Documentation for the picker
       -- https://github.com/folke/snacks.nvim/blob/main/docs/picker.md
