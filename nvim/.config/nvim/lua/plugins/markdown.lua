@@ -23,23 +23,43 @@ return {
   --     "nvim-treesitter/nvim-treesitter",
   --     "echasnovski/mini.nvim",
   --     "saghen/blink.cmp",
-  --     "nvim-tree/nvim-web-devicons",
+  --     -- "nvim-tree/nvim-web-devicons",
   --   },
   --
   --   config = function()
-  --     local presets = require("markview.presets")
+  --     -- local presets = require("markview.presets")
   --     require("markview").setup({
   --       markdown = {
   --         code_blocks = {
   --           enable = true,
   --           style = "block", -- "simple" or "block"
+  --           sign = true,
   --           label_direction = "right", -- "left" or "right"
+  --           border_hl = "MarkviewCode",
+  --           info_hl = "MarkviewCodeInfo",
   --           pad_amount = 2,
   --           pad_char = " ",
-  --           min_width = 80,
+  --           min_width = 60,
+  --           default = {
+  --             block_hl = "MarkviewCode",
+  --             pad_hl = "MarkviewCode",
+  --           },
+  --
+  --           ["diff"] = {
+  --             block_hl = function(_, line)
+  --               if line:match("^%+") then
+  --                 return "MarkviewPalette4"
+  --               elseif line:match("^%-") then
+  --                 return "MarkviewPalette1"
+  --               else
+  --                 return "MarkviewCode"
+  --               end
+  --             end,
+  --             pad_hl = "MarkviewCode",
+  --           },
   --         },
-  --         horizontal_rules = presets.horizontal_rules.thick,
-  --         tables = presets.tables.rounded,
+  --         -- horizontal_rules = presets.horizontal_rules.thick,
+  --         -- tables = presets.tables.rounded,
   --         -- headings
   --         -- Accessed using require("markview.presets").headings.
   --         -- glow/glow_center/slanted/arrowed/simple/marker

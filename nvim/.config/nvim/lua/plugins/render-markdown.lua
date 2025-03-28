@@ -66,6 +66,11 @@ return {
         scope_highlight = nil,
       },
     },
+    code = {
+      enabled = true,
+      -- position = "right",
+      width = "full",
+    },
     html = {
       -- Turn on / off all HTML rendering
       enabled = true,

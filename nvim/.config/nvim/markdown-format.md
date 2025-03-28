@@ -136,11 +136,15 @@ Markdown記述・書き方（見出し・表・リンク・画像・文字色な
 
 "````"で囲まれた文字はコードブロックになります。 入力例	表示結果 これは `code` です
 
-```typesript
-void hello()
+```typescript
+void hello();
 {
   console.log("Hello World!");
 }
+```
+
+```python
+print("Hello World!")
 ```
 
 ## テキストカラー（文字の色）
