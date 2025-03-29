@@ -136,7 +136,7 @@ Markdown記述・書き方（見出し・表・リンク・画像・文字色な
 
 "````"で囲まれた文字はコードブロックになります。 入力例	表示結果 これは `code` です
 
-```typescript
+```typescript {filename="test.tsx"}
 void hello();
 {
   console.log("Hello World!");
@@ -145,6 +145,20 @@ void hello();
 
 ```python
 print("Hello World!")
+```
+
+```lua {filename="render-markdown.lua"}
+return {
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {},
+  }
+}
 ```
 
 ## テキストカラー（文字の色）

@@ -1,30 +1,12 @@
 # dotfiles
 
-```bash
-
-echo "# dotfiles" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/hiroyuki1227/dotfiles-latest.git
-git push -u origin main
-
-…or push an existing repository from the command line
-git remote add origin https://github.com/hiroyuki1227/dotfiles-latest.git
-git branch -M main
-git push -u origin main
-
-
-```
-
 ## stow setup
 
 ```bash
 
 brew install stow
 
-git clone  https://github.com/hiroyuki1227/dotfiles-latest.git
+git clone  https://github.com/hiroyuki1227/dotfiles-latest.git ~/dotfiles
 
 cd dotfiles
 stow -v nvim zsh alacritty kitty lazygit  scripts tmux wezterm hammmerspoon
@@ -50,4 +32,4 @@ ps aux | fzf --height 40% --layout=reverse --prompt="Select process to kill: " |
 
 ```
 
-### 
+; End of file

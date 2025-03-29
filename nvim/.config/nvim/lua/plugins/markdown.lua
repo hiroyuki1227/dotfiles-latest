@@ -14,7 +14,7 @@ return {
   --   "OXY2DEV/markview.nvim",
   --   lazy = false, -- Recommended
   --   branch = "dev",
-  --   ft = "markdown", -- If you decide to lazy-load anyway
+  --   -- ft = "markdown", -- If you decide to lazy-load anyway
   --
   --   dependencies = {
   --     -- You will not need this if you installed the
@@ -22,14 +22,22 @@ return {
   --     -- Or if the parsers are in your $RUNTIMEPATH
   --     "nvim-treesitter/nvim-treesitter",
   --     "echasnovski/mini.nvim",
-  --     "saghen/blink.cmp",
+  --     -- "saghen/blink.cmp",
   --     -- "nvim-tree/nvim-web-devicons",
   --   },
   --
   --   config = function()
   --     -- local presets = require("markview.presets")
   --     require("markview").setup({
+  --       preview = {
+  --         enble = true,
+  --         icon_provider = "mini",
+  --       },
+  --       markdown_inline = {
+  --         enable = true,
+  --       },
   --       markdown = {
+  --         enable = true,
   --         code_blocks = {
   --           enable = true,
   --           style = "block", -- "simple" or "block"
@@ -58,15 +66,15 @@ return {
   --             pad_hl = "MarkviewCode",
   --           },
   --         },
-  --         -- horizontal_rules = presets.horizontal_rules.thick,
-  --         -- tables = presets.tables.rounded,
-  --         -- headings
-  --         -- Accessed using require("markview.presets").headings.
-  --         -- glow/glow_center/slanted/arrowed/simple/marker
-  --         -- https://github.com/OXY2DEV/markview.nvim/wiki/Presets
-  --         -- headings = presets.headings.glow,
-  --       },
-  --     })
+  -- horizontal_rules = presets.horizontal_rules.thick,
+  -- tables = presets.tables.rounded,
+  -- headings
+  -- Accessed using require("markview.presets").headings.
+  -- glow/glow_center/slanted/arrowed/simple/marker
+  -- https://github.com/OXY2DEV/markview.nvim/wiki/Presets
+  -- headings = presets.headings.glow,
+  --   },
+  -- })
   --     -- vim.cmd(string.format([[highlight MarkviewHeading1 guibg=%s guifg=%s]], color1_bg, color_fg))
   --     -- vim.cmd(string.format([[highlight MarkviewHeading2 guibg=%s guifg=%s]], color2_bg, color_fg))
   --     -- vim.cmd(string.format([[highlight MarkviewHeading3 guibg=%s guifg=%s]], color3_bg, color_fg))
@@ -82,7 +90,7 @@ return {
   --     -- vim.cmd([[highlight MarkviewHeading5 guibg=#D3C6AA guifg=white]])
   --     -- vim.cmd([[highlight MarkviewHeading6 guibg=#384B55 guifg=white]])
   --     -- vim.cmd([[highlight MarkviewCode guibg=#1e2326]])
-  --   end,
+  -- end,
   -- },
   {
     -- Install markdown preview, use npx if available.

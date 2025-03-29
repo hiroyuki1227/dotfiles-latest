@@ -1,7 +1,11 @@
 local colors = require("config.colors")
 return {
   "MeanderingProgrammer/render-markdown.nvim",
-  dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" }, -- if you use the mini.nvim suite
+  dependencies = {
+    "nvim-treesitter/nvim-treesitter",
+    "echasnovski/mini.nvim",
+    -- "nvim-tree/nvim-web-devicons",
+  }, -- if you use the mini.nvim suite
   lazy = false,
   enabled = true,
   ft = { "markdown" },
@@ -38,6 +42,7 @@ return {
     vim.cmd(string.format([[highlight Headline6Fg cterm=bold gui=bold guifg=%s]], color6_bg))
   end,
   opts = {
+    render_modes = true,
     bullet = {
       -- Turn on / off list bullet rendering
       enabled = true,
@@ -69,7 +74,7 @@ return {
     code = {
       enabled = true,
       -- position = "right",
-      width = "full",
+      width = "block",
     },
     html = {
       -- Turn on / off all HTML rendering

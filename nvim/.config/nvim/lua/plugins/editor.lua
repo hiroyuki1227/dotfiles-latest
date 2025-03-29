@@ -231,45 +231,6 @@ return {
   },
 
   {
-    "saghen/blink.cmp",
-    opts = {
-      -- sources = {
-      --   default = { "lazydev", "lsp", "path", "snippets", "buffer", "codecompanion" },
-      --   providers = {
-      --     lazydev = {
-      --       name = "lazydev",
-      --       module = "lazydev.integrations.blink",
-      --       -- make lazydev comletions top priority (see `:h blink.cmp`)
-      --       score_offset = 100,
-      --     },
-      --   },
-      -- },
-
-      completion = {
-        list = {
-          selection = {
-            auto_insert = true,
-            preselect = true,
-          },
-        },
-        menu = {
-          winblend = vim.o.pumblend,
-          border = "rounded",
-        },
-        documentation = {
-          window = {
-            border = "rounded",
-          },
-        },
-      },
-      signature = {
-        window = {
-          winblend = vim.o.pumblend,
-        },
-      },
-    },
-  },
-  {
     "simrat39/symbols-outline.nvim",
     cmd = "SymbolsOutline",
     keys = { { "<leader>co", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" } },
@@ -278,16 +239,42 @@ return {
       position = "right",
     },
   },
-  {
-    "mfussenegger/nvim-lint",
-    optional = true,
-    opts = {
-      linters = {
-        -- https://github.com/LazyVim/LazyVim/discussions/4094#discussioncomment-10178217
-        ["markdownlint-cli2"] = {
-          args = { "--config", os.getenv("HOME") .. "~/dotfiles/.markdownlint.yaml", "--" },
-        },
-      },
-    },
-  },
+  -- {
+  --   "mfussenegger/nvim-lint",
+  --   optional = true,
+  --   config = function()
+  --     local lint = require("lint")
+  --
+  --     lint.linters_by_ft = {
+  --       javascript = { "eslint_d" },
+  --       typescript = { "eslint_d" },
+  --       javascriptreact = { "eslint_d" },
+  --       typescriptreact = { "eslint_d" },
+  --       svelte = { "eslint_d" },
+  --       kotlin = { "ktlint" },
+  --       terraform = { "tflint" },
+  --     }
+  --
+  --     local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+  --
+  --     vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+  --       group = lint_augroup,
+  --       callback = function()
+  --         lint.try_lint()
+  --       end,
+  --     })
+  --
+  --     vim.keymap.set("n", "<leader>ll", function()
+  --       lint.try_lint()
+  --     end, { desc = "Trigger linting for current file" })
+  --   end,
+  --   opts = {
+  --     linters = {
+  --       -- https://github.com/LazyVim/LazyVim/discussions/4094#discussioncomment-10178217
+  --       ["markdownlint-cli2"] = {
+  --         args = { "--config", os.getenv("HOME") .. "~/dotfiles/.markdownlint.yaml", "--" },
+  --       },
+  --     },
+  --   },
+  -- },
 }

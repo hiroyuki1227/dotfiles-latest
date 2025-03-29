@@ -18,8 +18,8 @@ map("v", "<Leader>d", '"_d')
 map("v", "<Leader>D", '"_D')
 
 -- increment/decrement numbers
-map("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- increment
-map("n", "<leader>-", "<C-x>", { desc = "Decrement number" }) -- decrement
+map("n", "+", "<C-a>", { desc = "Increment number" }) -- increment
+map("n", "-", "<C-x>", { desc = "Decrement number" }) -- decrement
 
 -- Delete a word backwards
 map("n", "dw", 'vb"_d')
@@ -31,21 +31,21 @@ map("n", "<C-a>", "gg<S-v>G")
 map("n", "<Leader>o", "o<Esc>^Da", opts)
 map("n", "<Leader>O", "O<Esc>^Da", opts)
 
--- Jumplist
+-- Jumplisf
 map("n", "<C-m>", "<C-i>", opts)
 
 -- save file without auto-formatting
-map("n", "<leader>sn", "<cmd>noautocmd w<CR>", { desc = "Save without formatting" })
+-- map("n", "<leader>sn", "<cmd>noautocmd w<CR>", { desc = "Save without formatting" })
 --
 
-map("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
+-- map("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 map("n", "<Esc>", ":noh<CR>", { desc = "clear search highlight" })
 
 -- window management
-map("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" }) -- split window vertically
-map("n", "<leader>ss", "<C-w>s", { desc = "Split window horizontally" }) -- split window horizontally
-map("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" }) -- make split windows equal width & height
-map("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
+map("n", "<leader>wv", "<C-w>v", { desc = "Split window vertically" }) -- split window vertically
+map("n", "<leader>ws", "<C-w>s", { desc = "Split window horizontally" }) -- split window horizontally
+map("n", "<leader>w=", "<C-w>=", { desc = "Make splits equal size(Equal High and Wide)" }) -- make split windows equal width & height
+map("n", "<leader>wd", "<cmd>close<CR>", { desc = "Delete Current Window" }) -- close current split window
 
 -- tab management
 map("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "Open new tab" }) -- open new tab
@@ -62,12 +62,12 @@ map("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "Go to next buffer" }) -- go t
 map("n", "<leader>bp", "<cmd>bprevious<CR>", { desc = "Go to previous buffer" }) -- go to previous buffer
 map("n", "<Tab>", ":bnext<CR>", opts)
 map("n", "<S-Tab>", ":bprevious<CR>", opts)
-
+--
 -- Move Window
-map("n", "<C-h>", "<C-w>h", opts)
-map("n", "<C-k>", "<C-w>k", opts)
-map("n", "<C-j>", "<C-w>j", opts)
-map("n", "<C-l>", "<C-w>l", opts)
+map("n", "<C-h>", "<C-w>h")
+map("n", "<C-j>", "<C-w>j")
+map("n", "<C-k>", "<C-w>k")
+map("n", "<C-l>", "<C-w>l")
 
 -- Resize with arrows
 map("n", "<C-w><up>", "<C-w>+", { desc = "Resize window up" })
@@ -75,18 +75,18 @@ map("n", "<C-w><Down>", "<C-w>-", { desc = "Resize window down" })
 map("n", "<C-w><Left>", "<C-w><", { desc = "Resize window left" })
 map("n", "<C-w><Right>", "<C-w>>", { desc = "Resize window right" })
 
--- Diagnostics
-map("n", "<C-j>", function()
-  vim.diagnostic.goto_next()
-end, opts)
-
+-- -- Diagnostics
+-- map("n", "<C-j>", function()
+--   vim.diagnostic.goto_next()
+-- end, opts)
+--
 -- require("craftzdog.hsl").replaceHexWithHSL()
-
-map("n", "<leader>r", function() end)
-require("user.lsp").toggleInlayHints()
-
-map("n", "<leader>i", function() end)
-
+--
+-- map("n", "<leader>r", function() end)
+-- require("user.lsp").toggleInlayHints()
+--
+-- map("n", "<leader>i", function() end)
+--
 vim.api.nvim_create_user_command("ToggleAutoformat", function()
   require("user.lsp").toggleAutoformat()
 end, {})

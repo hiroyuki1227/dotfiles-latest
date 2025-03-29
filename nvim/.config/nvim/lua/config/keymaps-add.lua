@@ -1,6 +1,3 @@
--- Filename: ~/github/dotfiles-latest/neovim/neobean/lua/config/keymaps.lua
--- ~/github/dotfiles-latest/neovim/neobean/lua/config/keymaps.lua
-
 local M = {}
 
 -- Keymaps are automatically loaded on the VeryLazy event
@@ -245,7 +242,7 @@ end, { desc = "[P]Inspect plugin merge config" })
 --   toggle()
 -- end, { desc = "[P]Snipe" })
 
-vim.keymap.set("n", "<leader>uk", '<cmd>lua require("kubectl").toggle()<cr>', { noremap = true, silent = true })
+-- vim.keymap.set("n", "<leader>uk", '<cmd>lua require("kubectl").toggle()<cr>', { noremap = true, silent = true })
 
 -- -- use kj to exit insert mode
 -- -- I auto save with
@@ -944,7 +941,7 @@ vim.keymap.set({ "n", "v", "i" }, "<M-z>", function()
   local fileName = vim.fn.expand("%:t") -- Gets the name of the file
   local goProjectPath = filePath:gsub("^~/", ""):gsub("/[^/]+$", "") -- Removes the ~/ at the start and the filename at the end
   -- Add .com to github and insert username
-  goProjectPath = goProjectPath:gsub("github", "github.com/linkarzu")
+  goProjectPath = goProjectPath:gsub("github", "github.com/hiroyuki1227")
   -- Add "go mod init" to the beginning
   goProjectPath = "go mod init " .. goProjectPath
   local lineToInsert = "Filename: " .. filePath
@@ -2324,18 +2321,18 @@ end, { desc = "[P]Spelling language English" })
 --
 -- Keymap to switch spelling language to Spanish lamw25wmal
 vim.keymap.set("n", "<leader>msls", function()
-  vim.opt.spelllang = "es"
-  vim.cmd("echo 'Spell language set to Spanish'")
-end, { desc = "[P]Spelling language Spanish" })
+  vim.opt.spelllang = "ja"
+  vim.cmd("echo 'Spell language set to Japanese'")
+end, { desc = "[P]Spelling language Japanese" })
 
 -- HACK: neovim spell multiple languages
 -- https://youtu.be/uLFAMYFmpkE
 --
 -- Keymap to switch spelling language to both spanish and english lamw25wmal
 vim.keymap.set("n", "<leader>mslb", function()
-  vim.opt.spelllang = "en,es"
-  vim.cmd("echo 'Spell language set to Spanish and English'")
-end, { desc = "[P]Spelling language Spanish and English" })
+  vim.opt.spelllang = "en,ja"
+  vim.cmd("echo 'Spell language set to Japanese and English'")
+end, { desc = "[P]Spelling language Japanese and English" })
 
 -- HACK: neovim spell multiple languages
 -- https://youtu.be/uLFAMYFmpkE
@@ -2724,7 +2721,7 @@ end, { desc = "[P]Toggle fold" })
 local function set_foldmethod_expr()
   -- These are lazyvim.org defaults but setting them just in case a file
   -- doesn't have them set
-  if vim.fn.has("nvim-0.10") == 1 then
+  if vim.fn.has("nvim-0.11") == 1 then
     vim.opt.foldmethod = "expr"
     vim.opt.foldexpr = "v:lua.require'lazyvim.util'.ui.foldexpr()"
     vim.opt.foldtext = ""
@@ -2999,8 +2996,8 @@ end, { desc = "[P]Insert/update Markdown TOC (English)" })
 --
 -- Keymap for Spanish TOC lamw25wmal
 vim.keymap.set("n", "<leader>mts", function()
-  update_markdown_toc("## Contenido", "### Tabla de contenido")
-end, { desc = "[P]Insert/update Markdown TOC (Spanish)" })
+  update_markdown_toc("## コンテンツ", "### 目次")
+end, { desc = "[P]Insert/update Markdown TOC (Japanese)" })
 
 -- Save the cursor position globally to access it across different mappings
 _G.saved_positions = {}
@@ -3661,7 +3658,7 @@ end, { desc = "[P]source ~/.zshrc" })
 
 -- Execute my 400-autoPushGithub.sh script
 vim.keymap.set("n", "<leader>gP", function()
-  local script_path = "~/github/dotfiles-latest/scripts/macos/mac/400-autoPushGithub.sh --nowait"
+  local script_path = "~/dotfiles/scripts/macos/mac/400-autoPushGithub.sh --nowait"
   -- Expand the home directory in the path
   script_path = vim.fn.expand(script_path)
   -- Execute the script and capture the output
