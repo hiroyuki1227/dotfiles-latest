@@ -51,8 +51,8 @@ window-vsync = true
 window-decoration = true
 window-inherit-working-directory = true
 
-# font-family = "JetBrainsMono Nerd Font"
-font-family = "JetBrainsMonoNL Nerd Font Mono"
+font-family = "JetBrainsMono Nerd Font"
+# font-family = "JetBrainsMonoNL Nerd Font Mono"
 # font-family = "JetBrainsMono Nerd Font Mono"
 # font-family = "PlemolJP Console NF"
 # font-family = "CodeNewRoman Nerd Font Mono"
