@@ -269,3 +269,12 @@ vim.api.nvim_create_autocmd("BufRead", {
 -- 		vim.opt.conceallevel = 0
 -- 	end,
 -- })
+--
+-- vim.api.nvim_create_autocmd("LspAttach", {
+--   callback = function(ev)
+--     local client = vim.lsp.get_client_by_id(ev.data.client_id)
+--     if client:supports_method("textDocument/completion") then
+--       vim.lsp.completion.enbale(true, clinet.id, ev.buf, { sutotrigger = true })
+--     end
+--   end,
+-- })

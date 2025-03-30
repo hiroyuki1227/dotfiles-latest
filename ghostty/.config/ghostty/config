@@ -52,21 +52,35 @@ window-decoration = true
 window-inherit-working-directory = true
 
 # font-family = "JetBrainsMono Nerd Font"
-# font-family = "JetBrainsMonoNL Nerd Font Mono"
+font-family = "JetBrainsMonoNL Nerd Font Mono"
 # font-family = "JetBrainsMono Nerd Font Mono"
 # font-family = "PlemolJP Console NF"
-font-family = "CodeNewRoman Nerd Font Mono"
+# font-family = "CodeNewRoman Nerd Font Mono"
 # font-family = "SpaceMono Nerd Font Mono"
 
-font-size = 15
+font-size = 14
 font-feature = -calt
 font-feature = -dlig
 font-feature = -liga
 font-thicken = true
-# font-thicken-strength = 
+font-thicken-strength = 1 
 
+adjust-cell-width = -1
+adjust-cell-height = 2
+
+# What color space to use when performing alpha blending.
+# This affects the appearance of text and of any images with transparency. Additionally, custom shaders will receive colors in the configured space.
+# Valid values:
+# native - Perform alpha blending in the native color space for the OS. On macOS this corresponds to Display P3, and on Linux it's sRGB.
+# linear - Perform alpha blending in linear space. This will eliminate the darkening artifacts around the edges of text that are very visible when certain color combinations are used (e.g. red / green), but makes dark text look much thinner than normal and light text much thicker. This is also sometimes known as "gamma correction". (Currently only supported on macOS. Has no effect on Linux.)
+# linear-corrected - Same as linear, but with a correction step applied for text that makes it look nearly or completely identical to native, but without any of the darkening artifacts.
+# alpha-blending = native
+alpha-blending = linear
+#
 # native tansparent tabs hidden
 macos-titlebar-style = hidden 
+macos-window-shadow = false
+
 macos-option-as-alt = right
 macos-icon = custom-style
 macos-icon-frame = plastic
@@ -78,19 +92,24 @@ quit-after-last-window-closed = true
 quick-terminal-animation-duration = 0.08
 # quick-terminal-animation-duration = 0
 
-background-opacity = 0.9
+background-opacity = 0.8
 background-blur-radius = 20
 window-height = 59
 window-width = 150 
 window-colorspace = display-p3
 
+# cursor setting
 cursor-click-to-move = true
-cursor-opacity = 0.7
+cursor-opacity = 0.8
 cursor-style = block
 cursor-style-blink = false
 
 mouse-hide-while-typing = true
 mouse-scroll-multiplier = 2
+
+mouse-hide-while-typing = true
+resize-overlay = never 
+
 unfocused-split-opacity = 0.825
 unfocused-split-fill = #5e6576
 
