@@ -222,30 +222,30 @@ vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 -- it in all markdown files
 --
 -- if vim.g.neovim_mode == "skitty" then
-vim.api.nvim_create_autocmd("BufRead", {
-  pattern = "*.md",
-  callback = function()
-    -- Get the full path of the current file
-    local file_path = vim.fn.expand("%:p")
-    -- Ignore files in my daily note directory
-    if file_path:match(os.getenv("HOME") .. "/github/obsidian_main/250%-daily/") then
-      return
-    end -- Avoid running zk multiple times for the same buffer
-    if vim.b.zk_executed then
-      return
-    end
-    vim.b.zk_executed = true -- Mark as executed
-    -- Use `vim.defer_fn` to add a slight delay before executing `zk`
-    vim.defer_fn(function()
-      vim.cmd("normal zk")
-      -- This write was disabling my inlay hints
-      -- vim.cmd("silent write")
-      vim.notify("Folded keymaps", vim.log.levels.INFO)
-    end, 100) -- Delay in milliseconds (100ms should be enough)
-  end,
-})
-
--- vim.api.nvim_create_autocmd("User", {
+-- vim.api.nvim_create_autocmd("BufRead", {
+--   pattern = "*.md",
+--   callback = function()
+--     -- Get the full path of the current file
+--     local file_path = vim.fn.expand("%:p")
+--     -- Ignore files in my daily note directory
+--     if file_path:match(os.getenv("HOME") .. "/github/obsidian_main/250%-daily/") then
+--       return
+--     end -- Avoid running zk multiple times for the same buffer
+--     if vim.b.zk_executed then
+--       return
+--     end
+--     vim.b.zk_executed = true -- Mark as executed
+--     -- Use `vim.defer_fn` to add a slight delay before executing `zk`
+--     vim.defer_fn(function()
+--       vim.cmd("normal zk")
+--       -- This write was disabling my inlay hints
+--       -- vim.cmd("silent write")
+--       vim.notify("Folded keymaps", vim.log.levels.INFO)
+--     end, 100) -- Delay in milliseconds (100ms should be enough)
+--   end,
+-- })
+--
+-- -- vim.api.nvim_create_autocmd("User", {
 --   pattern = "MarkviewAttach",
 --   callback = function(event)
 --     --- This will have all the data you need.
