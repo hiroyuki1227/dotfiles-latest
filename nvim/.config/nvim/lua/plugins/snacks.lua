@@ -650,6 +650,22 @@ return {
           -- max_height = 30,
         },
       },
+      statuscolumn = {
+        enabled = true,
+        left = { "mark", "sign" },
+        right = { "fold", "git" },
+        folds = {
+          open = false,
+          git_hl = false,
+        },
+        git = {
+          patterns = { "GitSign", "MiniDiffSign" },
+        },
+        refresh = 50,
+      },
+      toggle = { enabled = false },
+      -- terminal = { enabled = false },
+      words = { enabled = false },
       dashboard = {
         enabled = true,
         lazy = false,

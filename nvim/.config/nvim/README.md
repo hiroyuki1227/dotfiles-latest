@@ -1,4 +1,4 @@
-## **ターミナルウィンドウを開く**
+# **ターミナルウィンドウを開く**
 
 Mac でターミナル ウィンドウを開きます。カラースキームが適切に機能するには、True Color ターミナルが必要です。
 
@@ -329,7 +329,7 @@ require("josean.lazy")
 
 以下を追加して、**プレナリー**と**vim-tmux-navigator**をインストールします。
 
-```Bash
+```lua
 return {
   "nvim-lua/plenary.nvim", -- lua functions that many plugins use
   "christoomey/vim-tmux-navigator", -- tmux & split window navigation
@@ -348,7 +348,7 @@ return {
 
 このファイルに次の内容を追加します。
 
-```Bash
+```lua
 return {
   {
     "folke/tokyonight.nvim",
@@ -401,7 +401,7 @@ return {
 
 このファイルに以下を追加します。
 
-```Bash
+```lua
 return {
   "nvim-tree/nvim-tree.lua",
   dependencies = "nvim-tree/nvim-web-devicons",
@@ -472,7 +472,7 @@ Which-key は、使用できるキーマップを確認するのに最適です�
 
 これをファイルに追加します。
 
-```Bash
+```lua
 return {
   "folke/which-key.nvim",
   event = "VeryLazy",
@@ -498,7 +498,7 @@ return {
 
 これをファイルに追加します。
 
-```Bash
+```lua
 return {
   "nvim-telescope/telescope.nvim",
   branch = "0.1.x",
@@ -549,7 +549,7 @@ alpha-nvim を使用して Neovim スタートアップ用のグリーターを�
 
 次のコードを追加します。
 
-```Bash
+```lua
 return {
   "goolord/alpha-nvim",
   event = "VimEnter",
@@ -600,7 +600,7 @@ return {
 
 このファイルに以下を追加します。
 
-```Bash
+```lua
 return {
   "rmagatti/auto-session",
   config = function()
@@ -629,7 +629,7 @@ return {
 
 `**lazy.lua**`次のようにコードに移動して変更します。
 
-```Bash
+```lua
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -660,7 +660,7 @@ require("lazy").setup("josean.plugins", {
 
 次のコードを追加します。
 
-```Bash
+```lua
 return {
   "akinsho/bufferline.nvim",
   dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -684,7 +684,7 @@ return {
 
 次のコードを追加します。
 
-```Bash
+```lua
 return {
   "nvim-lualine/lualine.nvim",
   dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -760,7 +760,7 @@ return {
 
 Lualine が Lazy.nvim を通じて保留中のプラグイン更新を表示できるようにするには、「lazy.lua」を開いて次のように変更します。
 
-```Bash
+```lua
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -797,7 +797,7 @@ require("lazy").setup("josean.plugins", {
 
 次のコードを追加します。
 
-```Bash
+```lua
 return {
   "stevearc/dressing.nvim",
   event = "VeryLazy",
@@ -814,7 +814,7 @@ return {
 
 次のコードを追加します。
 
-```Bash
+```lua
 return {
   "szw/vim-maximizer",
   keys = {
@@ -835,7 +835,7 @@ Treesitter は、より優れた構文強調表示、インデント、自動タ
 
 次のコードを追加します。
 
-```Bash
+```lua
 return {
   "nvim-treesitter/nvim-treesitter",
   event = { "BufReadPre", "BufNewFile" },
@@ -905,7 +905,7 @@ return {
 
 次のコードを追加します。
 
-```Bash
+```lua
 return {
   "lukas-reineke/indent-blankline.nvim",
   event = { "BufReadPre", "BufNewFile" },
@@ -928,7 +928,7 @@ return {
 
 次のコードを追加します。
 
-```Bash
+```lua
 return {
   "hrsh7th/nvim-cmp",
   event = "InsertEnter",
@@ -1005,7 +1005,7 @@ return {
 
 次のコードを追加します。
 
-```Bash
+```lua
 return {
   "windwp/nvim-autopairs",
   event = { "InsertEnter" },
@@ -1108,7 +1108,7 @@ return {
 
 このファイルを開いて以下を追加すると、Telescope で Todo を検索できるようになります。
 
-```Bash
+```lua
 return {
   "nvim-telescope/telescope.nvim",
   branch = "0.1.x",

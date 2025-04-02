@@ -1,3 +1,6 @@
+-- Filename: ~/github/dotfiles-latest/neovim/neobean/lua/config/keymaps.lua
+-- ~/github/dotfiles-latest/neovim/neobean/lua/config/keymaps.lua
+
 local M = {}
 
 -- Keymaps are automatically loaded on the VeryLazy event
@@ -242,7 +245,7 @@ end, { desc = "[P]Inspect plugin merge config" })
 --   toggle()
 -- end, { desc = "[P]Snipe" })
 
--- vim.keymap.set("n", "<leader>uk", '<cmd>lua require("kubectl").toggle()<cr>', { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>uk", '<cmd>lua require("kubectl").toggle()<cr>', { noremap = true, silent = true })
 
 -- -- use kj to exit insert mode
 -- -- I auto save with
@@ -941,7 +944,7 @@ vim.keymap.set({ "n", "v", "i" }, "<M-z>", function()
   local fileName = vim.fn.expand("%:t") -- Gets the name of the file
   local goProjectPath = filePath:gsub("^~/", ""):gsub("/[^/]+$", "") -- Removes the ~/ at the start and the filename at the end
   -- Add .com to github and insert username
-  goProjectPath = goProjectPath:gsub("github", "github.com/hiroyuki1227")
+  goProjectPath = goProjectPath:gsub("github", "github.com/linkarzu")
   -- Add "go mod init" to the beginning
   goProjectPath = "go mod init " .. goProjectPath
   local lineToInsert = "Filename: " .. filePath
@@ -1964,6 +1967,141 @@ vim.keymap.set("n", "<leader>mfA", function()
   end
 end, { desc = "[P]Format and save all Markdown files in the repo" })
 
+local function process_embeds_in_buffer(bufnr)
+  local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+  local embeds = {}
+  local seen = {}
+  local target_line = nil
+  local current_section = nil
+  local lines_to_remove = {}
+  local protected_sections = {
+    ["YouTube video"] = true,
+    ["Other videos mentioned"] = true,
+  }
+  -- Collect embeds and find target section
+  for i, line in ipairs(lines) do
+    if line:match("^##%s+") then
+      current_section = line:match("^##%s+(.-)%s*$")
+    end
+    if line:match("^## If you like my content, and want to support me") then
+      target_line = i
+    end
+    if line:match("^{%% include embed/youtube.html id=") then
+      if not protected_sections[current_section] then
+        if not seen[line] then
+          table.insert(embeds, line)
+          seen[line] = true
+        end
+        table.insert(lines_to_remove, i)
+      end
+    end
+  end
+  if not target_line then
+    return { error = "Target section 'If you like my content...' not found" }
+  end
+  -- Existing section handling
+  local existing_section_start, existing_section_end = nil, nil
+  for i = 1, #lines do
+    if lines[i]:match("^## Other videos mentioned") then
+      existing_section_start = i
+      for j = i + 1, #lines do
+        if lines[j]:match("^## ") then
+          existing_section_end = j - 1
+          break
+        end
+        existing_section_end = j
+      end
+      break
+    end
+  end
+  -- Build new lines
+  local new_lines = {}
+  for i, line in ipairs(lines) do
+    local in_removed = vim.tbl_contains(lines_to_remove, i)
+    local in_existing_section = existing_section_start and i >= existing_section_start and i <= existing_section_end
+    if not in_removed and not in_existing_section then
+      table.insert(new_lines, line)
+    end
+  end
+  -- Find new target position
+  local new_target_pos = nil
+  for i, line in ipairs(new_lines) do
+    if line:match("^## If you like my content") then
+      new_target_pos = i
+      break
+    end
+  end
+  if not new_target_pos then
+    return { error = "Couldn't find target position after processing" }
+  end
+  -- Insert new section if embeds found
+  if #embeds > 0 then
+    local section_content = { "## Other videos mentioned", "" }
+    for _, embed in ipairs(embeds) do
+      table.insert(section_content, embed)
+      table.insert(section_content, "")
+    end
+    table.insert(section_content, "")
+    for i = #section_content, 1, -1 do
+      table.insert(new_lines, new_target_pos, section_content[i])
+    end
+  end
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, new_lines)
+  return {
+    moved = #embeds,
+    message = #embeds > 0 and ("Moved " .. #embeds .. " embeds to 'Other videos mentioned' section")
+      or "No embeds to move",
+  }
+end
+
+-- Move youtube embeds in my blogpost to their own section for the current
+-- buffer lamw26wmal
+-- http://youtube.com/post/Ugkx5K4nL8AtcH2Fjg6pyzQPamyqEugK-HNh?si=-pONtWziiB58yqmT
+vim.keymap.set("n", "<leader>mfy", function()
+  local result = process_embeds_in_buffer(0)
+  if result.error then
+    print(result.error)
+  else
+    print(result.message)
+  end
+end, { desc = "[P]Move YouTube embeds to dedicated section" })
+
+-- Keymap youtube embeds for ALL the markdown files in the current repository
+-- This will auto-format them, so don't worry about running and auto format for
+-- all markdown files afterwards
+vim.keymap.set("n", "<leader>mfY", function()
+  local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+  if not git_root or git_root == "" then
+    print("Could not determine Git repository root.")
+    return
+  end
+  local find_command = string.format("find %s -type f -name '*.md'", vim.fn.shellescape(git_root))
+  local handle = io.popen(find_command)
+  if not handle then
+    print("Failed to find Markdown files.")
+    return
+  end
+  local files = {}
+  for file in handle:lines() do
+    table.insert(files, file)
+  end
+  handle:close()
+  if #files == 0 then
+    print("No Markdown files found in repository.")
+    return
+  end
+  for _, file in ipairs(files) do
+    local bufnr = vim.fn.bufadd(file)
+    vim.fn.bufload(bufnr)
+    local result = process_embeds_in_buffer(bufnr)
+    vim.api.nvim_buf_call(bufnr, function()
+      vim.cmd("write")
+    end)
+    local status = result.error and ("Error: " .. result.error) or result.message
+    print(string.format("%s: %s", file, status))
+  end
+end, { desc = "[P]Move YouTube embeds in all repo Markdown files" })
+
 -- HACK: My complete Neovim markdown setup and workflow in 2024
 -- https://youtu.be/c0cuvzK1SDo
 
@@ -2321,18 +2459,18 @@ end, { desc = "[P]Spelling language English" })
 --
 -- Keymap to switch spelling language to Spanish lamw25wmal
 vim.keymap.set("n", "<leader>msls", function()
-  vim.opt.spelllang = "ja"
-  vim.cmd("echo 'Spell language set to Japanese'")
-end, { desc = "[P]Spelling language Japanese" })
+  vim.opt.spelllang = "es"
+  vim.cmd("echo 'Spell language set to Spanish'")
+end, { desc = "[P]Spelling language Spanish" })
 
 -- HACK: neovim spell multiple languages
 -- https://youtu.be/uLFAMYFmpkE
 --
 -- Keymap to switch spelling language to both spanish and english lamw25wmal
 vim.keymap.set("n", "<leader>mslb", function()
-  vim.opt.spelllang = "en,ja"
-  vim.cmd("echo 'Spell language set to Japanese and English'")
-end, { desc = "[P]Spelling language Japanese and English" })
+  vim.opt.spelllang = "en,es"
+  vim.cmd("echo 'Spell language set to Spanish and English'")
+end, { desc = "[P]Spelling language Spanish and English" })
 
 -- HACK: neovim spell multiple languages
 -- https://youtu.be/uLFAMYFmpkE
@@ -2700,37 +2838,29 @@ end, { desc = "[P]Paste Github link" })
 --                           Folding section
 -------------------------------------------------------------------------------
 
--- HACK: Fold markdown headings in Neovim with a keymap
--- https://youtu.be/EYczZLNEnIY
---
--- Use <CR> to fold when in normal mode
--- To see help about folds use `:help fold`
-vim.keymap.set("n", "<CR>", function()
-  -- Get the current line number
-  local line = vim.fn.line(".")
-  -- Get the fold level of the current line
-  local foldlevel = vim.fn.foldlevel(line)
-  if foldlevel == 0 then
-    vim.notify("No fold found", vim.log.levels.INFO)
+-- Checks each line to see if it matches a markdown heading (#, ##, etc.):
+-- It’s called implicitly by Neovim’s folding engine by vim.opt_local.foldexpr
+function _G.markdown_foldexpr()
+  local line = vim.fn.getline(vim.v.lnum)
+  local heading_level = line:match("^(#+)%s")
+  if heading_level then
+    return ">" .. #heading_level
   else
-    vim.cmd("normal! za")
-    vim.cmd("normal! zz") -- center the cursor line on screen
+    return "="
   end
-end, { desc = "[P]Toggle fold" })
-
-local function set_foldmethod_expr()
-  -- These are lazyvim.org defaults but setting them just in case a file
-  -- doesn't have them set
-  if vim.fn.has("nvim-0.11") == 1 then
-    vim.opt.foldmethod = "expr"
-    vim.opt.foldexpr = "v:lua.require'lazyvim.util'.ui.foldexpr()"
-    vim.opt.foldtext = ""
-  else
-    vim.opt.foldmethod = "indent"
-    vim.opt.foldtext = "v:lua.require'lazyvim.util'.ui.foldtext()"
-  end
-  vim.opt.foldlevel = 99
 end
+
+local function set_markdown_folding()
+  vim.opt_local.foldmethod = "expr"
+  vim.opt_local.foldexpr = "v:lua.markdown_foldexpr()"
+  vim.opt_local.foldlevel = 99
+end
+
+-- Use autocommand to apply only to markdown files
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = set_markdown_folding,
+})
 
 -- Function to fold all headings of a specific level
 local function fold_headings_of_level(level)
@@ -2748,16 +2878,21 @@ local function fold_headings_of_level(level)
     if line_content:match("^" .. string.rep("#", level) .. "%s") then
       -- Move the cursor to the current line
       vim.fn.cursor(line, 1)
-      -- Fold the heading if it matches the level
-      if vim.fn.foldclosed(line) == -1 then
-        vim.cmd("normal! za")
+      -- Check if the current line has a fold level > 0
+      local current_foldlevel = vim.fn.foldlevel(line)
+      if current_foldlevel > 0 then
+        -- Fold the heading if it matches the level
+        if vim.fn.foldclosed(line) == -1 then
+          vim.cmd("normal! za")
+        end
+        -- else
+        --   vim.notify("No fold at line " .. line, vim.log.levels.WARN)
       end
     end
   end
 end
 
 local function fold_markdown_headings(levels)
-  set_foldmethod_expr()
   -- I save the view to know where to jump back after folding
   local saved_view = vim.fn.winsaveview()
   for _, level in ipairs(levels) do
@@ -2767,39 +2902,6 @@ local function fold_markdown_headings(levels)
   -- Restore the view to jump to where I was
   vim.fn.winrestview(saved_view)
 end
-
--- HACK: Fold markdown headings in Neovim with a keymap
--- https://youtu.be/EYczZLNEnIY
---
--- Keymap for unfolding markdown headings of level 2 or above
--- Changed all the markdown folding and unfolding keymaps from <leader>mfj to
--- zj, zk, zl, z; and zu respectively lamw25wmal
-vim.keymap.set("n", "zu", function()
-  -- "Update" saves only if the buffer has been modified since the last save
-  vim.cmd("silent update")
-  -- vim.keymap.set("n", "<leader>mfu", function()
-  -- Reloads the file to reflect the changes
-  vim.cmd("edit!")
-  vim.cmd("normal! zR") -- Unfold all headings
-  vim.cmd("normal! zz") -- center the cursor line on screen
-end, { desc = "[P]Unfold all headings level 2 or above" })
-
--- HACK: Fold markdown headings in Neovim with a keymap
--- https://youtu.be/EYczZLNEnIY
---
--- gk jummps to the markdown heading above and then folds it
--- zi by default toggles folding, but I don't need it lamw25wmal
-vim.keymap.set("n", "zi", function()
-  -- "Update" saves only if the buffer has been modified since the last save
-  vim.cmd("silent update")
-  -- Difference between normal and normal!
-  -- - `normal` executes the command and respects any mappings that might be defined.
-  -- - `normal!` executes the command in a "raw" mode, ignoring any mappings.
-  vim.cmd("normal gk")
-  -- This is to fold the line under the cursor
-  vim.cmd("normal! za")
-  vim.cmd("normal! zz") -- center the cursor line on screen
-end, { desc = "[P]Fold the heading cursor currently on" })
 
 -- HACK: Fold markdown headings in Neovim with a keymap
 -- https://youtu.be/EYczZLNEnIY
@@ -2865,6 +2967,57 @@ vim.keymap.set("n", "z;", function()
   fold_markdown_headings({ 6, 5, 4 })
   vim.cmd("normal! zz") -- center the cursor line on screen
 end, { desc = "[P]Fold all headings level 4 or above" })
+
+-- HACK: Fold markdown headings in Neovim with a keymap
+-- https://youtu.be/EYczZLNEnIY
+--
+-- Use <CR> to fold when in normal mode
+-- To see help about folds use `:help fold`
+vim.keymap.set("n", "<CR>", function()
+  -- Get the current line number
+  local line = vim.fn.line(".")
+  -- Get the fold level of the current line
+  local foldlevel = vim.fn.foldlevel(line)
+  if foldlevel == 0 then
+    vim.notify("No fold found", vim.log.levels.INFO)
+  else
+    vim.cmd("normal! za")
+    vim.cmd("normal! zz") -- center the cursor line on screen
+  end
+end, { desc = "[P]Toggle fold" })
+
+-- HACK: Fold markdown headings in Neovim with a keymap
+-- https://youtu.be/EYczZLNEnIY
+--
+-- Keymap for unfolding markdown headings of level 2 or above
+-- Changed all the markdown folding and unfolding keymaps from <leader>mfj to
+-- zj, zk, zl, z; and zu respectively lamw25wmal
+vim.keymap.set("n", "zu", function()
+  -- "Update" saves only if the buffer has been modified since the last save
+  vim.cmd("silent update")
+  -- vim.keymap.set("n", "<leader>mfu", function()
+  -- Reloads the file to reflect the changes
+  vim.cmd("edit!")
+  vim.cmd("normal! zR") -- Unfold all headings
+  vim.cmd("normal! zz") -- center the cursor line on screen
+end, { desc = "[P]Unfold all headings level 2 or above" })
+
+-- HACK: Fold markdown headings in Neovim with a keymap
+-- https://youtu.be/EYczZLNEnIY
+--
+-- gk jummps to the markdown heading above and then folds it
+-- zi by default toggles folding, but I don't need it lamw25wmal
+vim.keymap.set("n", "zi", function()
+  -- "Update" saves only if the buffer has been modified since the last save
+  vim.cmd("silent update")
+  -- Difference between normal and normal!
+  -- - `normal` executes the command and respects any mappings that might be defined.
+  -- - `normal!` executes the command in a "raw" mode, ignoring any mappings.
+  vim.cmd("normal gk")
+  -- This is to fold the line under the cursor
+  vim.cmd("normal! za")
+  vim.cmd("normal! zz") -- center the cursor line on screen
+end, { desc = "[P]Fold the heading cursor currently on" })
 
 -------------------------------------------------------------------------------
 --                         End Folding section
@@ -2996,8 +3149,8 @@ end, { desc = "[P]Insert/update Markdown TOC (English)" })
 --
 -- Keymap for Spanish TOC lamw25wmal
 vim.keymap.set("n", "<leader>mts", function()
-  update_markdown_toc("## コンテンツ", "### 目次")
-end, { desc = "[P]Insert/update Markdown TOC (Japanese)" })
+  update_markdown_toc("## Contenido", "### Tabla de contenido")
+end, { desc = "[P]Insert/update Markdown TOC (Spanish)" })
 
 -- Save the cursor position globally to access it across different mappings
 _G.saved_positions = {}
@@ -3451,6 +3604,54 @@ end, { desc = "Decrease headings in visual selection" })
 --   vim.cmd("nohlsearch")
 -- end, { desc = "[P]Decrease headings with confirmation" })
 
+-- -- NOTE: Ignore this, it works out of the box, see
+-- -- https://www.reddit.com/r/neovim/comments/1jozord/comment/mkvmp7s/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+-- -- To open markdown links, the cursor usually has to be in this position for gx
+-- -- to work [link text](https://test<cursor>site.com)
+-- -- I want to open links if I run gx in the `link text` section too lamw26wmal
+-- --
+-- -- Switched this keymap to an autocmd as links in non markdown files were not
+-- -- being called correctly
+-- vim.api.nvim_create_autocmd("FileType", {
+--   pattern = "markdown",
+--   callback = function()
+--     vim.keymap.set("n", "gx", function()
+--       local line = vim.fn.getline(".")
+--       local cursor_col = vim.fn.col(".")
+--       local pos = 1
+--       while pos <= #line do
+--         local open_bracket = line:find("%[", pos)
+--         if not open_bracket then
+--           break
+--         end
+--         local close_bracket = line:find("%]", open_bracket + 1)
+--         if not close_bracket then
+--           break
+--         end
+--         local open_paren = line:find("%(", close_bracket + 1)
+--         if not open_paren then
+--           break
+--         end
+--         local close_paren = line:find("%)", open_paren + 1)
+--         if not close_paren then
+--           break
+--         end
+--         if
+--           (cursor_col >= open_bracket and cursor_col <= close_bracket)
+--           or (cursor_col >= open_paren and cursor_col <= close_paren)
+--         then
+--           local url = line:sub(open_paren + 1, close_paren - 1)
+--           vim.ui.open(url)
+--           return
+--         end
+--         pos = close_paren + 1
+--       end
+--       -- fallback to default gx behavior
+--       vim.cmd("normal! gx")
+--     end, { buffer = true, desc = "[P]Better URL opener for markdown" })
+--   end,
+-- })
+
 -- ############################################################################
 --                       End of markdown section
 -- ############################################################################
@@ -3658,7 +3859,7 @@ end, { desc = "[P]source ~/.zshrc" })
 
 -- Execute my 400-autoPushGithub.sh script
 vim.keymap.set("n", "<leader>gP", function()
-  local script_path = "~/dotfiles/scripts/macos/mac/400-autoPushGithub.sh --nowait"
+  local script_path = "~/github/dotfiles-latest/scripts/macos/mac/400-autoPushGithub.sh --nowait"
   -- Expand the home directory in the path
   script_path = vim.fn.expand(script_path)
   -- Execute the script and capture the output

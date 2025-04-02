@@ -9,6 +9,7 @@ return {
         "javascript",
         "typescript",
         "tsx",
+        "python",
         "yaml",
         "html",
         "css",

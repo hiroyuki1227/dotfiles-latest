@@ -110,3 +110,5 @@ vim.g.lazyvim_prettier_needs_config = true
 vim.g.lazyvim_picker = "telescope"
 -- vim.g.lazyvim_picker = "fzf"
 vim.g.lazyvim_cmp = "blink.cmp"
+-- vim.g.lazyvim_python_lsp = "pyright"
+-- vim.g.lazyvim_python_ruff = "ruff"

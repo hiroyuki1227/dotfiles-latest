@@ -1,3 +1,4 @@
+-- local icons = require("lib.icons")
 return {
   "saghen/blink.cmp",
   dependencies = {
@@ -38,12 +39,14 @@ return {
     -- keymap = { preset = "default" },
     --
     appearance = {
-      nerd_font_variant = "mono",
+      use_nvim_cmp_as_default = true,
+      -- kind_icon = icons.kind,
+      nerd_font_variant = "normal",
     },
 
     -- NOTE: For the emoji definitions make sure "emoji" is installed
     sources = {
-      default = { "lsp", "path", "snippets", "buffer", "emoji", "dictionary" },
+      default = { "lazydev", "lsp", "path", "snippets", "buffer", "emoji", "dictionary" },
       providers = {
         emoji = {
           module = "blink-emoji",
@@ -57,12 +60,17 @@ return {
               -- By default, enabled for all file-types.
               -- emojiはmarkdownファイルとgitcommitするときに利用できる
               -- ":"を入力してemojiのキーワードを入れる。
-              { "gitcommit", "markdown" },
+              --
+              { "gitcommit", "markdown", "text", "plaintex", "typst", "toml", "yaml", "json" },
               vim.o.filetype
             )
           end,
         },
-
+        lazydev = {
+          name = "LazyDev",
+          module = "lazydev.integrations.blink",
+          score_offset = 100,
+        },
         -- NOTE: For the word definitions make sure "wn" is installed
         -- brew install wordnet
         -- https://github.com/Kaiser-Yang/blink-cmp-dictionary

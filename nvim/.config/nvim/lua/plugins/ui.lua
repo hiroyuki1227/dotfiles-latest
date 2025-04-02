@@ -307,4 +307,59 @@ return {
       },
     },
   },
+  {
+
+    -- マウスと矢印キーがキーボードのホーム キー列にない場合は、使用しないでください。
+    -- 5j 12-画面内での垂直方向の移動には相対ジャンプ (例: ) を使用します。
+    -- CTRL-U CTRL-D CTRL-B CTRL-F gg G画面外での垂直移動に使用します。
+    -- w W b B e E ge gE短距離の水平移動にはワードモーション（ ）を使用します。
+    -- f F t T , ; 0 ^ $中距離から長距離の水平移動に使用します。
+    -- ci{ y5j dap可能な限り、演算子 + モーション/テキスト オブジェクト (例: ) を使用します。
+    -- 括弧間を移動するには、%および 角括弧コマンド ( を参照)を使用します。:h [
+    "m4xshen/hardtime.nvim",
+    dependencies = { "MunifTanjim/nui.nvim" },
+    opts = {},
+  },
+  {
+    "nvzone/showkeys",
+    cmd = "ShowkeysToggle",
+    opts = {
+      -- top-right, top-center, top-left, bottom-right,bottom-center, bottom-left
+      position = "bottom-right",
+      maxkeys = 3,
+      show_count = true,
+      keyformat = {
+
+        ["<BS>"] = "󰁮 ",
+        ["<CR>"] = "⏎",
+        ["<Space>"] = "󱁐",
+        ["<Up>"] = "󰁝",
+        ["<Down>"] = "󰁅",
+        ["<Left>"] = "󰁍",
+        ["<Right>"] = "󰁔",
+        ["<PageUp>"] = "Page 󰁝",
+        ["<PageDown>"] = "Page 󰁅",
+        ["<D>"] = "⌘",
+        ["<C>"] = "⌃",
+        ["<A>"] = "⌥",
+        ["<S>"] = "⇧",
+        ["<M>"] = "⌥",
+        ["<Tab>"] = "⇥",
+        ["<S-Tab>"] = "⇤",
+        ["<S-Right>"] = "⇒",
+        ["<S-Left>"] = "⇐",
+        ["<S-Up>"] = "⇑",
+        ["<S-Down>"] = "⇓",
+        ["<C-Right>"] = "⇒",
+        ["<C-Left>"] = "⇐",
+        ["<C-Up>"] = "⇑",
+        ["<C-Down>"] = "⇓",
+        ["<Return>"] = "⏎",
+        ["<ESC>"] = "⎋",
+      },
+    },
+    keys = {
+      { "<leader>ks", "<cmd>ShowkeysToggle<cr>", desc = "Showkeys Toggle" },
+    },
+  },
 }
