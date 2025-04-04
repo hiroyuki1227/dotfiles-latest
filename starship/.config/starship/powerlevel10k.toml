@@ -218,6 +218,8 @@ symbol = " "
 [python]
 symbol = " "
 pyenv_version_name = true
+# style = 'fg:yellow bold'
+# format = '[$symbol$version]($style) '
 
 [ruby]
 symbol = " "
