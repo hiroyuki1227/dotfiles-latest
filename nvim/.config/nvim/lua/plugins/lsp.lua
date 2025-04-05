@@ -23,10 +23,13 @@ return {
         "svelte-language-server",
         "harper-ls",
         "ruff",
-        -- "black",
-        -- "flake8",
-        -- "mypy",
-        -- "pylint",
+        "python-lsp-server",
+        "jedi-language-server",
+        "black",
+        "isort",
+        "flake8",
+        "mypy",
+        "pylint",
       })
     end,
   },
@@ -103,11 +106,14 @@ return {
             },
           },
         },
-        -- ruff_lsp = {},
-        -- pyright = {},
+        ruff_lsp = {},
+        pyright = {},
         svelte = {},
         dockerls = {},
         docker_compose_language_service = {},
+        html = {},
+        jedi_language_server = {},
+        jsonls = {},
         prismals = {},
         cssls = {},
         emmet_ls = {},
@@ -146,7 +152,7 @@ return {
             },
           },
         },
-        html = {},
+
         yamlls = {
           settings = {
             yaml = {
