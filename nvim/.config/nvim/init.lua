@@ -7,5 +7,6 @@ _G.dd = function(...)
 end
 vim.print = _G.dd
 
+vim.g.md_heading_bg = "transparent"
 require("config.lazy")
 require("config.highlights")

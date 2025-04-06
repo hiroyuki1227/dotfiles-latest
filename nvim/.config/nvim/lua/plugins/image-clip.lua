@@ -31,7 +31,11 @@ return {
 
       -- I want to save the images in a directory named after the current file,
       -- but I want the name of the dir to end with `-img`
-      dir_path = function()
+      -- dir_path = function()
+      -- return vim.fn.expand("%:t:r") .. "-img"
+      -- end,
+      -- Conditional dir_path based on skitty mode
+      dir_path = vim.g.neovim_mode == "skitty" and "img" or function()
         return vim.fn.expand("%:t:r") .. "-img"
       end,
 
@@ -43,8 +47,7 @@ return {
       -- I don't want to give my images a name, but instead autofill it using
       -- the date and time as shown on `file_name` below
       prompt_for_file_name = false, ---@type boolean
-      file_name = "%Y-%m-%d-at-%H-%M-%S", ---@type string
-
+      file_name = "%y%m%d-%H%M%S", ---@type string
       -- -- Set the extension that the image file will have
       -- -- I'm also specifying the image options with the `process_cmd`
       -- -- Notice that I HAVE to convert the images to the desired format
@@ -105,12 +108,13 @@ return {
         --
         -- -- This will dynamically configure the alternative text to show the
         -- -- same that you configured as the "file_name" above
-        template = "![$FILE_NAME]($FILE_PATH)", ---@type string
+        template = vim.g.neovim_mode == "skitty" and "![ ](./$FILE_PATH)" or "![Image](./$FILE_PATH)",
+        -- template = "![$FILE_NAME]($FILE_PATH)", ---@type string
       },
     },
   },
-  keys = {
-    -- suggested keymap
-    { "<leader>v", "<cmd>PasteImage<cr>", desc = "Paste image from system clipboard" },
-  },
+  -- keys = {
+  --   -- suggested keymap
+  --   { "<leader>v", "<cmd>PasteImage<cr>", desc = "Paste image from system clipboard" },
+  -- },
 }
