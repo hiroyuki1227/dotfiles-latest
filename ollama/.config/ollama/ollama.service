@@ -1,0 +1,18 @@
+
+[Unit]
+Description=Ollama Service
+After=network-online.target
+
+[Service]
+ExecStart=/opt/homebrew/bin/ollama servev --idle-timeout 600
+User=ollama
+Group=ollama
+Restart=always
+RestartSec=3
+Environment="PATH=/opt/homebrew/bin:$PATH"
+Environment="OLLAMA_MODELS=/disk/hdd5/ollama-models"
+Environment="OLLAMA_HOST=0.0.0.0"
+Environment="OLLAMA_ORIGINS=192.168.*,172.*"
+
+[Install]
+WantedBy=default.target
