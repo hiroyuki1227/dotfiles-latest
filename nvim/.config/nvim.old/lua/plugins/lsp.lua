@@ -11,25 +11,25 @@ return {
         "shfmt",
         "tailwindcss-language-server",
         "typescript-language-server",
-        -- "docker-compose-language-service",
-        -- "dockerfile-language-server",
-        -- "prisma-language-server",
+        "docker-compose-language-service",
+        "dockerfile-language-server",
+        "prisma-language-server",
         "css-lsp",
-        -- "emmet-ls",
-        -- "html-lsp",
+        "emmet-ls",
+        "html-lsp",
         -- "htmx-ls",
         -- "templ",
-        -- "lua-language-server",
+        "lua-language-server",
         "svelte-language-server",
         "harper-ls",
         "ruff",
-        -- "python-lsp-server",
-        -- "jedi-language-server",
-        -- "black",
-        -- "isort",
-        -- "flake8",
-        -- "mypy",
-        -- "pylint",
+        "python-lsp-server",
+        "jedi-language-server",
+        "black",
+        "isort",
+        "flake8",
+        "mypy",
+        "pylint",
       })
     end,
   },
@@ -44,20 +44,20 @@ return {
       inlay_hints = { enabled = false },
       ---@type lspconfig.options
       servers = {
-        -- pylsp = {
-        --   settings = {
-        --     pylsp = {
-        --       pyflakes = { enabled = false },
-        --       pycodestyle = { enabled = false },
-        --       autopep8 = { enabled = false },
-        --       yapf = { enabled = false },
-        --       mccabe = { enabled = false },
-        --       pylsp_mypy = { enabled = false },
-        --       pylsp_black = { enabled = false },
-        --       pylsp_isort = { enabled = false },
-        --     },
-        --   },
-        -- },
+        pylsp = {
+          settings = {
+            pylsp = {
+              pyflakes = { enabled = false },
+              pycodestyle = { enabled = false },
+              autopep8 = { enabled = false },
+              yapf = { enabled = false },
+              mccabe = { enabled = false },
+              pylsp_mypy = { enabled = false },
+              pylsp_black = { enabled = false },
+              pylsp_isort = { enabled = false },
+            },
+          },
+        },
         harper_ls = {
           enabled = true,
           filetypes = { "markdown" },
@@ -79,66 +79,44 @@ return {
           },
         },
         ruff = {
-          init_options = {
-            settings = {
-              python = {
-                inlayHints = true,
-              },
-              -- Ruff language server settings go here
+          -- Notes on code actions: https://github.com/astral-sh/ruff-lsp/issues/119#issuecomment-1595628355
+          -- Get isort like behavior: https://github.com/astral-sh/ruff/issues/8926#issuecomment-1834048218
+          commands = {
+            RuffAutofix = {
+              function()
+                vim.lsp.buf.execute_command({
+                  command = "ruff.applyAutofix",
+                  arguments = {
+                    { uri = vim.uri_from_bufnr(0) },
+                  },
+                })
+              end,
+              description = "Ruff: Fix all auto-fixable problems",
             },
-          },
-          -- -- Notes on code actions: https://github.com/astral-sh/ruff-lsp/issues/119#issuecomment-1595628355
-          -- -- Get isort like behavior: https://github.com/astral-sh/ruff/issues/8926#issuecomment-1834048218
-          -- commands = {
-          --   RuffAutofix = {
-          --     function()
-          --       vim.lsp.buf.execute_command({
-          --         command = "ruff.applyAutofix",
-          --         arguments = {
-          --           { uri = vim.uri_from_bufnr(0) },
-          --         },
-          --       })
-          --     end,
-          --     description = "Ruff: Fix all auto-fixable problems",
-          --   },
-          --   RuffOrganizeImports = {
-          --     function()
-          --       vim.lsp.buf.execute_command({
-          --         command = "ruff.applyOrganizeImports",
-          --         arguments = {
-          --           { uri = vim.uri_from_bufnr(0) },
-          --         },
-          --       })
-          --     end,
-          --     description = "Ruff: Format imports",
-          --   },
-          -- },
-        },
-        -- ruff_lsp = {},
-        pyright = {
-          settings = {
-            pyright = {
-              -- Using Ruff's import organizer
-              disableOrganizeImports = true,
-            },
-            python = {
-              analysis = {
-                -- Ignore all files for analysis to exclusivery use Ruff for
-                -- linting
-                ignore = { "*" },
-              },
+            RuffOrganizeImports = {
+              function()
+                vim.lsp.buf.execute_command({
+                  command = "ruff.applyOrganizeImports",
+                  arguments = {
+                    { uri = vim.uri_from_bufnr(0) },
+                  },
+                })
+              end,
+              description = "Ruff: Format imports",
             },
           },
         },
-        -- svelte = {},
-        -- dockerls = {},
-        -- docker_compose_language_service = {},
-        -- html = {},
-        -- jedi_language_server = {},
-        -- jsonls = {},
-        -- prismals = {},
+        ruff_lsp = {},
+        pyright = {},
+        svelte = {},
+        dockerls = {},
+        docker_compose_language_service = {},
+        html = {},
+        jedi_language_server = {},
+        jsonls = {},
+        prismals = {},
         cssls = {},
-        -- emmet_ls = {},
+        emmet_ls = {},
         tailwindcss = {
           root_dir = function(...)
             return require("lspconfig.util").root_pattern(".git")(...)
@@ -174,34 +152,7 @@ return {
             },
           },
         },
-        vtsls = {
-          settings = {
-            typescript = {
-              inlayHints = {
-                parameterNames = { enabled = "all" },
-                parameterTypes = { enabled = true },
-                variableTypes = { enabled = true },
-                propertyDeclarationTypes = { enabled = true },
-                functionLikeReturnTypes = { enabled = true },
-                enumMemberValues = { enabled = true },
-              },
-            },
-          },
-        },
-        svelte = {
-          settings = {
-            typescript = {
-              inlayHints = {
-                parameterNames = { enabled = "all" },
-                parameterTypes = { enabled = true },
-                variableTypes = { enabled = true },
-                propertyDeclarationTypes = { enabled = true },
-                functionLikeReturnTypes = { enabled = true },
-                enumMemberValues = { enabled = true },
-              },
-            },
-          },
-        },
+
         yamlls = {
           settings = {
             yaml = {
@@ -298,12 +249,12 @@ return {
         },
       })
     end,
-    -- require("lspconfig").ruff.setup({
-    --   init_options = {
-    --     settings = {
-    --       -- Ruff language servier settings go here
-    --     },
-    --   },
-    -- }),
+    require("lspconfig").ruff.setup({
+      init_options = {
+        settings = {
+          -- Ruff language servier settings go here
+        },
+      },
+    }),
   },
 }

@@ -112,8 +112,8 @@ mouse-hide-while-typing = true
 resize-overlay = never 
 
 unfocused-split-opacity = 0.55
-unfocused-split-fill = #000000
-split-divider-color = #a9a9a9
+unfocused-split-fill = #ee7800
+split-divider-color = #ffa500
 
 confirm-close-surface = false
 wait-after-command = true

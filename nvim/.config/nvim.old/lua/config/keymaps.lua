@@ -80,11 +80,11 @@ map("n", "<C-w><Right>", "<C-w>>", { desc = "Resize window right" })
 --   vim.diagnostic.goto_next()
 -- end, opts)
 --
--- require("user.hsl").replaceHexWithHSL()
+-- require("craftzdog.hsl").replaceHexWithHSL()
 --
-map("n", "<leader>r", function() end)
-require("user.lsp").toggleInlayHints()
-
+-- map("n", "<leader>r", function() end)
+-- require("user.lsp").toggleInlayHints()
+--
 -- map("n", "<leader>i", function() end)
 --
 vim.api.nvim_create_user_command("ToggleAutoformat", function()

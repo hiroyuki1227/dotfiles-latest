@@ -18,8 +18,6 @@ return {
       local dap = require("dap")
       local dapui = require("dapui")
 
-      require("dap-python").setup(LazyVim.get_pkg_path("debugpy", "/venv/bin/python"))
-
       require("mason-nvim-dap").setup({
         -- Makes a best effort to setup the various debuggers with
         -- reasonable debug configurations
@@ -80,13 +78,13 @@ return {
 
       -- Install golang specific config
       -- require('dap-go').setup()
-      require("dap-python").setup()
+      require("dap-python").setup("uv")
     end,
   },
-  {
-    "benomahony/uv.nvim",
-    config = function()
-      require("uv").setup()
-    end,
-  },
+  -- {
+  --   "benomahony/uv.nvim",
+  --   config = function()
+  --     require("uv").setup()
+  --   end,
+  -- },
 }
