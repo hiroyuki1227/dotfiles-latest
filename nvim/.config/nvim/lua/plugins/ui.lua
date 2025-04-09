@@ -251,7 +251,6 @@ return {
     },
   },
   {
-
     -- マウスと矢印キーがキーボードのホーム キー列にない場合は、使用しないでください。
     -- 5j 12-画面内での垂直方向の移動には相対ジャンプ (例: ) を使用します。
     -- CTRL-U CTRL-D CTRL-B CTRL-F gg G画面外での垂直移動に使用します。
@@ -261,7 +260,37 @@ return {
     -- 括弧間を移動するには、%および 角括弧コマンド ( を参照)を使用します。:h [
     "m4xshen/hardtime.nvim",
     dependencies = { "MunifTanjim/nui.nvim" },
-    opts = {},
+    config = function()
+      require("hardtime").setup({
+        disabled_filetypes = { "qf", "netrw", "NvimTree", "lazy", "mason", "oil", "TelescopePrompt" },
+        hints = {
+          ["k%^"] = {
+            message = function()
+              return "Use - instead of k^" -- return the hint message you want to display
+            end,
+            length = 2,
+          },
+          ["d[tTfF].i"] = { -- this matches d + {t/T/f/F} + {any character} + i
+            message = function(keys) -- keys is a string of key strokes that matches the pattern
+              return "Use " .. "c" .. keys:sub(2, 3) .. " instead of " .. keys
+            end,
+            length = 4,
+          },
+          ["[dcyvV][ia][%(%)]"] = {
+            message = function(keys)
+              return "Use " .. keys:sub(1, 2) .. "b instead of " .. keys
+            end,
+            length = 3,
+          },
+          ["[dcyvV][ia][%{%}]"] = {
+            message = function(keys)
+              return "Use " .. keys:sub(1, 2) .. "B instead of " .. keys
+            end,
+            length = 3,
+          },
+        },
+      })
+    end,
   },
   {
     "nvzone/showkeys",

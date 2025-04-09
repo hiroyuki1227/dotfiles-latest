@@ -1,5 +1,8 @@
 require("config.keymaps-add")
 
+-- local discipline = require("discipline")
+-- discipline.cowboy()
+
 local map = vim.keymap.set
 local opts = { noremap = true, silent = true }
 

@@ -145,11 +145,16 @@ return {
             padding = { left = 0, right = 1 },
             -- color = { fg = "#a5afc2", bg = "#0D1116", gui = "bold" },
           },
+          {
+            function()
+              return vim.fn.line("$")
+            end,
+          },
         },
         lualine_z = {
-          -- function()
-          --   return " " .. os.date("%R")
-          -- end,
+          function()
+            return " " .. os.date("%R")
+          end,
         },
       },
       extensions = { "neo-tree", "lazy", "fzf" },
