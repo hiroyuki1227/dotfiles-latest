@@ -7,7 +7,7 @@ return {
     "Kaiser-Yang/blink-cmp-dictionary",
   },
 
-  version = "1.*", -- build from source
+  version = "*", -- build from source
   -- @module 'blink.cmp'
   -- @type blink.cmp.Config
   opts = {
@@ -61,7 +61,7 @@ return {
               -- emojiはmarkdownファイルとgitcommitするときに利用できる
               -- ":"を入力してemojiのキーワードを入れる。
               --
-              { "gitcommit", "markdown", "text", "plaintex", "typst", "toml", "yaml", "json" },
+              { "lua", "gitcommit", "markdown", "text", "plaintex", "typst", "toml", "yaml", "json" },
               vim.o.filetype
             )
           end,
