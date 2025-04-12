@@ -59,7 +59,7 @@ font-family = "CodeNewRoman Nerd Font Mono"
 # font-family = "SpaceMono Nerd Font Mono"
 
 font-family = "UDEV Gothic NF"
-font-size = 15
+font-size = 13
 font-feature = -calt
 font-feature = -dlig
 font-feature = -liga
@@ -94,7 +94,7 @@ quick-terminal-screen = mouse
 quick-terminal-animation-duration = 0.1
 quick-terminal-autohide = false
 
-background-opacity = 0.9
+background-opacity = 0.8
 background-blur-radius = 20
 window-height = 54
 window-width = 164 

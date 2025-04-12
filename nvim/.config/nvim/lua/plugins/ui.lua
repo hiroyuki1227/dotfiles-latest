@@ -173,6 +173,7 @@ return {
         show_buffer_close_icons = false,
         show_close_icon = false,
       },
+      highlights = nil,
     },
   },
 
@@ -260,37 +261,8 @@ return {
     -- 括弧間を移動するには、%および 角括弧コマンド ( を参照)を使用します。:h [
     "m4xshen/hardtime.nvim",
     dependencies = { "MunifTanjim/nui.nvim" },
-    config = function()
-      require("hardtime").setup({
-        disabled_filetypes = { "qf", "netrw", "NvimTree", "lazy", "mason", "oil", "TelescopePrompt" },
-        hints = {
-          ["k%^"] = {
-            message = function()
-              return "Use - instead of k^" -- return the hint message you want to display
-            end,
-            length = 2,
-          },
-          ["d[tTfF].i"] = { -- this matches d + {t/T/f/F} + {any character} + i
-            message = function(keys) -- keys is a string of key strokes that matches the pattern
-              return "Use " .. "c" .. keys:sub(2, 3) .. " instead of " .. keys
-            end,
-            length = 4,
-          },
-          ["[dcyvV][ia][%(%)]"] = {
-            message = function(keys)
-              return "Use " .. keys:sub(1, 2) .. "b instead of " .. keys
-            end,
-            length = 3,
-          },
-          ["[dcyvV][ia][%{%}]"] = {
-            message = function(keys)
-              return "Use " .. keys:sub(1, 2) .. "B instead of " .. keys
-            end,
-            length = 3,
-          },
-        },
-      })
-    end,
+    -- config = function()
+    opts = {},
   },
   {
     "nvzone/showkeys",
@@ -334,4 +306,37 @@ return {
       { "<leader>ks", "<cmd>ShowkeysToggle<cr>", desc = "Showkeys Toggle" },
     },
   },
+  -- {
+  --   "tribela/transparent.nvim",
+  --   event = "VimEnter",
+  --   -- config = true,
+  --   config = function()
+  --     require("transparent").setup({
+  --       enable = true,
+  --       extra_groups = { -- table/string: additional groups that should be cleared
+  --         "BufferLine",
+  --         "BufferLineTabClose",
+  --         "BufferlineBufferSelected",
+  --         "BufferLineFill",
+  --         "BufferLineBackground",
+  --         "BufferLineSeparator",
+  --         "BufferLineIndicatorSelected",
+  --         "IndentBlanklineChar",
+  --         -- make floating windows transparent
+  --         "LspFloatWinNormal",
+  --         "Normal",
+  --         "NormalFloat",
+  --         "FloatBorder",
+  --         "TelescopeNormal",
+  --         "TelescopeBorder",
+  --         "TelescopePromptBorder",
+  --         "SagaBorder",
+  --         "SagaNormal",
+  --         "lualine",
+  --       },
+  --       exclude = {}, -- table: groups you don't want to clear
+  --       -- clear_prefix = { "lualine", "NeoTree", "BufferLine" },
+  --     })
+  --   end,
+  -- },
 }

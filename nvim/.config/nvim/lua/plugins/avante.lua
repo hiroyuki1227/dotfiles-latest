@@ -14,7 +14,8 @@ return {
     provider = "ollama",
     ollama = {
       endpoint = "http://127.0.0.1:11434", -- Note that there is no /v1 at the end.
-      model = "deepseek-r1:latest",
+      -- model = "deepseek-r1:latest",
+      model = "gemma3:4b",
     },
   },
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
@@ -55,4 +56,20 @@ return {
       ft = { "markdown", "Avante" },
     },
   },
+  -- -- 🔥 Dressing.nvim (UI Enhancements)
+  -- {
+  --   "stevearc/dressing.nvim",
+  --   lazy = true,
+  --   opts = {
+  --     input = { enabled = false },
+  --     select = { enabled = false },
+  --   },
+  -- },
+  --
+  -- -- 🎯 Blink Completion Framework
+  -- {
+  --   "saghen/blink.compat",
+  --   lazy = false, -- Changed to load immediately
+  --   opts = {},
+  -- },
 }
