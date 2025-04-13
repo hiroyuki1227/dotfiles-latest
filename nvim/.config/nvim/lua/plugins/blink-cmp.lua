@@ -111,7 +111,7 @@ return {
           lazydev = {
             name = "LazyDev",
             module = "lazydev.integrations.blink",
-            score_offset = 100,
+            score_offset = -1000,
           },
           -- TODO:
           nerdfont = { -- keymap - insert mode at key is ":"

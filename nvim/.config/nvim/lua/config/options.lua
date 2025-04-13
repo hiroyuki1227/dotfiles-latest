@@ -77,16 +77,16 @@ vim.opt.formatoptions:append({ "r" })
 vim.cmd([[au BufNewFile,BufRead *.astro setf astro]])
 vim.cmd([[au BufNewFile,BufRead Podfile setf ruby]])
 
--- カーソル行の背景色を変更
-vim.cmd([[
- highlight CursorLine guibg= #616a6b
- highlight CursorLineNr guibg= guibg=#323449 guifg= #f8c471
- highlight LineNrAbove guifg = #616A6B
- " highlight LineNr guifg = #F8C471
- highlight LineNrBelow guifg = #616A6B
- " highlight ColorColumn guibg =#323449
- highlight ColorColumn guibg =#616A6B
-]])
+-- -- カーソル行の背景色を変更
+-- vim.cmd([[
+--  highlight CursorLine guibg= #616a6b
+--  highlight CursorLineNr guibg= guibg=#323449 guifg= #f8c471
+--  highlight LineNrAbove guifg = #616A6B
+--  " highlight LineNr guifg = #F8C471
+--  highlight LineNrBelow guifg = #616A6B
+--  " highlight ColorColumn guibg =#323449
+--  highlight ColorColumn guibg =#616A6B
+-- ]])
 
 -- カーソル行の強調表示を有効にする
 opt.cursorline = true

@@ -116,6 +116,7 @@ unfocused-split-fill = #ee7800
 split-divider-color = #ffa500
 
 confirm-close-surface = false
+# wait-after-command = false
 wait-after-command = true
 
 #

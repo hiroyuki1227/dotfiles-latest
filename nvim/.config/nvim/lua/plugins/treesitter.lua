@@ -80,7 +80,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter-context",
     event = "LazyFile",
-    opts = { mode = "cursor", max_lines = 3 },
+    opts = { mode = "cursor", max_lines = 5 },
     keys = {
       {
         "<leader>ut",
