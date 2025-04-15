@@ -210,9 +210,12 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
   group = vim.api.nvim_create_augroup("float_diagnostic", { clear = true }),
   callback = function()
+    -- vim.diagnostic.config({ virtual_text = true })
     vim.diagnostic.open_float(nil, {
       focus = false,
       border = "rounded",
+      -- source = "always",
+      -- source = "if_many",
       scope = "cursor",
       -- pos = 10,
     })

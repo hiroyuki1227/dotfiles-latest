@@ -1,7 +1,7 @@
 # config-file = ghostty-theme
 # config-file = solarized_osaka_dark
-# theme = "Solarized Dark - Patched"
-theme = "tokyonight"
+theme = "Solarized Dark - Patched"
+# theme = "tokyonight"
 # theme = "catppuccin-mocha"
 
 # Some shaders can be found in this repo, they're usually uploaded to discord
@@ -94,8 +94,8 @@ quick-terminal-screen = mouse
 quick-terminal-animation-duration = 0.1
 quick-terminal-autohide = false
 
-background-opacity = 0.8
-background-blur-radius = 20
+background-opacity = 0.9
+background-blur-radius = 10
 window-height = 54
 window-width = 164 
 window-colorspace = display-p3
