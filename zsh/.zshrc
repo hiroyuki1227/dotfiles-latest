@@ -1,15 +1,14 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
 
-source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
+# fi
+#
+# source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
+#
+# # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+#
 alias reload-zsh="source ~/.zshrc"
 alias edit-zsh="nvim ~/.zshrc"
 
@@ -29,14 +28,71 @@ bindkey '^[[B' history-search-forward
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# pnpm
+# export PNPM_HOME="/Users/hrsuda/Library/pnpm"
+# case ":$PATH:" in
+#   *":$PNPM_HOME:"*) ;;
+#   *) export PATH="$PNPM_HOME:$PATH" ;;
+# esac
+# pnpm end
+#
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+# place this after nvm initialization!
+autoload -U add-zsh-hook
+
+# Python development setup
+export PATH="$(brew --prefix python)/libexec/bin:$PATH"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+#
+
+# place this after nvm initialization!
+load-nvmrc() {
+  local nvmrc_path
+  nvmrc_path="$(nvm_find_nvmrc)"
+
+  if [ -n "$nvmrc_path" ]; then
+    local nvmrc_node_version
+    nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+    if [ "$nvmrc_node_version" = "N/A" ]; then
+      nvm install
+    elif [ "$nvmrc_node_version" != "$(nvm version)" ]; then
+      nvm use
+    fi
+  elif [ -n "$(PWD=$OLDPWD nvm_find_nvmrc)" ] && [ "$(nvm version)" != "$(nvm version default)" ]; then
+    echo "Reverting to nvm default version"
+    nvm use default
+  fi
+}
+
+export CLICOLOR=1
 
 export PATH=$PATH:/Users/hrsuda/.spicetify
 
-export PATH="$HOME/.rbenv/shims:$PATH"
-
+# export PATH="$HOME/.rbenv/shims:$PATH"
+# Rancher Desktop
+# if [ -d "$HOME/.rd/bin" ] ; then
+	# export PATH="$HOME/.rd/bin:$PATH"
+# fi
+#
+# Curl
+export PATH="/opt/homebrew/opt/curl/bin:$PATH"
+export LDFLAGS="-L/opt/homebrew/opt/curl/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/curl/include"
+export PKG_CONFIG_PATH="/opt/homebrew/opt/curl/lib/pkgconfig"
+#
+if [ -f "$HOME/.obsidian/auth" ]; then
+  source ~/.obsidian/auth
+fi
+# TeX Live
+export PATH="/Library/TeX/texbin:$PATH"
+#
 # ---- FZF -----
 
 # Set up fzf key bindings and fuzzy completion
@@ -70,7 +126,7 @@ _fzf_compgen_dir() {
   fd --type=d --hidden --exclude .git . "$1"
 }
 
-source ~/fzf-git.sh/fzf-git.sh
+source ~/.fzf-git/fzf-git.sh
 
 show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi"
 
@@ -97,11 +153,27 @@ function pkill() {
 }
 # ----- Bat (better cat) -----
 
-export BAT_THEME=tokyonight_night
+# export BAT_THEME=tokyonight_night
 
 # ---- Eza (better ls) -----
+if command -v eza &>/dev/null; then
+  alias ls="eza --icons=always"
+  alias ll="eza --icons=always -lhg"
+  alias lla="eza --icons=always -alhg"
+  alias tree="eza --icons=always --tree" 
+fi
+# ----- Bat (better cat) -----
+export BAT_THEME="gruvbox-dark"
+export BAT_PAGER="less -R"
 
-alias ls="eza --icons=always"
+# export BAT_THEME=tokyonight_night
+
+if builtin command -v bat > /dev/null; then
+  alias catt="bat"
+  alias cat="bat --paging=never --style=plain"
+  alias cata="bat --show-all --pading=never"
+fi
+
 
 # ---- TheFuck -----
 
@@ -112,8 +184,124 @@ eval $(thefuck --alias fk)
 # ---- Zoxide (better cd) ----
 eval "$(zoxide init zsh)"
 
-alias cd="z"
+# starship shell setup
+if command -v starship &>/dev/null; then
+  export STARSHIP_CONFIG=~/.config/starship/starship.toml
+  export STARSHIP_CACHE=~/.starship/cache
+  eval "$(starship init zsh)" >/dev/null 2>&1
+fi 
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+# export PATH="/Users/hrsuda/.rd/bin:$PATH"
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
+
+function t() {
+  {
+    exec </dev/tty
+    exec <&1
+    local session
+    session=$(sesh list -t -c | fzf --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡  ')
+    [[ -z "$session" ]] && return
+    sesh connect $session
+  }
+}
+#
+# fastfetch
+#
+# setup neovim
+# Directory to store the neovim configs
+# export download_dir="$HOME/Downloads/test-configs"
+# export NVIM_APPNAME=neobean nvim
+# export NVIM_APPNAME=neobean
+
+# mise 開発環境セットアップツール
+# eval "$(/opt/homebrew/bin/mise activate zsh)"
+
+# OSC 133 sequences
+preexec() { printf "\033]133;A\033\\" }
+precmd()  { printf "\033]133;B\033\\" }
+
+
+
+# python uv setup
+eval "$(uv generate-shell-completion zsh)"
+eval "$(uvx --generate-shell-completion zsh)"
+export PATH="/Users/hrsuda/.local/bin:$PATH"
+
+
+#Git
+alias ga='git add'
+alias gap='git add -p'
+alias gs='git status'
+alias gpr='git pull -r'
+alias gl='git lg'
+alias glo='git log --oneline'
+alias gcm='git commit -m'
+alias pear='git pair '
+alias gra='git commit --amend --reset-author --no-edit'
+alias gco='git checkout'
+alias hangon='git stash save -u'
+alias gsp='git stash pop'
+alias grc='git rebase --continue'
+alias gclean='git clean -df'
+alias gup='gco main && gpr && gco -'
+alias unwip='git reset HEAD~'
+alias unroll='git reset HEAD~ --hard'
+alias gpfwl='git push --force-with-lease'
+alias glt='git describe --tags --abbrev=0'
+alias unroll='unwip && git checkout . && git clean -df'
+alias rspec_units='rspec --exclude-pattern "**/features/*_spec.rb"'
+alias awsume='. awsume sso;. awsume' 
+alias gprune=$'git branch --merged main | grep -v \'^[ *]*main$\' | xargs git branch -d'
+alias remove_branches='git branch | grep -v "master" | xargs git branch -D'
+alias fsb='~/fsb.sh'
+alias fshow='~/fshow.sh'
+
+# Tmux
+# Attaches tmux to a session (example: ta portal)
+alias ta='tmux attach -t'
+# Creates a new session
+alias tn='tmux new-session -s '
+# Kill session
+alias tk='tmux kill-session -t '
+# Lists all ongoing sessions
+alias tl='tmux list-sessions'
+# Detach from session
+alias td='tmux detach'
+# Tmux Clear pane
+alias tc='clear; tmux clear-history; clear'
+
 alias brewup="brew update && brew upgrade && brew cleanup && brew autoremove"
-alias bcn="brew cu -a"
-alias bcnall="brew upgrade --cask --greedy"
+alias bcu="brew cu -a --cleanup"
+alias bcuall="brew upgrade --cask --greedy"
+
 alias ide="~/.scripts/ide"
+
+alias vim="nvim"
+alias vi="nvim"
+
+alias cd="z"
+alias cdd="z -"
+#  Python uv and ruff alias
+alias uvinit="uv init"        # プロジェクト初期化
+alias uvpin="uv python pin"   # pythonバージョン指定
+alias uvlock="uv python lock" # pythonバージョン指定
+alias uvunlock="uv python unlock" # python バージョン開放
+alias uvrun="uv run python"   # python実行 (uvrun pythonファイルｊ)
+alias uvadd="uv add"          # package install (uvadd package名)
+alias uvremove="uv remove"    # package uninstall (uvremove package名)
+alias uvxinit="uvx init"
+# ruff(uv)
+alias uvruff="uv run ruff check && uv run ruff check --fix"
+
+# local LLM setup
+alias ol-start="ollama serve --idle-timeout 600"    # 60分間の間に終了しない
+alias ol-update="ollama list | tail -n +2 | tr -s ' ' | cut -d ' ' -f1 | xargs -n1 ollama pull"
+# alias ol-chat="ollama run $(cat ~/.config/ollama/config.yaml)"
