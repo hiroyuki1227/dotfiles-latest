@@ -17,6 +17,13 @@ local colors = require("config.colors")
 return {
   "MeanderingProgrammer/render-markdown.nvim",
   enabled = true,
+  ft = {
+    "markdown",
+    "markdown.mdx",
+    "Avante",
+    "codecompanion",
+  },
+
   -- Moved highlight creation out of opts as suggested by plugin maintainer
   -- There was no issue, but it was creating unnecessary noise when ran
   -- :checkhealth render-markdown
@@ -75,6 +82,7 @@ return {
     end
   end,
   opts = {
+    file_type = { "markdown", "Avante", "codecompanion" },
     bullet = {
       -- Turn on / off list bullet rendering
       enabled = true,
