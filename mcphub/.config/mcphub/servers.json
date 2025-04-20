@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "weather": {
+      "command": "npx @mcp/weather",
+      "description": "Provides real-time weather data and forecasts"
+    }
+  }
+}

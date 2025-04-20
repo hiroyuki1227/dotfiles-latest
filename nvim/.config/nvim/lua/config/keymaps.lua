@@ -3,6 +3,8 @@ require("config.keymaps-add")
 -- local discipline = require("discipline")
 -- discipline.cowboy()
 
+vim.g.mapleader = " "
+vim.g.maplocalleader = ","
 local map = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
@@ -78,6 +80,9 @@ map("n", "<C-w><Down>", "<C-w>-", { desc = "Resize window down" })
 map("n", "<C-w><Left>", "<C-w><", { desc = "Resize window left" })
 map("n", "<C-w><Right>", "<C-w>>", { desc = "Resize window right" })
 
+map("n", "<LocalLeader>d", function()
+  require("codecompanion").prompt("docs")
+end, { noremap = true, silent = true })
 -- -- Diagnostics
 -- map("n", "<C-j>", function()
 --   vim.diagnostic.goto_next()

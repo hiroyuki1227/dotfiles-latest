@@ -131,6 +131,7 @@ return {
             padding = { left = 1, right = 1 },
             -- color = { fg = Snacks.util.color("Constant"), gui = "bold" },
           },
+          --   { require("mcphub.extensions.lualine") },
         },
         lualine_y = {
           {
