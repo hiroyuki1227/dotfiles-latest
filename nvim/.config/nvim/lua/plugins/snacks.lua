@@ -544,7 +544,7 @@ return {
       -- Documentation for the picker
       -- https://github.com/folke/snacks.nvim/blob/main/docs/picker.md
       picker = {
-        sources = { explorer = { hidden = true } },
+        sources = { explorer = { hidden = true }, files = { hidden = true } },
         transform = function(item)
           if not item.file then
             return item

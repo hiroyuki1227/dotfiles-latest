@@ -34,6 +34,7 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.editor.mini-diff" },
     { import = "lazyvim.plugins.extras.lang.python" },
     { import = "lazyvim.plugins.extras.editor.snacks_picker" },
+    -- { import = "lazyvim.plugins.extras.editor.fzf" },
     -- { import = "lazyvim.plugins.extras.editor.neo-tree" },
     { import = "lazyvim.plugins.extras.lang.docker" },
     { import = "lazyvim.plugins.extras.lang.prisma" },

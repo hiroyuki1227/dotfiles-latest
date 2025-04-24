@@ -666,37 +666,17 @@ vim.keymap.set("n", "N", "Nzzzv")
 
 -- Launch, limiting search/replace to current file
 -- https://github.com/MagicDuck/grug-far.nvim?tab=readme-ov-file#-cookbook
-vim.keymap.set(
-  { "v" },
-  "<leader>s1",
-  '<cmd>lua require("grug-far").open({ prefills = { paths = vim.fn.expand("%") } })<cr>',
-  { noremap = true, silent = true }
-)
+vim.keymap.set({ "v" }, "<leader>s1", '<cmd>lua require("grug-far").open({ prefills = { paths = vim.fn.expand("%") } })<cr>', { noremap = true, silent = true })
 
 -- Replaces the word I'm currently on, opens a terminal so that I start typing the new word
 -- It replaces the word globally across the entire file
-vim.keymap.set(
-  "n",
-  "<leader>su",
-  [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
-  { desc = "[P]Replace word I'm currently on GLOBALLY" }
-)
+vim.keymap.set("n", "<leader>su", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "[P]Replace word I'm currently on GLOBALLY" })
 
 -- Replaces the current word with the same word in uppercase, globally
-vim.keymap.set(
-  "n",
-  "<leader>sU",
-  [[:%s/\<<C-r><C-w>\>/<C-r>=toupper(expand('<cword>'))<CR>/gI<Left><Left><Left>]],
-  { desc = "[P]GLOBALLY replace word I'm on with UPPERCASE" }
-)
+vim.keymap.set("n", "<leader>sU", [[:%s/\<<C-r><C-w>\>/<C-r>=toupper(expand('<cword>'))<CR>/gI<Left><Left><Left>]], { desc = "[P]GLOBALLY replace word I'm on with UPPERCASE" })
 
 -- Replaces the current word with the same word in lowercase, globally
-vim.keymap.set(
-  "n",
-  "<leader>sL",
-  [[:%s/\<<C-r><C-w>\>/<C-r>=tolower(expand('<cword>'))<CR>/gI<Left><Left><Left>]],
-  { desc = "[P]GLOBALLY replace word I'm on with lowercase" }
-)
+vim.keymap.set("n", "<leader>sL", [[:%s/\<<C-r><C-w>\>/<C-r>=tolower(expand('<cword>'))<CR>/gI<Left><Left><Left>]], { desc = "[P]GLOBALLY replace word I'm on with lowercase" })
 
 -- Quickly alternate between the last 2 files
 -- LazyVim comes with the default shortcut <leader>bb for this, but I navigate
@@ -773,11 +753,7 @@ vim.keymap.set("n", "<leader>cb", function()
     -- running this script with bash to not execute my zshrc file after
     -- vim.cmd("silent !tmux split-window -h -l 60 'bash -c \"" .. escaped_file .. "; exec bash\"'")
     -- `-l 60` specifies the size of the tmux pane, in this case 60 columns
-    vim.cmd(
-      "silent !tmux split-window -h -l 60 'bash -c \""
-        .. escaped_file
-        .. "; echo; echo Press any key to exit...; read -n 1; exit\"'"
-    )
+    vim.cmd("silent !tmux split-window -h -l 60 'bash -c \"" .. escaped_file .. "; echo; echo Press any key to exit...; read -n 1; exit\"'")
   else
     vim.cmd("echo 'Not a script. Shebang line not found.'")
   end
@@ -914,15 +890,7 @@ M.tmux_pane_function = function(dir)
       vim.g.tmux_pane_dir = escaped_dir
     end
     -- If no pane exists, open it with zsh and DISABLE_PULL variable
-    vim.fn.system(
-      "tmux split-window "
-        .. split_cmd
-        .. " -l "
-        .. pane_size
-        .. " 'cd \""
-        .. escaped_dir
-        .. "\" && DISABLE_PULL=1 zsh'"
-    )
+    vim.fn.system("tmux split-window " .. split_cmd .. " -l " .. pane_size .. " 'cd \"" .. escaped_dir .. "\" && DISABLE_PULL=1 zsh'")
     vim.fn.system("tmux send-keys " .. move_key)
     -- Resolve zsh-vi-mode issue for first-time pane
     vim.fn.system("tmux send-keys Escape i")
@@ -1081,8 +1049,7 @@ local function handle_image_paste(img_dir)
   local temp_buf = vim.api.nvim_create_buf(false, true) -- Create an unlisted, scratch buffer
   vim.api.nvim_set_current_buf(temp_buf) -- Switch to the temporary buffer
   local temp_image_path = vim.fn.tempname() .. ".avif"
-  local image_pasted =
-    paste_image(vim.fn.fnamemodify(temp_image_path, ":h"), vim.fn.fnamemodify(temp_image_path, ":t:r"))
+  local image_pasted = paste_image(vim.fn.fnamemodify(temp_image_path, ":h"), vim.fn.fnamemodify(temp_image_path, ":t:r"))
   vim.api.nvim_buf_delete(temp_buf, { force = true }) -- Delete the buffer
   vim.fn.delete(temp_image_path) -- Delete the temporary file
   vim.defer_fn(function()
@@ -1110,8 +1077,7 @@ local function handle_image_paste(img_dir)
           temp_dir = vim.fn.fnamemodify(temp_dir, ":h")
         end
         -- Build the relative path
-        local relative_path = levels == 0 and "./assets/" .. IMAGE_STORAGE_PATH
-          or string.rep("../", levels) .. "assets/" .. IMAGE_STORAGE_PATH
+        local relative_path = levels == 0 and "./assets/" .. IMAGE_STORAGE_PATH or string.rep("../", levels) .. "assets/" .. IMAGE_STORAGE_PATH
         vim.api.nvim_put({ "![Image](" .. relative_path .. '){: width="500" }' }, "c", true, true)
         -- Capital "O" to move to the line above
         vim.cmd("normal! O")
@@ -1311,11 +1277,7 @@ vim.keymap.set("n", "<leader>iR", function()
   local absolute_image_path = current_file_path .. "/" .. image_path
   -- Check if file exists
   if vim.fn.filereadable(absolute_image_path) == 0 then
-    vim.api.nvim_echo(
-      { { "Image file does not exist:\n", "ErrorMsg" }, { absolute_image_path, "ErrorMsg" } },
-      false,
-      {}
-    )
+    vim.api.nvim_echo({ { "Image file does not exist:\n", "ErrorMsg" }, { absolute_image_path, "ErrorMsg" } }, false, {})
     return
   end
   -- Get directory and extension of current image
@@ -1418,231 +1380,224 @@ end, { desc = "[P]Rename image under cursor" })
 -- IMGUR_CLIENT_SECRET="wwwwww"
 --
 -- Path to your environment variables file
--- local env_file_path = vim.fn.expand("~/Library/Documents/com~apple~CloudDocs/github/imgur_credentials")
--- -- Configuration variables
--- -- update these names to match the names you have in the file above
--- local access_token_var = "IMGUR_ACCESS_TOKEN"
--- local refresh_token_var = "IMGUR_REFRESH_TOKEN"
--- local client_id_var = "IMGUR_CLIENT_ID"
--- local client_secret_var = "IMGUR_CLIENT_SECRET"
+local env_file_path = vim.fn.expand("~/Library/Mobile Documents/com~apple~CloudDocs/github/imgur_credentials")
+-- Configuration variables
+-- update these names to match the names you have in the file above
+local access_token_var = "IMGUR_ACCESS_TOKEN"
+local refresh_token_var = "IMGUR_REFRESH_TOKEN"
+local client_id_var = "IMGUR_CLIENT_ID"
+local client_secret_var = "IMGUR_CLIENT_SECRET"
 -- Keymap setup
--- vim.keymap.set({ "n", "i" }, "<M-i>", function()
---   vim.notify("UPLOADING IMAGE TO IMGUR...", vim.log.levels.INFO)
---   -- Slight delay to show the message
---   vim.defer_fn(function()
---     -- Function to read environment variables from the specified file
---     local function load_env_variables()
---       local env_vars = {}
---       local file = io.open(env_file_path, "r")
---       if file then
---         for line in file:lines() do
---           -- Updated pattern to match lines without 'export'
---           for key, value in string.gmatch(line, '([%w_]+)="([^"]+)"') do
---             env_vars[key] = value
---           end
---         end
---         file:close()
---       else
---         vim.notify("Failed to open " .. env_file_path .. " to load environment variables.", vim.log.levels.ERROR)
---       end
---       return env_vars
---     end
---     -- Load environment variables
---     local env_vars = load_env_variables()
---     -- Set environment variables in Neovim
---     for key, value in pairs(env_vars) do
---       vim.fn.setenv(key, value)
---     end
---     -- Retrieve the necessary variables
---     local imgur_access_token = env_vars[access_token_var]
---     local imgur_refresh_token = env_vars[refresh_token_var]
---     local imgur_client_id = env_vars[client_id_var]
---     local imgur_client_secret = env_vars[client_secret_var]
---     if not imgur_access_token or imgur_access_token == "" then
---       vim.notify(
---         "Imgur Access Token not found. Please set " .. access_token_var .. " in your environment file.",
---         vim.log.levels.ERROR
---       )
---       return
---     end
---     -- Predeclare the functions to handle mutual references
---     local upload_to_imgur
---     local refresh_access_token
---     local upload_attempts = 0 -- Keep track of upload attempts to prevent infinite loops
---     -- Function to refresh the access token if expired
---     refresh_access_token = function(callback)
---       vim.notify("Access token invalid or expired. Refreshing access token...", vim.log.levels.WARN)
---       local refresh_command = string.format(
---         [[curl --silent --request POST "https://api.imgur.com/oauth2/token" \
---         --data "refresh_token=%s" \
---         --data "client_id=%s" \
---         --data "client_secret=%s" \
---         --data "grant_type=refresh_token"]],
---         imgur_refresh_token,
---         imgur_client_id,
---         imgur_client_secret
---       )
---       -- print("Refresh command: " .. refresh_command) -- Log the refresh command
---       local new_access_token = nil
---       local new_refresh_token = nil
---       vim.fn.jobstart(refresh_command, {
---         stdout_buffered = true,
---         on_stdout = function(_, data)
---           local json_data = table.concat(data, "\n")
---           -- print("Refresh token response JSON: " .. json_data) -- Log the response JSON
---           local response = vim.fn.json_decode(json_data)
---           if response and response.access_token then
---             new_access_token = response.access_token
---             new_refresh_token = response.refresh_token
---             -- print("New access token obtained: " .. new_access_token) -- Log the new access token
---             -- print("New refresh token obtained: " .. new_refresh_token) -- Log the new refresh token
---           else
---             vim.notify(
---               "Failed to refresh access token: " .. (response and response.error_description or "Unknown error"),
---               vim.log.levels.ERROR
---             )
---           end
---         end,
---         on_exit = function()
---           if new_access_token and new_refresh_token then
---             -- Update environment variables in Neovim
---             vim.fn.setenv(access_token_var, new_access_token)
---             vim.fn.setenv(refresh_token_var, new_refresh_token)
---             imgur_access_token = new_access_token
---             imgur_refresh_token = new_refresh_token
---             vim.notify("Access token refreshed successfully.", vim.log.levels.INFO)
---             -- Write the new access token and refresh token to the environment file to persist them
---             local file = io.open(env_file_path, "r+")
---             if not file then
---               vim.notify("Error: Could not open " .. env_file_path .. " for writing.", vim.log.levels.ERROR)
---               return
---             end
---             local content = file:read("*all")
---             if content then
---               -- Update Access Token
---               local pattern_access = access_token_var .. '="[^"]*"'
---               local replacement_access = access_token_var .. '="' .. new_access_token .. '"'
---               content = content:gsub(pattern_access, replacement_access)
---               -- Update Refresh Token
---               local pattern_refresh = refresh_token_var .. '="[^"]*"'
---               local replacement_refresh = refresh_token_var .. '="' .. new_refresh_token .. '"'
---               content = content:gsub(pattern_refresh, replacement_refresh)
---               file:seek("set", 0)
---               file:write(content)
---               file:close()
---             else
---               vim.notify("Failed to read " .. env_file_path .. " content.", vim.log.levels.ERROR)
---               file:close()
---             end
---             -- Reload environment variables from the environment file
---             env_vars = load_env_variables()
---             for key, value in pairs(env_vars) do
---               vim.fn.setenv(key, value)
---             end
---             -- Callback after refreshing the token
---             if callback then
---               callback()
---             end
---           else
---             vim.notify("Failed to refresh access token.", vim.log.levels.ERROR)
---           end
---         end,
---       })
---     end
---     -- Function to execute image upload command to Imgur
---     upload_to_imgur = function()
---       upload_attempts = upload_attempts + 1
---       if upload_attempts > 2 then
---         vim.notify("Maximum upload attempts reached. Please check your credentials.", vim.log.levels.ERROR)
---         return
---       end
---       -- Detect the operating system
---       local is_mac = vim.fn.has("macunix") == 1
---       local is_linux = vim.fn.has("unix") == 1 and not is_mac
---       local clipboard_command = ""
---       if is_mac then
---         -- macOS command to get image from clipboard
---         clipboard_command =
---           [[osascript -e 'get the clipboard as «class PNGf»' | sed 's/«data PNGf//; s/»//' | xxd -r -p]]
---       elseif is_linux then
---         -- Linux command to get image from clipboard using xclip
---         clipboard_command = [[xclip -selection clipboard -t image/png -o]]
---         -- Alternative for Wayland-based systems (uncomment if needed)
---         -- clipboard_command = [[wl-paste --type image/png]]
---       else
---         vim.notify("Unsupported operating system for clipboard image upload.", vim.log.levels.ERROR)
---         return
---       end
---       local upload_command = string.format(
---         [[
---           %s \
---           | curl --silent --write-out "HTTPSTATUS:%%{http_code}" --request POST --form "image=@-" \
---           --header "Authorization: Bearer %s" "https://api.imgur.com/3/image"
---         ]],
---         clipboard_command,
---         imgur_access_token
---       )
---       -- print("Upload command: " .. upload_command) -- Log the upload command
---       local url = nil
---       local error_status = nil
---       local error_message = nil
---       local account_id = nil
---       vim.fn.jobstart(upload_command, {
---         stdout_buffered = true,
---         on_stdout = function(_, data)
---           local output = table.concat(data, "\n")
---           local json_data, http_status = output:match("^(.*)HTTPSTATUS:(%d+)$")
---           if not json_data or not http_status then
---             -- print("Failed to parse response and HTTP status code.")
---             error_status = nil
---             error_message = "Unknown error"
---             return
---           end
---           -- print("Upload response JSON: " .. json_data)
---           -- print("HTTP status code: " .. http_status)
---           local response = vim.fn.json_decode(json_data)
---           error_status = tonumber(http_status)
---           if error_status >= 200 and error_status < 300 and response and response.success then
---             url = response.data.link
---             account_id = response.data.account_id
---             -- print("Upload successful. URL: " .. url)
---           else
---             -- Extract error message from different possible response formats
---             if response.data and response.data.error then
---               error_message = response.data.error
---             elseif response.errors and response.errors[1] and response.errors[1].detail then
---               error_message = response.errors[1].detail
---             else
---               error_message = "Unknown error"
---             end
---             -- print("Upload failed. Status: " .. tostring(error_status) .. ", Error: " .. error_message)
---           end
---         end,
---         on_exit = function()
---           if url and account_id ~= vim.NIL and account_id ~= nil then
---             -- Format the URL as Markdown
---             local markdown_url = string.format("![imgur](%s)", url)
---             vim.notify("Image uploaded to Imgur.", vim.log.levels.INFO)
---             -- Insert formatted Markdown link into buffer at cursor position
---             local row, col = unpack(vim.api.nvim_win_get_cursor(0))
---             vim.api.nvim_buf_set_text(0, row - 1, col, row - 1, col, { markdown_url })
---           elseif error_status == 401 or error_status == 429 then
---             vim.notify("Access token expired or invalid, refreshing...", vim.log.levels.WARN)
---             refresh_access_token(function()
---               upload_to_imgur()
---             end)
---           elseif error_status == 400 and error_message == "We don't support that file type!" then
---             vim.notify("Failed to upload image: " .. error_message, vim.log.levels.ERROR)
---           else
---             vim.notify("Failed to upload image to Imgur: " .. (error_message or "Unknown error"), vim.log.levels.ERROR)
---           end
---         end,
---       })
---     end
---     -- Attempt to upload the image
---     upload_to_imgur()
---   end, 100)
--- end, { desc = "[P]Paste image to Imgur" })
+vim.keymap.set({ "n", "i" }, "<M-i>", function()
+  vim.notify("UPLOADING IMAGE TO IMGUR...", vim.log.levels.INFO)
+  -- Slight delay to show the message
+  vim.defer_fn(function()
+    -- Function to read environment variables from the specified file
+    local function load_env_variables()
+      local env_vars = {}
+      local file = io.open(env_file_path, "r")
+      if file then
+        for line in file:lines() do
+          -- Updated pattern to match lines without 'export'
+          for key, value in string.gmatch(line, '([%w_]+)="([^"]+)"') do
+            env_vars[key] = value
+          end
+        end
+        file:close()
+      else
+        vim.notify("Failed to open " .. env_file_path .. " to load environment variables.", vim.log.levels.ERROR)
+      end
+      return env_vars
+    end
+    -- Load environment variables
+    local env_vars = load_env_variables()
+    -- Set environment variables in Neovim
+    for key, value in pairs(env_vars) do
+      vim.fn.setenv(key, value)
+    end
+    -- Retrieve the necessary variables
+    local imgur_access_token = env_vars[access_token_var]
+    local imgur_refresh_token = env_vars[refresh_token_var]
+    local imgur_client_id = env_vars[client_id_var]
+    local imgur_client_secret = env_vars[client_secret_var]
+    if not imgur_access_token or imgur_access_token == "" then
+      vim.notify("Imgur Access Token not found. Please set " .. access_token_var .. " in your environment file.", vim.log.levels.ERROR)
+      return
+    end
+    -- Predeclare the functions to handle mutual references
+    local upload_to_imgur
+    local refresh_access_token
+    local upload_attempts = 0 -- Keep track of upload attempts to prevent infinite loops
+    -- Function to refresh the access token if expired
+    refresh_access_token = function(callback)
+      vim.notify("Access token invalid or expired. Refreshing access token...", vim.log.levels.WARN)
+      local refresh_command = string.format(
+        [[curl --silent --request POST "https://api.imgur.com/oauth2/token" \
+        --data "refresh_token=%s" \
+        --data "client_id=%s" \
+        --data "client_secret=%s" \
+        --data "grant_type=refresh_token"]],
+        imgur_refresh_token,
+        imgur_client_id,
+        imgur_client_secret
+      )
+      -- print("Refresh command: " .. refresh_command) -- Log the refresh command
+      local new_access_token = nil
+      local new_refresh_token = nil
+      vim.fn.jobstart(refresh_command, {
+        stdout_buffered = true,
+        on_stdout = function(_, data)
+          local json_data = table.concat(data, "\n")
+          -- print("Refresh token response JSON: " .. json_data) -- Log the response JSON
+          local response = vim.fn.json_decode(json_data)
+          if response and response.access_token then
+            new_access_token = response.access_token
+            new_refresh_token = response.refresh_token
+            -- print("New access token obtained: " .. new_access_token) -- Log the new access token
+            -- print("New refresh token obtained: " .. new_refresh_token) -- Log the new refresh token
+          else
+            vim.notify("Failed to refresh access token: " .. (response and response.error_description or "Unknown error"), vim.log.levels.ERROR)
+          end
+        end,
+        on_exit = function()
+          if new_access_token and new_refresh_token then
+            -- Update environment variables in Neovim
+            vim.fn.setenv(access_token_var, new_access_token)
+            vim.fn.setenv(refresh_token_var, new_refresh_token)
+            imgur_access_token = new_access_token
+            imgur_refresh_token = new_refresh_token
+            vim.notify("Access token refreshed successfully.", vim.log.levels.INFO)
+            -- Write the new access token and refresh token to the environment file to persist them
+            local file = io.open(env_file_path, "r+")
+            if not file then
+              vim.notify("Error: Could not open " .. env_file_path .. " for writing.", vim.log.levels.ERROR)
+              return
+            end
+            local content = file:read("*all")
+            if content then
+              -- Update Access Token
+              local pattern_access = access_token_var .. '="[^"]*"'
+              local replacement_access = access_token_var .. '="' .. new_access_token .. '"'
+              content = content:gsub(pattern_access, replacement_access)
+              -- Update Refresh Token
+              local pattern_refresh = refresh_token_var .. '="[^"]*"'
+              local replacement_refresh = refresh_token_var .. '="' .. new_refresh_token .. '"'
+              content = content:gsub(pattern_refresh, replacement_refresh)
+              file:seek("set", 0)
+              file:write(content)
+              file:close()
+            else
+              vim.notify("Failed to read " .. env_file_path .. " content.", vim.log.levels.ERROR)
+              file:close()
+            end
+            -- Reload environment variables from the environment file
+            env_vars = load_env_variables()
+            for key, value in pairs(env_vars) do
+              vim.fn.setenv(key, value)
+            end
+            -- Callback after refreshing the token
+            if callback then
+              callback()
+            end
+          else
+            vim.notify("Failed to refresh access token.", vim.log.levels.ERROR)
+          end
+        end,
+      })
+    end
+    -- Function to execute image upload command to Imgur
+    upload_to_imgur = function()
+      upload_attempts = upload_attempts + 1
+      if upload_attempts > 2 then
+        vim.notify("Maximum upload attempts reached. Please check your credentials.", vim.log.levels.ERROR)
+        return
+      end
+      -- Detect the operating system
+      local is_mac = vim.fn.has("macunix") == 1
+      local is_linux = vim.fn.has("unix") == 1 and not is_mac
+      local clipboard_command = ""
+      if is_mac then
+        -- macOS command to get image from clipboard
+        clipboard_command = [[osascript -e 'get the clipboard as «class PNGf»' | sed 's/«data PNGf//; s/»//' | xxd -r -p]]
+      elseif is_linux then
+        -- Linux command to get image from clipboard using xclip
+        clipboard_command = [[xclip -selection clipboard -t image/png -o]]
+        -- Alternative for Wayland-based systems (uncomment if needed)
+        -- clipboard_command = [[wl-paste --type image/png]]
+      else
+        vim.notify("Unsupported operating system for clipboard image upload.", vim.log.levels.ERROR)
+        return
+      end
+      local upload_command = string.format(
+        [[
+          %s \
+          | curl --silent --write-out "HTTPSTATUS:%%{http_code}" --request POST --form "image=@-" \
+          --header "Authorization: Bearer %s" "https://api.imgur.com/3/image"
+        ]],
+        clipboard_command,
+        imgur_access_token
+      )
+      -- print("Upload command: " .. upload_command) -- Log the upload command
+      local url = nil
+      local error_status = nil
+      local error_message = nil
+      local account_id = nil
+      vim.fn.jobstart(upload_command, {
+        stdout_buffered = true,
+        on_stdout = function(_, data)
+          local output = table.concat(data, "\n")
+          local json_data, http_status = output:match("^(.*)HTTPSTATUS:(%d+)$")
+          if not json_data or not http_status then
+            -- print("Failed to parse response and HTTP status code.")
+            error_status = nil
+            error_message = "Unknown error"
+            return
+          end
+          -- print("Upload response JSON: " .. json_data)
+          -- print("HTTP status code: " .. http_status)
+          local response = vim.fn.json_decode(json_data)
+          error_status = tonumber(http_status)
+          if error_status >= 200 and error_status < 300 and response and response.success then
+            url = response.data.link
+            account_id = response.data.account_id
+            -- print("Upload successful. URL: " .. url)
+          else
+            -- Extract error message from different possible response formats
+            if response.data and response.data.error then
+              error_message = response.data.error
+            elseif response.errors and response.errors[1] and response.errors[1].detail then
+              error_message = response.errors[1].detail
+            else
+              error_message = "Unknown error"
+            end
+            -- print("Upload failed. Status: " .. tostring(error_status) .. ", Error: " .. error_message)
+          end
+        end,
+        on_exit = function()
+          if url and account_id ~= vim.NIL and account_id ~= nil then
+            -- Format the URL as Markdown
+            local markdown_url = string.format("![imgur](%s)", url)
+            vim.notify("Image uploaded to Imgur.", vim.log.levels.INFO)
+            -- Insert formatted Markdown link into buffer at cursor position
+            local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+            vim.api.nvim_buf_set_text(0, row - 1, col, row - 1, col, { markdown_url })
+          elseif error_status == 401 or error_status == 429 then
+            vim.notify("Access token expired or invalid, refreshing...", vim.log.levels.WARN)
+            refresh_access_token(function()
+              upload_to_imgur()
+            end)
+          elseif error_status == 400 and error_message == "We don't support that file type!" then
+            vim.notify("Failed to upload image: " .. error_message, vim.log.levels.ERROR)
+          else
+            vim.notify("Failed to upload image to Imgur: " .. (error_message or "Unknown error"), vim.log.levels.ERROR)
+          end
+        end,
+      })
+    end
+    -- Attempt to upload the image
+    upload_to_imgur()
+  end, 100)
+end, { desc = "[P]Paste image to Imgur" })
 
 -- -- Upload images to imgur, this uploads the images UN-authentiated, it means
 -- -- it uploads them anonymously, not tied to your account
@@ -1827,11 +1782,7 @@ vim.keymap.set("n", "<leader>id", function()
   local absolute_image_path = current_file_path .. "/" .. image_path
   -- Check if file exists
   if vim.fn.filereadable(absolute_image_path) == 0 then
-    vim.api.nvim_echo(
-      { { "Image file does not exist:\n", "ErrorMsg" }, { absolute_image_path, "ErrorMsg" } },
-      false,
-      {}
-    )
+    vim.api.nvim_echo({ { "Image file does not exist:\n", "ErrorMsg" }, { absolute_image_path, "ErrorMsg" } }, false, {})
     return
   end
   if vim.fn.executable("trash") == 0 then
@@ -2058,8 +2009,7 @@ local function process_embeds_in_buffer(bufnr)
   vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, new_lines)
   return {
     moved = #embeds,
-    message = #embeds > 0 and ("Moved " .. #embeds .. " embeds to 'Other videos mentioned' section")
-      or "No embeds to move",
+    message = #embeds > 0 and ("Moved " .. #embeds .. " embeds to 'Other videos mentioned' section") or "No embeds to move",
   }
 end
 
@@ -2138,12 +2088,7 @@ wk.add({
 -- Alternative solution proposed by @cashplease-s9m in my video
 -- My complete Neovim markdown setup and workflow in 2025
 -- https://youtu.be/1YEbKDlxfss
-vim.keymap.set(
-  "v",
-  "<leader>mj",
-  ":g/^\\s*$/d<CR>:nohlsearch<CR>",
-  { desc = "[P]Delete newlines in selected text (join)" }
-)
+vim.keymap.set("v", "<leader>mj", ":g/^\\s*$/d<CR>:nohlsearch<CR>", { desc = "[P]Delete newlines in selected text (join)" })
 
 -- -- In visual mode, delete all newlines within selected text
 -- -- I like keeping my bulletpoints one after the next, sometimes formatting gets
@@ -2366,8 +2311,7 @@ vim.keymap.set("n", "<M-x>", function()
     updateBufferWithChunk(chunk)
     vim.notify("Untoggled", vim.log.levels.INFO)
   elseif has_untoggled_index then
-    chunk[has_untoggled_index] =
-      removeLabel(chunk[has_untoggled_index]):gsub("`untoggled`", "`" .. label_done .. " " .. timestamp .. "`")
+    chunk[has_untoggled_index] = removeLabel(chunk[has_untoggled_index]):gsub("`untoggled`", "`" .. label_done .. " " .. timestamp .. "`")
     chunk[1] = bulletToX(chunk[1])
     chunk[1] = removeLabel(chunk[1])
     chunk[1] = insertLabelAfterBracket(chunk[1], "`" .. label_done .. " " .. timestamp .. "`")
@@ -2842,6 +2786,124 @@ end, { desc = "[P]Paste Github link" })
 -- vim.keymap.set("i", "<S-Tab>", function()
 --   vim.api.nvim_input("<C-D>")
 -- end, { desc = "[P]Decrease Indent" })
+
+local function get_markdown_headings()
+  local cursor_line = vim.fn.line(".")
+  local parser = vim.treesitter.get_parser(0, "markdown")
+  if not parser then
+    vim.notify("Markdown parser not available", vim.log.levels.ERROR)
+    return nil, nil, nil, nil, nil, nil
+  end
+  local tree = parser:parse()[1]
+  local query = vim.treesitter.query.parse(
+    "markdown",
+    [[
+    (atx_heading (atx_h1_marker) @h1)
+    (atx_heading (atx_h2_marker) @h2)
+    (atx_heading (atx_h3_marker) @h3)
+    (atx_heading (atx_h4_marker) @h4)
+    (atx_heading (atx_h5_marker) @h5)
+    (atx_heading (atx_h6_marker) @h6)
+  ]]
+  )
+  -- Collect and sort all headings
+  local headings = {}
+  for id, node in query:iter_captures(tree:root(), 0) do
+    local start_line = node:start() + 1 -- Convert to 1-based
+    table.insert(headings, { line = start_line, level = id })
+  end
+  table.sort(headings, function(a, b)
+    return a.line < b.line
+  end)
+  -- Find current heading and track its index
+  local current_heading, current_idx, next_heading, next_same_heading
+  for idx, h in ipairs(headings) do
+    if h.line <= cursor_line then
+      current_heading = h
+      current_idx = idx
+    elseif not next_heading then
+      next_heading = h -- First heading after cursor
+    end
+  end
+  -- Find next same-level heading if current exists
+  if current_heading then
+    -- Look for next same-level after current index
+    for i = current_idx + 1, #headings do
+      local h = headings[i]
+      if h.level == current_heading.level then
+        next_same_heading = h
+        break
+      end
+    end
+  end
+  -- Return all values (nil if not found)
+  return current_heading and current_heading.line or nil,
+    current_heading and current_heading.level or nil,
+    next_heading and next_heading.line or nil,
+    next_heading and next_heading.level or nil,
+    next_same_heading and next_same_heading.line or nil,
+    next_same_heading and next_same_heading.level or nil
+end
+
+-- Print details of current markdown heading, next heading and next same level heading
+vim.keymap.set("n", "<leader>mT", function()
+  local cl, clvl, nl, nlvl, nsl, nslvl = get_markdown_headings()
+  local message_parts = {}
+  if cl then
+    table.insert(message_parts, string.format("Current: H%d (line %d)", clvl, cl))
+  else
+    table.insert(message_parts, "Not in a section")
+  end
+  if nl then
+    table.insert(message_parts, string.format("Next: H%d (line %d)", nlvl, nl))
+  end
+  if nsl then
+    table.insert(message_parts, string.format("Next H%d: line %d", nslvl, nsl))
+  end
+  vim.notify(table.concat(message_parts, " | "), vim.log.levels.INFO)
+end, { desc = "Show current, next, and same-level Markdown headings" })
+
+-- -- Create next heading similar to the way its done in emacs lamw26wmal
+-- -- When inside tmux
+-- -- C-CR does not work because Neovim recognizes both CR and C-CR as the same "\r",
+-- -- you can see this with:
+-- -- :lua print(vim.inspect(vim.fn.getcharstr()))
+-- --
+-- -- If I run this outside tmux, for C-CR, in Ghostty I get
+-- -- "<80><fc>\4\r"
+-- -- So to fix this, I'm sending the keys in my tmux.conf file
+vim.keymap.set({ "n", "i" }, "<C-CR>", function()
+  -- Capture all needed return values
+  local _, level, next_line, next_level, next_same_line = get_markdown_headings()
+  if not level then
+    vim.notify("No heading context found", vim.log.levels.WARN)
+    return
+  end
+  local heading_prefix = string.rep("#", level) .. " "
+  local insert_line = next_same_line and next_same_line or vim.fn.line("$") + 1
+  -- If there’s a higher-level heading coming next, insert above it
+  if next_line and next_level and (next_level < level) then
+    insert_line = next_line
+  end
+  -- Insert heading line and an empty line after it
+  vim.api.nvim_buf_set_lines(0, insert_line - 1, insert_line - 1, false, { heading_prefix, "" })
+  -- Move cursor to the end of heading marker
+  vim.api.nvim_win_set_cursor(0, { insert_line, #heading_prefix })
+  -- Enter insert mode and type a space
+  vim.api.nvim_feedkeys("i ", "n", false)
+end, { desc = "[P]Insert heading emacs style" })
+
+-- -- When inside tmux
+-- -- C-CR does not work because Neovim recognizes both CR and C-CR as the same "\r",
+-- -- you can see this with:
+-- -- :lua print(vim.inspect(vim.fn.getcharstr()))
+-- --
+-- -- If I run this outside tmux, for C-CR, in Ghostty I get
+-- -- "<80><fc>\4\r"
+-- -- So to fix this, I'm sending the keys in my tmux.conf file
+-- vim.keymap.set({ "n", "i" }, "<C-CR>", function()
+--   vim.notify("Ctrl+Enter detected", vim.log.levels.INFO)
+-- end, { desc = "Ctrl+Enter CSIu mapping" })
 
 -------------------------------------------------------------------------------
 --                           Folding section
@@ -3842,8 +3904,7 @@ vim.keymap.set("n", "<leader>gC", function()
       return
     end
     -- Check if the repository already exists on GitHub
-    local check_repo_command =
-      string.format("gh repo view %s/%s", vim.fn.system("gh api user --jq '.login'"):gsub("%s+", ""), repo_name)
+    local check_repo_command = string.format("gh repo view %s/%s", vim.fn.system("gh api user --jq '.login'"):gsub("%s+", ""), repo_name)
     local check_repo_result = vim.fn.systemlist(check_repo_command)
     if not string.find(table.concat(check_repo_result), "Could not resolve to a Repository") then
       print("Repository '" .. repo_name .. "' already exists on GitHub.")
@@ -3863,8 +3924,7 @@ vim.keymap.set("n", "<leader>gC", function()
       -- Initialize the git repository and create the GitHub repository
       local init_command = string.format("cd %s && git init", vim.fn.shellescape(cwd))
       vim.fn.system(init_command)
-      local create_command =
-        string.format("cd %s && gh repo create %s %s --source=.", vim.fn.shellescape(cwd), repo_name, repo_type_flag)
+      local create_command = string.format("cd %s && gh repo create %s %s --source=.", vim.fn.shellescape(cwd), repo_name, repo_type_flag)
       local create_result = vim.fn.system(create_command)
       -- Print the result of the repository creation command
       if string.find(create_result, "https://github.com") then
@@ -3897,23 +3957,23 @@ vim.keymap.set("n", "<leader>fz", function()
 end, { desc = "[P]source ~/.zshrc" })
 
 -- Execute my 400-autoPushGithub.sh script
-vim.keymap.set("n", "<leader>gP", function()
-  local script_path = "~/github/dotfiles-latest/scripts/macos/mac/400-autoPushGithub.sh --nowait"
-  -- Expand the home directory in the path
-  script_path = vim.fn.expand(script_path)
-  -- Execute the script and capture the output
-  local output = vim.fn.system(script_path)
-  -- Check the exit status
-  local exit_code = vim.v.shell_error
-  if exit_code == 0 then
-    vim.api.nvim_echo({ { "Git push successful", "NormalMsg" } }, false, {})
-  else
-    vim.api.nvim_echo({
-      { "Git push failed:", "ErrorMsg" },
-      { output, "ErrorMsg" },
-    }, false, {})
-  end
-end, { desc = "[P] execute 400-autoPushGithub.sh" })
+-- vim.keymap.set("n", "<leader>gP", function()
+--   local script_path = "~/github/dotfiles-latest/scripts/macos/mac/400-autoPushGithub.sh --nowait"
+--   -- Expand the home directory in the path
+--   script_path = vim.fn.expand(script_path)
+--   -- Execute the script and capture the output
+--   local output = vim.fn.system(script_path)
+--   -- Check the exit status
+--   local exit_code = vim.v.shell_error
+--   if exit_code == 0 then
+--     vim.api.nvim_echo({ { "Git push successful", "NormalMsg" } }, false, {})
+--   else
+--     vim.api.nvim_echo({
+--       { "Git push failed:", "ErrorMsg" },
+--       { output, "ErrorMsg" },
+--     }, false, {})
+--   end
+-- end, { desc = "[P] execute 400-autoPushGithub.sh" })
 
 -- -- From Primeagen's tmux-sessionizer
 -- -- ctrl+f in normal mode will silently run a command to create a new tmux window and execute the tmux-sessionizer.

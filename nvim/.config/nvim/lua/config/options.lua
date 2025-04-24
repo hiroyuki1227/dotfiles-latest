@@ -93,7 +93,7 @@ opt.cursorline = true
 -- "number" : 行番号だけ
 -- "both" : 行全体
 opt.cursorlineopt = "both" -- to enable cursorline!
-opt.colorcolumn = "80"
+-- opt.colorcolumn = "80"
 -- opt.cursorcolumn = true
 opt.ruler = true
 opt.helplang = { "ja", "en" }

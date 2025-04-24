@@ -110,6 +110,9 @@ return {
         -- Highlight for item associated with checked checkbox
         scope_highlight = nil,
       },
+      code = {
+        border = "thick",
+      },
     },
     html = {
       -- Turn on / off all HTML rendering

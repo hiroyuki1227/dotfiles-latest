@@ -117,7 +117,7 @@ split-divider-color = #ffa500
 
 confirm-close-surface = false
 # wait-after-command = false
-wait-after-command = true
+wait-after-command = false
 
 #
 # Keybinds settings

@@ -286,12 +286,20 @@ return {
     "neovim/nvim-lspconfig",
     opts = function()
       local keys = require("lazyvim.plugins.lsp.keymaps").get()
+      -- vim.list_extend(Keys, {
+      --   { "gd", "<cmd>FzfLua lsp_definitions     jump1=true ignore_current_line=true<cr>", desc = "Goto Definition", has = "definition" },
+      --   -- { "gr", "<cmd>FzfLua lsp_references      jump1=true ignore_current_line=true<cr>", desc = "References", nowait = true },
+      --   -- { "gI", "<cmd>FzfLua lsp_implementations jump1=true ignore_current_line=true<cr>", desc = "Goto Implementation" },
+      --   -- { "gy", "<cmd>FzfLua lsp_typedefs        jump1=true ignore_current_line=true<cr>", desc = "Goto T[y]pe Definition" },
+      -- })
+
       vim.list_extend(keys, {
         {
           "gd",
           function()
             -- DO NOT RESUSE WINDOW
             require("telescope.builtin").lsp_definitions({ reuse_win = false })
+            -- require("fzf-lua.builtin").lsp_definitions({ reuse_win = false })
           end,
           desc = "Goto Definition",
           has = "definition",

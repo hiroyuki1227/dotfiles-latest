@@ -147,12 +147,11 @@ return {
             -- },
 
             schema = {
-              -- model = "phi4:14b","
-              -- "deepseek-r1:7b",
-              -- "gemma3:4b"
+              -- model = "phi4",
+              -- "gemma3:12b
               -- }
               model = {
-                default = "gemma3:4b",
+                default = "gemma3:12b",
               },
               num_ctx = {
                 default = 16384,
