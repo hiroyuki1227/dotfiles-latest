@@ -92,9 +92,9 @@ end, { noremap = true, silent = true })
 --
 map("n", "<leader>r", function() end)
 require("user.lsp").toggleInlayHints()
-
--- map("n", "<leader>i", function() end)
 --
+-- -- map("n", "<leader>i", function() end)
+-- --
 vim.api.nvim_create_user_command("ToggleAutoformat", function()
   require("user.lsp").toggleAutoformat()
 end, {})

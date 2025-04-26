@@ -112,3 +112,5 @@ vim.g.lazyvim_picker = "telescope"
 vim.g.lazyvim_cmp = "blink.cmp"
 -- vim.g.lazyvim_python_lsp = "pyright"
 vim.g.lazyvim_python_ruff = "ruff"
+-- views can only be fully collapsed with the global statusline
+vim.opt.laststatus = 3
