@@ -2,6 +2,8 @@ return {
   -- tools
   {
     "williamboman/mason.nvim",
+    { "mason-org/mason.nvim", version = "^1.0.0" },
+    { "mason-org/mason-lspconfig.nvim", version = "^1.0.0" },
     opts = function(_, opts)
       vim.list_extend(opts.ensure_installed, {
         "stylua",
@@ -19,7 +21,7 @@ return {
         -- "html-lsp",
         -- "htmx-ls",
         -- "templ",
-        -- "lua-language-server",
+        "lua-language-server",
         "svelte-language-server",
         "harper-ls",
         "ruff",
@@ -115,21 +117,21 @@ return {
           },
         },
         -- ruff_lsp = {},
-        pyright = {
-          settings = {
-            pyright = {
-              -- Using Ruff's import organizer
-              disableOrganizeImports = true,
-            },
-            python = {
-              analysis = {
-                -- Ignore all files for analysis to exclusivery use Ruff for
-                -- linting
-                ignore = { "*" },
-              },
-            },
-          },
-        },
+        -- pyright = {
+        --   settings = {
+        --     pyright = {
+        --       -- Using Ruff's import organizer
+        --       disableOrganizeImports = true,
+        --     },
+        --     python = {
+        --       analysis = {
+        --         -- Ignore all files for analysis to exclusivery use Ruff for
+        --         -- linting
+        --         ignore = { "*" },
+        --       },
+        --     },
+        --   },
+        -- },
         -- svelte = {},
         -- dockerls = {},
         -- docker_compose_language_service = {},
@@ -288,9 +290,9 @@ return {
       local keys = require("lazyvim.plugins.lsp.keymaps").get()
       -- vim.list_extend(Keys, {
       --   { "gd", "<cmd>FzfLua lsp_definitions     jump1=true ignore_current_line=true<cr>", desc = "Goto Definition", has = "definition" },
-      --   -- { "gr", "<cmd>FzfLua lsp_references      jump1=true ignore_current_line=true<cr>", desc = "References", nowait = true },
-      --   -- { "gI", "<cmd>FzfLua lsp_implementations jump1=true ignore_current_line=true<cr>", desc = "Goto Implementation" },
-      --   -- { "gy", "<cmd>FzfLua lsp_typedefs        jump1=true ignore_current_line=true<cr>", desc = "Goto T[y]pe Definition" },
+      --   { "gr", "<cmd>FzfLua lsp_references      jump1=true ignore_current_line=true<cr>", desc = "References", nowait = true },
+      --   { "gI", "<cmd>FzfLua lsp_implementations jump1=true ignore_current_line=true<cr>", desc = "Goto Implementation" },
+      --   { "gy", "<cmd>FzfLua lsp_typedefs        jump1=true ignore_current_line=true<cr>", desc = "Goto T[y]pe Definition" },
       -- })
 
       vim.list_extend(keys, {
@@ -299,10 +301,34 @@ return {
           function()
             -- DO NOT RESUSE WINDOW
             require("telescope.builtin").lsp_definitions({ reuse_win = false })
-            -- require("fzf-lua.builtin").lsp_definitions({ reuse_win = false })
           end,
           desc = "Goto Definition",
           has = "definition",
+        },
+        {
+          "gr",
+          function()
+            -- DO NOT RESUSE WINDOW
+            require("telescope.builtin").lsp_references({ reuse_win = false })
+          end,
+          desc = "References",
+          nowait = true,
+        },
+        {
+          "gI",
+          function()
+            -- DO NOT RESUSE WINDOW
+            require("telescope.builtin").lsp_implementations({ reuse_win = false })
+          end,
+          desc = "Goto Implementation",
+        },
+        {
+          "gy",
+          function()
+            -- DO NOT RESUSE WINDOW
+            require("telescope.builtin").lsp_typedefs({ reuse_win = false })
+          end,
+          desc = "Goto T[y]pe Definition",
         },
       })
     end,
