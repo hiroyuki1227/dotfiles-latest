@@ -42,8 +42,8 @@ custom-shader = shaders/bloom025.glsl
 # custom-shader = shaders/underwater.glsl
 # custom-shader = shaders/water.glsl
 
-window-padding-x = 5,5
-window-padding-y = 10,5
+window-padding-x = 5
+window-padding-y = 5
 window-padding-balance = true
 # window-padding-balance = false
 # window-padding-color = background
@@ -59,7 +59,7 @@ font-family = "CodeNewRoman Nerd Font Mono"
 # font-family = "SpaceMono Nerd Font Mono"
 
 font-family = "UDEV Gothic NF"
-font-size = 13
+font-size = 15
 font-feature = -calt
 font-feature = -dlig
 font-feature = -liga
@@ -94,8 +94,8 @@ quick-terminal-screen = mouse
 quick-terminal-animation-duration = 0.1
 quick-terminal-autohide = false
 
-background-opacity = 0.75
-background-blur-radius = 20
+background-opacity = 0.9
+background-blur-radius = 10
 window-height = 54
 window-width = 164 
 window-colorspace = display-p3

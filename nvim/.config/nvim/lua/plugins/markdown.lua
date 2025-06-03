@@ -23,5 +23,8 @@ return {
       { "<leader>mss", "<cmd>MarkdownPreview<cr>", desc = "Markdown Preview" },
       { "<leader>msx", "<cmd>MarkdownPreviewStop<cr>", desc = "Markdown Preview Stop" },
     },
+    init = function()
+      vim.g.mkdp_page_tile = "${name}"
+    end,
   },
 }

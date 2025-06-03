@@ -149,5 +149,8 @@ return {
         "Headline6Fg",
       },
     },
+    -- code = {
+    --   style = "none",
+    -- },
   },
 }
