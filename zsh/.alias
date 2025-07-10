@@ -1,3 +1,10 @@
+alias avim="NVIM_APPNAME=AstroNvim nvim"
+alias lvim="NVIM_APPNAME=LazyVim nvim"
+alias kvim="NVIM_APPNAME=KickstartNvim nvim"
+
+# Weather
+alias forecast='curl "https://wttr.in/wylie?1&F&q"'
+alias weather='curl "https://wttr.in/wylie?format=1"'
 
 #Git
 alias ga='git add'
@@ -41,11 +48,34 @@ alias td='tmux detach'
 # Tmux Clear pane
 alias tc='clear; tmux clear-history; clear'
 
-alias avim="NVIM_APPNAME=AstroNvim nvim"
-alias lvim="NVIM_APPNAME=LazyVim nvim"
-alias kvim="NVIM_APPNAME=KickstartNvim nvim"
+alias brewup="brew update && brew upgrade && brew cleanup && brew autoremove"
+alias bcu="brew cu -a --cleanup"
+alias bcuall="brew upgrade --cask --greedy"
 
-# Weather
-alias forecast='curl "https://wttr.in/wylie?1&F&q"'
-alias weather='curl "https://wttr.in/wylie?format=1"'
+alias ide="~/.scripts/ide"
 
+alias vim="nvim"
+alias vi="nvim"
+
+alias cd="z"
+alias cdd="z -"
+#  Python uv and ruff alias
+alias uvinit="uv init"        # プロジェクト初期化
+alias uvpin="uv python pin"   # pythonバージョン指定
+alias uvlock="uv python lock" # pythonバージョン指定
+alias uvunlock="uv python unlock" # python バージョン開放
+alias uvrun="uv run python"   # python実行 (uvrun pythonファイルｊ)
+alias uvadd="uv add"          # package install (uvadd package名)
+alias uvremove="uv remove"    # package uninstall (uvremove package名)
+alias uvxinit="uvx init"
+# ruff(uv)
+alias uvruff="uv run ruff check && uv run ruff check --fix"
+
+# local LLM setup
+alias ol-start="ollama serve --idle-timeout 600"    # 60分間の間に終了しない
+alias ol-update="ollama list | tail -n +2 | tr -s ' ' | cut -d ' ' -f1 | xargs -n1 ollama pull"
+#HISTTIMEFORMAT='%Y/%m/%d %H:%M:%S ' alias ol-chat="ollama run $(cat ~/.config/ollama/config.yaml)"
+#
+# Command completion
+HISTTIMEFORMAT='%Y/%m/%d %H:%M:%S '
+alias h="history -n 1000 | fzf --tac -i --no-sort -n 1 -m --tiebreak=index | awk '{print \$2}' | xargs -I{} bat {}"

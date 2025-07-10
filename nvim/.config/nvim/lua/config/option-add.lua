@@ -231,7 +231,7 @@ if vim.g.neovide then
   --
   -- vim.g.neovide_background_color = "#24283b"
   vim.g.neovide_window_blurred = true
-  vim.g.neovide_transparency = 0.6
+  vim.g.neovide_opacity = 0.6
   vim.g.neovide_normal_opacity = 0.6
   vim.g.transparency = 0.6
   --
