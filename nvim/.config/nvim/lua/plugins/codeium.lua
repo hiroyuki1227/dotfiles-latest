@@ -1,4 +1,31 @@
 return {
+  -- {
+  --   "Exafunction/windsurf.nvim",
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "saghen/blink.cmp",
+  --     -- "hrsh7th/nvim-cmp",
+  --   },
+  --   config = function()
+  --     require("codeium").setup()
+  --   end,
+  -- },
+  -- {
+  --   "saghen/blink.cmp",
+  --   dependencies = {
+  --     {
+  --       "Exafunction/codeium.nvim",
+  --     },
+  --   },
+  --   opts = {
+  --     sources = {
+  --       default = { "lsp", "path", "snippets", "buffer", "codeium" },
+  --       providers = {
+  --         codeium = { name = "Codeium", module = "codeium.blink", async = true },
+  --       },
+  --     },
+  --   },
+  -- },
   {
     "monkoose/neocodeium",
     event = "VeryLazy",
