@@ -255,5 +255,11 @@ eval "$(uv generate-shell-completion zsh)"
 eval "$(uvx --generate-shell-completion zsh)"
 export PATH="/Users/hrsuda/.local/bin:$PATH"
 
+#n NVIM_APPNAME
+alias nvim="NVIM_APPNAME=~/.config/nvim nvim"
+alias astro="NVIM_APPNAME=~/.config/astro nvim"
+alias nvchad="NVIM_APPNAME=~/.config/nvchad nvim"
+
+
 
 [[ ! -f ~/.alias ]] || source ~/.alias
