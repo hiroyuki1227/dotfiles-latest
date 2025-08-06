@@ -24,9 +24,8 @@ if command -v nvim &> /dev/null; then
       fi
       echo "output NVIM_APPNAME: ${NVIM_APPNAME}"
     }
-
   function vi(){
-    #nvim -c "LetItSnow" "$@"
+   #  nvim -c "LetItSnow" "$@"
     nvim "$@"
   }
   function vim(){

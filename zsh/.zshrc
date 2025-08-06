@@ -256,10 +256,10 @@ eval "$(uvx --generate-shell-completion zsh)"
 export PATH="/Users/hrsuda/.local/bin:$PATH"
 
 #n NVIM_APPNAME
-alias nvim="NVIM_APPNAME=~/.config/nvim nvim"
-alias astro="NVIM_APPNAME=~/.config/astro nvim"
-alias nvchad="NVIM_APPNAME=~/.config/nvchad nvim"
 
+alias nvim_lazy='NVIM_APPNAME="LazyVim" nvim'
+alias nvim_astro='NVIM_APPNAME="AstroNvim" nvim'
+alias nvim_nvchad='NVIM_APPNAME="NvChad" nvim'
 
 
 [[ ! -f ~/.alias ]] || source ~/.alias
