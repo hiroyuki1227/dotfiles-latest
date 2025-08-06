@@ -2,6 +2,25 @@
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 
+# Direct OS
+# case "$(uname -s)" in 
+#   Darwin)
+#     OS="Mac"
+#     ;;
+#   Linux)
+#     OS="Linux"
+#     ;;
+#   *)
+#     OS="Unknown"
+#     ;;
+# esac
+#
+# # macOS-scpcific confirmations
+# if [[ "$OS" == "Mac" ]]; then
+#   source ~/dotfiles/zsh/zshrc-macos.sh
+#   #Linux-specific confirmations
+# elif [[ "$OS" == "Linux" ]]; then
+#   source ~/dotfiles/zsh/zshrc-linux.sh
 # fi
 #
 # source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
@@ -9,6 +28,7 @@
 # # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 # [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 #
+
 alias reload-zsh="source ~/.zshrc"
 alias edit-zsh="nvim ~/.zshrc"
 
