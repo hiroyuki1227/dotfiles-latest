@@ -276,7 +276,7 @@ if command -v nvim &> /dev/null; then
     nvim
     AstroNvim
     nvchad
-    LazyNvim
+    LazyVim
     lunarvim
   )
 
