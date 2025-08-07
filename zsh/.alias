@@ -1,6 +1,7 @@
 alias avim="NVIM_APPNAME=AstroNvim nvim"
 alias lvim="NVIM_APPNAME=LazyVim nvim"
 alias kvim="NVIM_APPNAME=KickstartNvim nvim"
+alias cvim="NVIM_APPNAME=NvChad nvim"
 
 # Weather
 alias forecast='curl "https://wttr.in/wylie?1&F&q"'
