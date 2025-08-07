@@ -274,7 +274,7 @@ if command -v nvim &> /dev/null; then
   # 使用可能な Neovim プロファイル一覧
   nvim_appnames=(
     nvim
-    AstorNvim
+    AstroNvim
     nvchad
     LazyNvim
     lunarvim
