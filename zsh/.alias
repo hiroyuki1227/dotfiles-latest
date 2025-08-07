@@ -55,9 +55,6 @@ alias bcuall="brew upgrade --cask --greedy"
 
 alias ide="~/.scripts/ide"
 
-alias vim="nvim"
-alias vi="nvim"
-
 alias cd="z"
 alias cdd="z -"
 #  Python uv and ruff alias

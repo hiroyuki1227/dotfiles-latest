@@ -255,11 +255,51 @@ eval "$(uv generate-shell-completion zsh)"
 eval "$(uvx --generate-shell-completion zsh)"
 export PATH="/Users/hrsuda/.local/bin:$PATH"
 
-#n NVIM_APPNAME
+export XDG_STATE_HOME="$HOME/.local/state"
+# NVIM_APPNAME
+# ===== Neovim AppName Switcher ===========================
 
-alias nvim_lazy='NVIM_APPNAME="LazyVim" nvim'
-alias nvim_astro='NVIM_APPNAME="AstroNvim" nvim'
-alias nvim_nvchad='NVIM_APPNAME="NvChad" nvim'
+# デフォルトの XDG_STATE_HOME を定義（なければ）
+: ${XDG_STATE_HOME:="${HOME}/.local/state"}
+
+if command -v nvim &> /dev/null; then
+  # NVIM_APPNAME が未保存なら初期値を astronvim に設定
+  if [ ! -f "${XDG_STATE_HOME}/nvim_appname" ]; then
+    echo LazyNvim > "${XDG_STATE_HOME}/nvim_appname"
+  fi
+
+  # NVIM_APPNAME を読み込んで環境変数に設定
+  export NVIM_APPNAME="$(<"${XDG_STATE_HOME}/nvim_appname")"
+
+  # 使用可能な Neovim プロファイル一覧
+  nvim_appnames=(
+    nvim
+    AstorNvim
+    nvchad
+    LazyNvim
+    lunarvim
+  )
+
+  # Neovim プロファイル切り替え関数
+  nvim_appname() {
+    local switch_nvim_appname
+    switch_nvim_appname=$(gum choose --select-if-one \
+      --header "Current NVIM_APPNAME: ${NVIM_APPNAME}" \
+      "${nvim_appnames[@]}")
+
+    if [ -n "${switch_nvim_appname}" ]; then
+      echo "${switch_nvim_appname}" > "${XDG_STATE_HOME}/nvim_appname"
+      export NVIM_APPNAME="$(<"${XDG_STATE_HOME}/nvim_appname")"
+      echo "✅ Switched NVIM_APPNAME to: ${switch_nvim_appname}"
+    else
+      echo "❌ Cancelled. NVIM_APPNAME unchanged: ${NVIM_APPNAME}"
+    fi
+  }
+
+  # vi/vim コマンドを Neovim に置き換え（プロファイル反映）
+  vi()  { nvim "$@"; }
+  vim() { nvim "$@"; }
+fi
 
 
 [[ ! -f ~/.alias ]] || source ~/.alias

@@ -1,7 +1,4 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
-export EDITOR='nvim'
-export VISUAL='nvim'
-
 
 # Added by OrbStack: command-line tools and integration
 # This won't be added again if you remove it.
