@@ -141,7 +141,7 @@ return {
               dictionary_directories = { vim.fn.expand("~/dotfiles/dictionaries") },
               -- Notice I'm also adding the words I add to the spell dictionary
               dictionary_files = {
-                vim.fn.expand("~/.config/nvim/spell/en.utf-8.add"),
+                vim.fn.expand("~/.config/LazyVim/spell/en.utf-8.add"),
               },
               -- --  NOTE: To disable the definitions uncomment this section below
               --

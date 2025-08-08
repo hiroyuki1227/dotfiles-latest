@@ -18,11 +18,11 @@ request access from your enterprise admin.
 
 ## Getting started
 
-1.  Install [Neovim][] or the latest patch of [Vim][] (9.0.0185 or newer).
+1. Install [Neovim][] or the latest patch of [Vim][] (9.0.0185 or newer).
 
-2.  Install [Node.js][].
+2. Install [Node.js][].
 
-3.  Install `github/copilot.vim` using vim-plug, lazy.nvim, or any other
+3. Install `github/copilot.vim` using vim-plug, lazy.nvim, or any other
     plugin manager.  Or to install manually, run one of the following
     commands:
 
@@ -34,7 +34,7 @@ request access from your enterprise admin.
     * Neovim, Linux/macOS:
 
           git clone --depth=1 https://github.com/github/copilot.vim.git \
-            ~/.config/nvim/pack/github/start/copilot.vim
+            ~/.config/LazyVim/pack/github/start/copilot.vim
 
     * Vim, Windows (PowerShell command):
 
@@ -46,7 +46,7 @@ request access from your enterprise admin.
           git clone --depth=1 https://github.com/github/copilot.vim.git `
             $HOME/AppData/Local/nvim/pack/github/start/copilot.vim
 
-4.  Start Vim/Neovim and invoke `:Copilot setup`.
+4. Start Vim/Neovim and invoke `:Copilot setup`.
 
 [Node.js]: https://nodejs.org/en/download/
 [Neovim]: https://github.com/neovim/neovim/releases/latest

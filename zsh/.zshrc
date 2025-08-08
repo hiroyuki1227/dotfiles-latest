@@ -277,7 +277,7 @@ if command -v nvim &> /dev/null; then
     AstroNvim
     nvchad
     LazyVim
-    lunarvim
+    neobean 
   )
 
   # Neovim プロファイル切り替え関数

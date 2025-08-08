@@ -6,7 +6,7 @@
 -- Function to load colors from the external file
 local function load_colors()
   local colors = {}
-  local active_file = os.getenv("HOME") .. "/.config/LazyVim/lua/config/active-colorscheme.sh"
+  local active_file = os.getenv("HOME") .. "/.config/neobean/lua/config/active-colorscheme.sh"
 
   local file = io.open(active_file, "r")
   if not file then
@@ -14,7 +14,7 @@ local function load_colors()
   end
 
   for line in file:lines() do
-    if not line:match("^%s*#") and not line:match("^%s*$") then
+    if not line:match("^%s*#") and not line:match("^%s*$") and not line:match("^wallpaper=") then
       local name, value = line:match("^(%S+)=%s*(.+)")
       if name and value then
         colors[name] = value:gsub('"', "")

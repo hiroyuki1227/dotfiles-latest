@@ -65,7 +65,7 @@ return {
           filetypes = { "markdown" },
           settings = {
             ["harper-ls"] = {
-              userDictPath = "~/.config/nvim/spell/en.utf-8.add",
+              userDictPath = "~/.config/LazyVim/spell/en.utf-8.add",
               linters = {
                 ToDoHyphen = false,
                 -- SentenceCapitalization = true,
