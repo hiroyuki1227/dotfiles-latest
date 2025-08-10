@@ -151,7 +151,8 @@ return {
               -- "gemma3:12b
               -- }
               model = {
-                default = "gemma3:12b",
+                -- default = "gemma3:12b",
+                default = "gpt-oss",
               },
               num_ctx = {
                 default = 16384,

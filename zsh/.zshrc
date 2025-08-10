@@ -3,35 +3,20 @@
 # confirmations, etc.) must go above this block; everything else may go below.
 
 # Direct OS
-# case "$(uname -s)" in 
-#   Darwin)
-#     OS="Mac"
-#     ;;
-#   Linux)
-#     OS="Linux"
-#     ;;
-#   *)
-#     OS="Unknown"
-#     ;;
-# esac
-#
+case "$(uname -s)" in 
+  Darwin)
+    OS="Mac"
+    ;;
+  Linux)
+    OS="Linux"
+    ;;
+  *)
+    OS="Unknown"
+    ;;
+esac
+
 # # macOS-scpcific confirmations
-# if [[ "$OS" == "Mac" ]]; then
-#   source ~/dotfiles/zsh/zshrc-macos.sh
-#   #Linux-specific confirmations
-# elif [[ "$OS" == "Linux" ]]; then
-#   source ~/dotfiles/zsh/zshrc-linux.sh
-# fi
-#
-# source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
-#
-# # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-#
-
-alias reload-zsh="source ~/.zshrc"
-alias edit-zsh="nvim ~/.zshrc"
-
+# [[ ! -f ~/dotfiles/zsh/.zsh-shard ]] || source ~/dotfiles/dotfiles/zsh/.zsh-shard
 # history setup
 HISTFILE=$HOME/.zhistory
 SAVEHIST=1000
@@ -45,73 +30,12 @@ setopt hist_verify
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
 
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# pnpm
-# export PNPM_HOME="/Users/hrsuda/Library/pnpm"
-# case ":$PATH:" in
-#   *":$PNPM_HOME:"*) ;;
-#   *) export PATH="$PNPM_HOME:$PATH" ;;
-# esac
-# pnpm end
-#
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
-# place this after nvm initialization!
-autoload -U add-zsh-hook
-
-# Python development setup
-export PATH="$(brew --prefix python)/libexec/bin:$PATH"
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
-#
-
-# place this after nvm initialization!
-load-nvmrc() {
-  local nvmrc_path
-  nvmrc_path="$(nvm_find_nvmrc)"
-
-  if [ -n "$nvmrc_path" ]; then
-    local nvmrc_node_version
-    nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-
-    if [ "$nvmrc_node_version" = "N/A" ]; then
-      nvm install
-    elif [ "$nvmrc_node_version" != "$(nvm version)" ]; then
-      nvm use
-    fi
-  elif [ -n "$(PWD=$OLDPWD nvm_find_nvmrc)" ] && [ "$(nvm version)" != "$(nvm version default)" ]; then
-    echo "Reverting to nvm default version"
-    nvm use default
-  fi
-}
-
-export CLICOLOR=1
-
-export PATH=$PATH:/Users/hrsuda/.spicetify
-
-# export PATH="$HOME/.rbenv/shims:$PATH"
-# Rancher Desktop
-# if [ -d "$HOME/.rd/bin" ] ; then
-	# export PATH="$HOME/.rd/bin:$PATH"
-# fi
-#
-# Curl
-export PATH="/opt/homebrew/opt/curl/bin:$PATH"
-export LDFLAGS="-L/opt/homebrew/opt/curl/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/curl/include"
-export PKG_CONFIG_PATH="/opt/homebrew/opt/curl/lib/pkgconfig"
-#
-if [ -f "$HOME/.obsidian/auth" ]; then
-  source ~/.obsidian/auth
+if [[ "$OS" == "Mac" ]]; then
+  source ~/dotfiles/zsh/zshrc-macos.sh
+elif [[ "$OS" == "Linux" ]]; then
+  source ~/dotfiles/zsh/zshrc-linux.sh
 fi
-# TeX Live
-export PATH="/Library/TeX/texbin:$PATH"
+
 #
 # ---- FZF -----
 
@@ -232,28 +156,9 @@ function t() {
     sesh connect $session
   }
 }
-#
-# fastfetch
-#
-# setup neovim
-# Directory to store the neovim configs
-# export download_dir="$HOME/Downloads/test-configs"
-# export NVIM_APPNAME=neobean nvim
-# export NVIM_APPNAME=neobean
-
-# mise 開発環境セットアップツール
-# eval "$(/opt/homebrew/bin/mise activate zsh)"
-
 # OSC 133 sequences
 preexec() { printf "\033]133;A\033\\" }
 precmd()  { printf "\033]133;B\033\\" }
-
-
-
-# python uv setup
-eval "$(uv generate-shell-completion zsh)"
-eval "$(uvx --generate-shell-completion zsh)"
-export PATH="/Users/hrsuda/.local/bin:$PATH"
 
 export XDG_STATE_HOME="$HOME/.local/state"
 # NVIM_APPNAME

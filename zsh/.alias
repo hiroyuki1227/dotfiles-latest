@@ -1,7 +1,9 @@
-alias avim="NVIM_APPNAME=AstroNvim nvim"
-alias lvim="NVIM_APPNAME=LazyVim nvim"
-alias kvim="NVIM_APPNAME=KickstartNvim nvim"
-alias cvim="NVIM_APPNAME=NvChad nvim"
+#
+# Aliases
+#
+alias reload-zsh="source ~/.zshrc"
+alias edit-zsh="nvim ~/.zshrc"
+alias ide="~/.scripts/ide"
 
 # Weather
 alias forecast='curl "https://wttr.in/wylie?1&F&q"'
@@ -52,8 +54,6 @@ alias tc='clear; tmux clear-history; clear'
 alias brewup="brew update && brew upgrade && brew cleanup && brew autoremove"
 alias bcu="brew cu -a --cleanup"
 alias bcuall="brew upgrade --cask --greedy"
-
-alias ide="~/.scripts/ide"
 
 alias cd="z"
 alias cdd="z -"
