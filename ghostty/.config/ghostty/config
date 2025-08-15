@@ -55,10 +55,12 @@ window-inherit-working-directory = true
 # font-family = "JetBrainsMonoNL Nerd Font Mono"
 # font-family = "JetBrainsMono Nerd Font Mono"
 # font-family = "PlemolJP Console NF"
-font-family = "CodeNewRoman Nerd Font Mono"
+# font-family = "CodeNewRoman Nerd Font Mono"
+font-family = "SF Mono Medium"
+# font-family = "SF Mono"
 # font-family = "SpaceMono Nerd Font Mono"
 
-font-family = "UDEV Gothic NF"
+# font-family = "UDEV Gothic NF"
 font-size = 13
 font-feature = -calt
 font-feature = -dlig

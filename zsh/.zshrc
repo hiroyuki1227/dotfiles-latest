@@ -31,9 +31,9 @@ bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
 
 if [[ "$OS" == "Mac" ]]; then
-  source ~/dotfiles/zsh/zshrc-macos.sh
+  source ~/dotfiles/zsh/zsh/zshrc-macos.sh
 elif [[ "$OS" == "Linux" ]]; then
-  source ~/dotfiles/zsh/zshrc-linux.sh
+  source ~/dotfiles/zsh/zsh/zshrc-linux.sh
 fi
 
 #
