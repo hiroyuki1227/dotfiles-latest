@@ -56,7 +56,7 @@ window-inherit-working-directory = true
 # font-family = "JetBrainsMono Nerd Font Mono"
 # font-family = "PlemolJP Console NF"
 # font-family = "CodeNewRoman Nerd Font Mono"
-font-family = "SF Mono Medium"
+font-family = "SF Mono Regular"
 # font-family = "SF Mono"
 # font-family = "SpaceMono Nerd Font Mono"
 

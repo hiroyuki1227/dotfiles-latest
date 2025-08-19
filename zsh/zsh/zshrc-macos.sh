@@ -72,4 +72,6 @@ eval "$(uv generate-shell-completion zsh)"
 eval "$(uvx --generate-shell-completion zsh)"
 export PATH="/Users/hrsuda/.local/bin:$PATH"
 
+fastfetch
+
 #Linux-specific confirmations

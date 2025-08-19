@@ -5,6 +5,7 @@ return {
   lazy = true,
   name = "catppuccin",
   opts = {
+    transparent = true,
     integrations = {
       -- Can disable the theme for neotree so its the same color as the right panel
       neotree = true,
