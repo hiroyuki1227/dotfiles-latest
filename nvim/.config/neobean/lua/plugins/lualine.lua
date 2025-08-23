@@ -79,7 +79,6 @@ vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
 local lang_map = {
   en = "EN",
   es = "ES",
-  jp = "JP",
 }
 
 local function get_venv_name()
