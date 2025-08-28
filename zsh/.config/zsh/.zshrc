@@ -213,8 +213,3 @@ fi
 
 
 [[ ! -f ~/.alias ]] || source ~/.alias
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/hrsuda/.lmstudio/bin"
-# End of LM Studio CLI section
-

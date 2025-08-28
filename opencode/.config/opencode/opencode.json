@@ -1,0 +1,26 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama (local)",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      },
+      "models": {
+        "gpt-oss:latest": {
+          "name": "gpt-oss:latest"
+        },
+        "gemini3:12b": {
+          "name": "gemini3:12b"
+        },
+        "phi4:latest": {
+          "name": "phi4:latest"
+        },
+        "deepseek-r1:14b": {
+          "name": "deepseek-r1:14b"
+        }
+      }
+    }
+  }
+}
