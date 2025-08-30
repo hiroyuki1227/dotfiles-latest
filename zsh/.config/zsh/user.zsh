@@ -87,8 +87,8 @@ alias brewup="brew update && brew upgrade && brew cleanup && brew autoremove"
 alias bcu="brew cu -a --cleanup"
 alias bcuall="brew upgrade --cask --greedy"
 
-alias cd="z"
-alias cdd="z -"
+# alias cd="z"
+# alias cdd="z -"
 #  Python uv and ruff alias
 alias uvinit="uv init"        # プロジェクト初期化
 alias uvpin="uv python pin"   # pythonバージョン指定

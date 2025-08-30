@@ -1,6 +1,8 @@
 # config-file = ghostty-theme
 # config-file = solarized_osaka_dark
 # theme = "Solarized Dark - Patched"
+term xterm-ghostty
+
 theme = "tokyonight"
 # theme = "catppuccin-mocha"
 
