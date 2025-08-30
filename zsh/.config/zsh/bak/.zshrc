@@ -9,6 +9,8 @@ case "$(uname -s)" in
     ;;
   Linux)
     OS="Linux"
+    ;;
+  *)
     OS="Unknown"
     ;;
 esac
@@ -16,19 +18,15 @@ esac
 #
 # Common setup
 #
-[[ ! -f ~/.config/zsh/common.sh ]] || source ~/.config/zsh/common.sh
+[[ ! -f ~/zsh/zshrc-common.sh ]] || source ~/zsh/zshrc-common.sh
 
 
 if [[ "$OS" == "Mac" ]]; then
-  source ~/.config/zsh/macos.sh
+  source ~/zsh/zshrc-macos.sh
 elif [[ "$OS" == "Linux" ]]; then
-  source ~/.config/zsh/linux.sh
+  source ~/zsh/zshrc-linux.sh
 fi
 
-[[ ! -f ~/.config/zsh/alias.sh ]] || source ~/.config/zsh/alias.sh
-#
-#
-#
 #
 export XDG_STATE_HOME="$HOME/.local/state"
 # NVIM_APPNAME
@@ -48,11 +46,11 @@ if command -v nvim &> /dev/null; then
 
   # 使用可能な Neovim プロファイル一覧
   nvim_appnames=(
-    neovim
-    neovim/AstroNvim
-    neovim/nvchad
-    neovim/LazyVim
-    neovim/neobean 
+    nvim
+    AstroNvim
+    nvchad
+    LazyVim
+    neobean 
   )
 
   # Neovim プロファイル切り替え関数
@@ -75,9 +73,4 @@ if command -v nvim &> /dev/null; then
   vi()  { nvim "$@"; }
   vim() { nvim "$@"; }
 fi
-
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/hrsuda/.lmstudio/bin"
-# End of LM Studio CLI section
 

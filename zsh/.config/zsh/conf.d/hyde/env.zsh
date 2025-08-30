@@ -1,5 +1,4 @@
 #!/usr/bin/env zsh
-
 #! ██████╗░░█████╗░  ███╗░░██╗░█████╗░████████╗  ███████╗██████╗░██╗████████╗
 #! ██╔══██╗██╔══██╗  ████╗░██║██╔══██╗╚══██╔══╝  ██╔════╝██╔══██╗██║╚══██╔══╝
 #! ██║░░██║██║░░██║  ██╔██╗██║██║░░██║░░░██║░░░  █████╗░░██║░░██║██║░░░██║░░░
@@ -20,7 +19,7 @@ XDG_DATA_DIRS="${XDG_DATA_DIRS:-$XDG_DATA_HOME:/usr/local/share:/usr/share}"
 XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 
-# XDG User Directories (fallback to xdg-user-dir command if available)
+# # XDG User Directories (fallback to xdg-user-dir command if available)
 if command -v xdg-user-dir >/dev/null 2>&1; then
   XDG_DESKTOP_DIR="${XDG_DESKTOP_DIR:-$(xdg-user-dir DESKTOP)}"
   XDG_DOWNLOAD_DIR="${XDG_DOWNLOAD_DIR:-$(xdg-user-dir DOWNLOAD)}"
@@ -32,10 +31,10 @@ if command -v xdg-user-dir >/dev/null 2>&1; then
   XDG_VIDEOS_DIR="${XDG_VIDEOS_DIR:-$(xdg-user-dir VIDEOS)}"
 fi
 
-# Less history file location
+# # Less history file location
 LESSHISTFILE="${LESSHISTFILE:-/tmp/less-hist}"
-
-# Application config files
+#
+# # Application config files
 PARALLEL_HOME="$XDG_CONFIG_HOME/parallel"
 SCREENRC="$XDG_CONFIG_HOME/screen/screenrc"
 TERMINFO="$XDG_DATA_HOME"/terminfo
@@ -44,7 +43,7 @@ WGETRC="${XDG_CONFIG_HOME}/wgetrc"
 PYTHON_HISTORY="$XDG_STATE_HOME/python_history"
 
 # HyDEs Compositor Configuration
-export HYPRLAND_CONFIG="${XDG_DATA_HOME:-$HOME/.local/share}/hypr/hyprland.conf"
+# export HYPRLAND_CONFIG="${XDG_DATA_HOME:-$HOME/.local/share}/hypr/hyprland.conf"
 
 # Export all variables
 export PATH \

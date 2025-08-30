@@ -1,5 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
+
   "provider": {
     "ollama": {
       "npm": "@ai-sdk/openai-compatible",
@@ -8,19 +9,33 @@
         "baseURL": "http://localhost:11434/v1"
       },
       "models": {
-        "gpt-oss:latest": {
-          "name": "gpt-oss:latest"
-        },
-        "gemini3:12b": {
-          "name": "gemini3:12b"
-        },
-        "phi4:latest": {
-          "name": "phi4:latest"
-        },
-        "deepseek-r1:14b": {
-          "name": "deepseek-r1:14b"
-        }
+        "gemma3:12b": { "name": "gemma3:12b (local)" }
+        //"gpt-oss:latest": { "name": "gpt-oss 20B (local)" }
       }
     }
-  }
+  },
+
+  "model": "ollama/gpt-oss:latest",
+
+  "agent": {
+    "build": {
+      "description": "Default coding mode with only OpenCode tools.",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "grep": true,
+        "glob": true,
+        "list": true,
+        "webfetch": true,
+        "patch": true,
+        "todoread": true,
+        "todowrite": true
+      },
+      "prompt": "{file:./AGENTS.md}"
+    }
+  },
+
+  "instructions": ["AGENTS.md"]
 }

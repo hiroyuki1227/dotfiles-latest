@@ -1,3 +1,4 @@
+
 # history setup
 HISTFILE=$HOME/.zhistory
 SAVEHIST=1000

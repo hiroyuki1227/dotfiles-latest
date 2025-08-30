@@ -1,6 +1,6 @@
 # Use your plugin system here
 
-return 1 # <--- Comment this line to disable HyDE's plugin loader // same as HYDE_ZSH_NO_PLUGINS
+# return 1 # <--- Comment this line to disable HyDE's plugin loader // same as HYDE_ZSH_NO_PLUGINS
 
 #! This file will not load, remove the return 1 line above to enable this file.
 #? Below is an example of how to set up Zsh plugins using Zinit
@@ -18,7 +18,7 @@ source "${ZINIT_HOME}/zinit.zsh"
 
 # Custom prompt
 # Loads your custom prompt configuration. Place this after plugins so it can use their features.
-zinit snippet $ZDOTDIR/prompt.zsh
+zinit snippet $HOME/.config/zsh/prompt.zsh
 
 # Plugin: history-search-multi-word
 # Allows searching your command history by multiple words, making it easier to find previous commands.

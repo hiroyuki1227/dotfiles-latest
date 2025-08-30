@@ -1,3 +1,5 @@
+# https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
+
 gui:
   theme:
     selectedLineBgColor:
@@ -21,8 +23,8 @@ os:
   # lazygit in the terminal is not locked while neovide is open
   # edit: 'NVIM_APPNAME="neobean" Neovide {{filename}} >/dev/null 2>&1 &'
   # editAtLine: 'NVIM_APPNAME="neobean" Neovide -- {{filename}} --line={{line}} >/dev/null 2>&1 &'
-  edit: 'NVIM_APPNAME="nvim {{filename}}'
-  editAtLine: 'NVIM_APPNAME="nvim -- {{filename}} --line={{line}}'
+  edit: 'NVIM_APPNAME="neobean" Neovide {{filename}}'
+  editAtLine: 'NVIM_APPNAME="neobean" Neovide -- {{filename}} --line={{line}}'
   #
   # editAtLineAndWait: 'NVIM_APPNAME="neobean" Neovide -- {{filename}} --line={{line}}'
   #
@@ -41,4 +43,5 @@ git:
     # For this to work, first install `brew install git-delta`
     # https://github.com/dandavison/delta
     # https://github.com/jesseduffield/lazygit/issues/155#issuecomment-2260986940
-    pager: delta --dark --paging=never --syntax-theme base16-256 -s
+    pager: delta --dark --paging=never --syntax-theme base16-256 -s --wrap-max-lines=10
+    # pager: delta --dark --paging=never --syntax-theme base16-256 -s
