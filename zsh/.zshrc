@@ -2,7 +2,7 @@
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 
-export TERM=xterm
+export TERM=xterm-256color
 
 # Direct OS
 case "$(uname -s)" in 

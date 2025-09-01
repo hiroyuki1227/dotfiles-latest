@@ -58,7 +58,7 @@ error_symbol = "🔥 "
 
 [hostname]
 ssh_only = false
-format = 'on [$hostname](bold yellow) '
+format = ' [$hostname](bold yellow) '
 disabled = false
 ssh_symbol = " "
 
