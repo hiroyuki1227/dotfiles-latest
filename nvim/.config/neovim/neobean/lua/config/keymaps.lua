@@ -4128,7 +4128,7 @@ end, { desc = "[P]source ~/.zshrc" })
 
 -- Execute my 400-autoPushGithub.sh script
 vim.keymap.set("n", "<leader>gP", function()
-  local script_path = "~/github/dotfiles-latest/scripts/macos/mac/400-autoPushGithub.sh --nowait"
+  local script_path = "~/github/dotfiles/scripts/macos/mac/400-autoPushGithub.sh --nowait"
   -- Expand the home directory in the path
   script_path = vim.fn.expand(script_path)
   -- Execute the script and capture the output
