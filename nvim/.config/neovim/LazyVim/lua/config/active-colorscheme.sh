@@ -14,17 +14,17 @@
 # C (#37f499) becomes when darkened 4 steps to the right.
 #
 # Markdown heading 1 - color04
-linkarzu_color18=#1e1832
+linkarzu_color18=#2d244b
 # Markdown heading 2 - color02
-linkarzu_color19=#092b1b
+linkarzu_color19=#10492d
 # Markdown heading 3 - color03
-linkarzu_color20=#00242c
+linkarzu_color20=#013e4a
 # Markdown heading 4 - color01
-linkarzu_color21=#232436
+linkarzu_color21=#4b314c
 # Markdown heading 5 - color05
-linkarzu_color22=#063531
+linkarzu_color22=#1e2b00
 # Markdown heading 6 - color08
-linkarzu_color23=#1c3249
+linkarzu_color23=#2d1c08
 # Markdown heading foreground
 # usually set to color10 which is the terminal background
 linkarzu_color26=#0D1116
@@ -32,10 +32,10 @@ linkarzu_color26=#0D1116
 linkarzu_color04=#987afb
 linkarzu_color02=#37f499
 linkarzu_color03=#04d1f9
-linkarzu_color01=#949ae5
-linkarzu_color05=#19dfcf
-linkarzu_color08=#5fa9f4
-linkarzu_color06=#1682ef
+linkarzu_color01=#fca6ff
+linkarzu_color05=#9ad900
+linkarzu_color08=#e58f2a
+linkarzu_color06=#05ff23
 
 # Colors to the right from https://www.colorhexa.com
 # Terminal and neovim background
@@ -52,17 +52,17 @@ linkarzu_color13=#232e3b
 linkarzu_color15=#013e4a
 
 # Comments
-linkarzu_color09=#a5afc2
+linkarzu_color09=#b7bfce
 # Underline spellbad
 linkarzu_color11=#f16c75
 # Underline spellcap
 linkarzu_color12=#f1fc79
 # Cursor and tmux windows text
-linkarzu_color14=#ebfafa
+linkarzu_color14=#ffffff
 # Selected text
 linkarzu_color16=#e9b3fd
 # Cursor color
 linkarzu_color24=#f94dff
 
 # Wallpaper for this colorscheme
-# wallpaper="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Images/wallpapers/official/skyrim-dragon-4.webp"
+wallpaper="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Images/wallpapers/official/skyrim-dragon-4.webp"

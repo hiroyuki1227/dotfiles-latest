@@ -1,29 +1,17 @@
+-- I manually created this file
 return {
   {
-    "folke/tokyonight.nvim",
-    lazy = true,
-    priority = 1000,
-    style = "night", -- night,storm,moon,day
+    "LazyVim/LazyVim",
     opts = {
-      transparent = true,
-      styles = {
-        sidebars = "transparent",
-        floats = "transparent",
-      },
+      -- catppuccin catppuccin-latte, catppuccin-frappe, catppuccin-macchiato, catppuccin-mocha
+      -- colorscheme = "catppuccin",
+      colorscheme = "eldritch",
+      -- colorscheme = "tokyonight",
+      -- colorscheme = "catppuccin-frappe",
+      -- colorscheme = "Duskfox",
+      -- colorscheme = "Nightfox",
+      -- colorscheme = "Carbonfox",
+      -- colorscheme = "gruvbox",
     },
   },
-  -- {
-  --   "craftzdog/solarized-osaka.nvim",
-  --   lazy = true,
-  --   priority = 1000,
-  --   opts = function()
-  --     return {
-  --       transparent = true,
-  --       styles = {
-  --         sidebars = "transparent",
-  --         floats = "transparent",
-  --       },
-  --     }
-  --   end,
-  -- },
 }

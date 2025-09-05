@@ -4,7 +4,6 @@
 -- Require the colors.lua module and access the colors directly without
 -- additional file reads
 local colors = require("config.colors")
-
 local color1_bg = colors["linkarzu_color04"]
 local color2_bg = colors["linkarzu_color02"]
 local color3_bg = colors["linkarzu_color03"]

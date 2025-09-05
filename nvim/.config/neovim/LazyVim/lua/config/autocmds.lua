@@ -210,58 +210,12 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
   group = vim.api.nvim_create_augroup("float_diagnostic", { clear = true }),
   callback = function()
-    -- vim.diagnostic.config({ virtual_text = true })
     vim.diagnostic.open_float(nil, {
       focus = false,
       border = "rounded",
-      -- source = "always",
-      -- source = "if_many",
-      scope = "cursor",
-      -- pos = 10,
     })
   end,
 })
-
--- local function on_cursor_hold()
---   if vim.lsp.buf.server_ready() then
---     vim.diagnostic.open_float()
---   end
--- end
---
--- local diagnostic_hover_augroup_name = "lspconfig-diagnostic"
---
--- local function enable_diagnostics_hover()
---   vim.api.nvim_create_augroup(diagnostic_hover_augroup_name, { clear = true })
---   vim.api.nvim_create_autocmd({ "CursorHold" }, { group = diagnostic_hover_augroup_name, callback = on_cursor_hold })
--- end
---
--- local function disable_diagnostics_hover()
---   vim.api.nvim_clear_autocmds({ group = diagnostic_hover_augroup_name })
--- end
---
--- vim.api.nvim_set_option("updatetime", 500)
--- enable_diagnostics_hover()
---
--- -- diagnosticがある行でホバーをするとすぐにdiagnosticのfloating windowで上書きされてしまうのを阻止する
--- -- ホバーをしたら一時的にdiagnosticを開くautocmdを無効化する
--- -- これだけだとそれ以降diagnosticが自動表示されなくなってしまうので有効化するautocmdを一回だけ発行して削除する
--- local function on_hover()
---   disable_diagnostics_hover()
---
---   vim.lsp.buf.hover()
---
---   vim.api.nvim_create_augroup("lspconfig-enable-diagnostics-hover", { clear = true })
---   -- ウィンドウの切り替えなどのイベントが絡んでくるとおかしくなるかもしれない
---   vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
---     group = "lspconfig-enable-diagnostics-hover",
---     callback = function()
---       vim.api.nvim_clear_autocmds({ group = "lspconfig-enable-diagnostics-hover" })
---       enable_diagnostics_hover()
---     end,
---   })
--- end
---
--- vim.keymap.set("n", "<Leader>lk", on_hover, opt)
 
 -- When I open markdown files I want to fold the markdown headings
 -- Originally I thought about using it only for skitty-notes, but I think I want
@@ -290,49 +244,39 @@ vim.api.nvim_create_autocmd("BufRead", {
     end, 100) -- Delay in milliseconds (100ms should be enough)
   end,
 })
---
---#region
-vim.api.nvim_create_autocmd("User", {
-  pattern = "ToggleMyPrompt",
+
+-- Clear jumps when I open Neovim, otherwise there'a lot of crap that links to
+-- different files, trying this and will see if it works out or not
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  once = true,
   callback = function()
-    require("avante.config").override({ system_prompt = "MY CUSTOM SYSTEM PROMPT" })
+    vim.schedule(function()
+      vim.cmd("clearjumps")
+    end)
   end,
 })
 
-vim.keymap.set("n", "<leader>am", function()
-  vim.api.nvim_exec_autocmds("User", { pattern = "ToggleMyPrompt" })
-end, { desc = "avante: toggle my prompt" }) --
---
--- -- vim.api.nvim_create_autocmd("User", {
---   pattern = "MarkviewAttach",
---   callback = function(event)
---     --- This will have all the data you need.
---     local data = event.data
---
---     vim.print(data)
---   end,
--- })
-
--- -- Turn off paste mode when leaving insert
--- vim.api.nvim_create_autocmd("InsertLeave", {
--- 	pattern = "*",
--- 	command = "set nopaste",
--- })
---
--- -- Disable the concealing in some file formats
--- -- The default conceallevel is 3 in LazyVim
--- vim.api.nvim_create_autocmd("FileType", {
--- 	pattern = { "json", "jsonc", "markdown" },
--- 	callback = function()
--- 		vim.opt.conceallevel = 0
--- 	end,
--- })
---
--- vim.api.nvim_create_autocmd("LspAttach", {
---   callback = function(ev)
---     local client = vim.lsp.get_client_by_id(ev.data.client_id)
---     if client:supports_method("textDocument/completion") then
---       vim.lsp.completion.enbale(true, clinet.id, ev.buf, { sutotrigger = true })
---     end
---   end,
--- })
+-- Disable harper_ls when a markdown file inside ~/github/obsidian_main/075-umg is opened
+local umg_root = vim.fn.expand("~/github/obsidian_main/075-umg")
+-- Only register the autocmd if the target directory exists
+if vim.fn.isdirectory(umg_root) == 1 then
+  vim.api.nvim_create_autocmd("BufRead", {
+    group = augroup("umg_markdown_disable_ls"),
+    pattern = "*.md",
+    callback = function()
+      local file_path = vim.fn.expand("%:p")
+      -- Check that the file resides inside umg_root
+      if vim.startswith(file_path, umg_root .. "/") then
+        -- Prevent running twice for the same buffer
+        if vim.b.harper_ls_disabled then
+          return
+        end
+        vim.b.harper_ls_disabled = true
+        vim.schedule(function()
+          pcall(vim.api.nvim_command, "LspStop harper_ls")
+        end)
+        vim.notify("UMG markdown opened: harper_ls disabled", vim.log.levels.INFO)
+      end
+    end,
+  })
+end
