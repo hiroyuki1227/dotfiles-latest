@@ -18,7 +18,7 @@ linkarzu_color18=#2d244b
 # Markdown heading 2 - color02
 linkarzu_color19=#10492d
 # Markdown heading 3 - color03
-linkarzu_color20=#013e4a
+linkarzu_color21=#013e4a
 # Markdown heading 4 - color01
 linkarzu_color21=#4b314c
 # Markdown heading 5 - color05

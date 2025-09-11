@@ -284,17 +284,6 @@ return {
     table.insert(
       snippets,
       s({
-        trig = "blank",
-        name = 'Add this {:target="_blank"}',
-        desc = 'Add this {:target="_blank"}',
-      }, {
-        t('{:target="_blank"}'),
-      })
-    )
-
-    table.insert(
-      snippets,
-      s({
         trig = "todo",
         name = "Add TODO: item",
         desc = "Add TODO: item",
@@ -343,35 +332,221 @@ return {
       s({
         trig = "dotfileslatest",
         name = "Adds -> [my dotfiles](https://github.com/hiroyuki1227/dotfiles-latest)",
-        desc = "Add link to https://github.com/hiroyui1227/dotfiles-latest",
+        desc = "Add link to https://github.com/hiroyuki1227/dotfiles-latest",
       }, {
         t("[my dotfiles](https://github.com/hiroyuki1227/dotfiles-latest)"),
       })
     )
 
-    -- Inserting "my dotfiles" link
-    table.insert(
-      snippets,
-      s({
-        trig = "newline",
-        name = "Adds a blank line in markdown file",
-        desc = "Adds a blank line in markdown file",
-      }, {
-        t('<div style="page-break-after: always; visibility: hidden"> pagebreak </div>'),
-      })
-    )
+    -- table.insert(
+    --   snippets,
+    --   s({
+    --     trig = "supportme",
+    --     name = "Inserts links (Ko-fi, Twitter, TikTok)",
+    --     desc = "Inserts links (Ko-fi, Twitter, TikTok)",
+    --   }, {
+    --     t({
+    --       "Join discord for free -> https://discord.gg/NgqMgwwtMH",
+    --       "If you want to support me by becoming a YouTube member",
+    --       "https://www.youtube.com/channel/UCrSIvbFncPSlK6AdwE2QboA/join",
+    --       "☕ Support me -> https://ko-fi.com/linkarzu",
+    --       "☑ My Twitter -> https://x.com/link_arzu",
+    --       "❤‍🔥 My tiktok -> https://www.tiktok.com/@linkarzu",
+    --       "My dotfiles (remember to star them) -> https://github.com/linkarzu/dotfiles-latest",
+    --       "A link to my resume -> https://resume.linkarzu.com/",
+    --     }),
+    --   })
+    -- )
 
-    -- Inserting "my dotfiles" link
-    table.insert(
-      snippets,
-      s({
-        trig = "pagebreak",
-        name = "Adds a blank line in markdown file",
-        desc = "Adds a blank line in markdown file",
-      }, {
-        t('<div style="page-break-after: always; visibility: hidden"> pagebreak </div>'),
-      })
-    )
+    -- table.insert(
+    --   snippets,
+    --   s({
+    --     trig = "discord",
+    --     name = "discord support",
+    --     desc = "discord support",
+    --   }, {
+    --     t({
+    --       "```txt",
+    --       "I have a members only discord, it's goal is to troubleshoot stuff related to my videos, and try to help users out",
+    --       "If you want to join, the link can be found below",
+    --       "https://www.youtube.com/channel/UCrSIvbFncPSlK6AdwE2QboA/join",
+    --       "```",
+    --     }),
+    --   })
+    -- )
+    --
+    -- Add a snippet for inserting a blogpost article template
+    -- table.insert(
+    --   snippets,
+    --   s({
+    --     trig = "blogposttemplate",
+    --     name = "Insert blog post template",
+    --     desc = "Insert blog post template with frontmatter and sections",
+    --   }, {
+    --     t({ "---", "title: " }),
+    --     i(1, ""),
+    --     t({ "", "description: " }),
+    --     i(2, ""),
+    --     t({
+    --       "",
+    --       "image:",
+    --       "  path: ./../../assets/img/imgs/250117-thux-simple-bar-sketchybar.avif",
+    --       "date: '2025-01-16 06:10:00 +0000'",
+    --       "categories:",
+    --       "  - macos",
+    --       "tags:",
+    --       "  - macos",
+    --       "  - tutorial",
+    --       "  - youtube",
+    --       "  - video",
+    --       "---",
+    --       "## Contents",
+    --       "",
+    --       "### Table of contents",
+    --       "",
+    --       "<!-- toc -->",
+    --       "",
+    --       "<!-- tocstop -->",
+    --       "",
+    --       "## YouTube video",
+    --       "",
+    --       "{% include embed/youtube.html id='' %}",
+    --       "",
+    --       "## Pre-requisites",
+    --       "",
+    --       "- List any here",
+    --       "",
+    --       "## If you like my content, and want to support me",
+    --       "",
+    --       '- If you want to share a tip, you can [donate here](https://ko-fi.com/linkarzu/goal?g=6){:target="_blank"}',
+    --       "- I recently was laid off, so if you know about any SRE related roles, please let me know",
+    --       "",
+    --       "## Discord server",
+    --       "",
+    --       "- My discord server is now open to the public, feel free to join and hang out with others",
+    --       '- join the [discord server in this link](https://discord.gg/NgqMgwwtMH){:target="_blank"}',
+    --       "",
+    --       '[![Image](./../../assets/img/imgs/250210-discord-free.avif){: width="300" }](https://discord.gg/NgqMgwwtMH){:target="_blank"}',
+    --       "",
+    --       "## Follow me on social media",
+    --       "",
+    --       '- [Twitter (or "X")](https://x.com/link_arzu){:target="_blank"}',
+    --       '- [LinkedIn](https://www.linkedin.com/in/christianarzu){:target="_blank"}',
+    --       '- [TikTok](https://www.tiktok.com/@linkarzu){:target="_blank"}',
+    --       '- [Instagram](https://www.instagram.com/link_arzu){:target="_blank"}',
+    --       '- [GitHub](https://github.com/linkarzu){:target="_blank"}',
+    --       '- [Threads](https://www.threads.net/@link_arzu){:target="_blank"}',
+    --       '- [OnlyFans 🍆](https://linkarzu.com/assets/img/imgs/250126-whyugae.avif){:target="_blank"}',
+    --       '- [YouTube (subscribe MF, subscribe)](https://www.youtube.com/@linkarzu){:target="_blank"}',
+    --       '- [Ko-Fi](https://ko-fi.com/linkarzu/goal?g=6){:target="_blank"}',
+    --       "",
+    --       "## All links in the video description",
+    --       "",
+    --       "- The following links will be in the YouTube video description:",
+    --       "  - Each one of the videos shown",
+    --       "  - A link to this blogpost",
+    --       "",
+    --       "## How do you manage your passwords?",
+    --       "",
+    --       "- I've tried many different password managers in the past, I've switched from `LastPass` to `Dashlane` and finally ended up in `1password`",
+    --       "- You want to find out why? More info in my article:",
+    --       '  - [How I use 1password to keep all my accounts safe](https://linkarzu.com/posts/1password/1password/){:target="_blank"}',
+    --       "- **If you want to support me in keeping this blogpost ad free, start your 1password 14 day free trial by clicking the image below**",
+    --       "",
+    --       '[![Image](../../assets/img/imgs/250124-1password-banner.avif){: width="300" }](https://www.dpbolvw.net/click-101327218-15917064){:target="_blank"}',
+    --       "",
+    --       "",
+    --     }),
+    --   })
+    -- )
+    --
+    -- Add a snippet for inserting a video markdown template
+    -- table.insert(
+    --   snippets,
+    --   s({
+    --     trig = "videotemplate",
+    --     name = "Insert video markdown template",
+    --     desc = "Insert video markdown template",
+    --   }, {
+    --     t("## "),
+    --     i(1, "cursor"),
+    --     t(" video"),
+    --     t({ "", "", "All of the details and the demo are covered in the video:", "" }),
+    --     t({ "", "If you don't like watching videos, the keymaps are in " }),
+    --     t("[my dotfiles](https://github.com/linkarzu/dotfiles-latest)"),
+    --     t({
+    --       "",
+    --       "",
+    --       "```txt",
+    --       "Members only discord",
+    --       "https://www.youtube.com/channel/UCrSIvbFncPSlK6AdwE2QboA/join",
+    --       "",
+    --       "If you find this video helpful and want to support me",
+    --       "https://ko-fi.com/linkarzu",
+    --       "",
+    --       "Follow me on twitter",
+    --       "https://x.com/link_arzu",
+    --       "",
+    --       "My dotfiles (remember to star them)",
+    --       "https://github.com/linkarzu/dotfiles-latest",
+    --       "",
+    --       "Videos mentioned in this video:",
+    --       "",
+    --       "#linkarzu",
+    --       "",
+    --       "1:00 - VIDEO video 1",
+    --       "2:00 - VIDEO video 2",
+    --       "```",
+    --       "",
+    --       "Video timeline:",
+    --       "",
+    --       "```txt",
+    --       "0:00 -",
+    --       "```",
+    --       "",
+    --       "```txt",
+    --       "Join discord for free -> https://discord.gg/NgqMgwwtMH",
+    --       "If you want to support me by becoming a YouTube member",
+    --       "https://www.youtube.com/channel/UCrSIvbFncPSlK6AdwE2QboA/join",
+    --       "☕ Support me -> https://ko-fi.com/linkarzu",
+    --       "☑ My Twitter -> https://x.com/link_arzu",
+    --       "❤‍🔥 My tiktok -> https://www.tiktok.com/@linkarzu",
+    --       "Start your setap free trial (my affiliate link)",
+    --       "setapp.sjv.io/QjKK1a",
+    --       "Start your 1password trial  (my affiliate link)",
+    --       "https://www.dpbolvw.net/click-101327218-15917064",
+    --       "My dotfiles (remember to star them) -> https://github.com/linkarzu/dotfiles-latest",
+    --       "A link to my resume -> https://resume.linkarzu.com/",
+    --       "```",
+    --       "",
+    --     }),
+    --   })
+    -- )
+    --
+    -- table.insert(
+    --   snippets,
+    --   s({
+    --     trig = "video-skitty",
+    --     name = "New video in skitty-notes",
+    --     desc = "New video in skitty-notes",
+    --   }, {
+    --     t("## "),
+    --     i(1, "video name"),
+    --     t({
+    --       "",
+    --       "",
+    --       "- [ ] ",
+    --     }),
+    --     i(2, ""), -- This is now the second jump point
+    --     t({
+    --       "",
+    --       "- [ ] **Thank supporters**",
+    --       "- [ ] Push GitHub changes",
+    --       "- [ ] Share discord server",
+    --       "",
+    --     }),
+    --   })
+    -- )
 
     -- Basic bash script template
     table.insert(

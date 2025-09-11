@@ -1,4 +1,4 @@
-local mapping_key_prefix = vim.g.ai_prefix_key or "<leader>a"
+local mapping_key_prefix = vim.g.ai_prefix_key or "<leader>c"
 -- local IS_DEV = false
 
 -- This is custom system prompt for Copilot adapter
@@ -71,8 +71,7 @@ Identify 'gotchas' or less obvious parts of the code that might trip up someone 
 Provide clear and relevant examples aligned with any provided context.
 ]]
 )
-local COPILOT_REVIEW = string.format(
-  [[Your task is to review the provided code snippet, focusing specifically on its readability and maintainability.
+local COPILOT_REVIEW = string.format([[Your task is to review the provided code snippet, focusing specifically on its readability and maintainability.
 Identify any issues related to:
 - Naming conventions that are unclear, misleading or doesn't follow conventions for the language being used.
 - The presence of unnecessary comments, or the lack of necessary ones.
@@ -91,10 +90,8 @@ Format your feedback as follows:
 - Provide a specific suggestion for improvement.
  
 If the code snippet has no readability issues, simply confirm that the code is clear and well-written as is.
-]]
-)
-local COPILOT_REFACTOR = string.format(
-  [[Your task is to refactor the provided code snippet, focusing specifically on its readability and maintainability.
+]])
+local COPILOT_REFACTOR = string.format([[Your task is to refactor the provided code snippet, focusing specifically on its readability and maintainability.
 Identify any issues related to:
 - Naming conventions that are unclear, misleading or doesn't follow conventions for the language being used.
 - The presence of unnecessary comments, or the lack of necessary ones.
@@ -103,8 +100,7 @@ Identify any issues related to:
 - The use of excessively long names for variables or functions.
 - Any inconsistencies in naming, formatting, or overall coding style.
 - Repetitive code patterns that could be more efficiently handled through abstraction or optimization.
-]]
-)
+]])
 
 return {
   {
@@ -298,11 +294,7 @@ return {
               content = function(context)
                 local code = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
 
-                return "Please explain how the following code works:\n\n```"
-                  .. context.filetype
-                  .. "\n"
-                  .. code
-                  .. "\n```\n\n"
+                return "Please explain how the following code works:\n\n```" .. context.filetype .. "\n" .. code .. "\n```\n\n"
               end,
               opts = {
                 contains_code = true,
@@ -492,11 +484,7 @@ return {
               content = function(context)
                 local code = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
 
-                return "Please refactor the following code to improve its clarity and readability:\n\n```"
-                  .. context.filetype
-                  .. "\n"
-                  .. code
-                  .. "\n```\n\n"
+                return "Please refactor the following code to improve its clarity and readability:\n\n```" .. context.filetype .. "\n" .. code .. "\n```\n\n"
               end,
               opts = {
                 contains_code = true,
@@ -542,11 +530,7 @@ return {
               content = function(context)
                 local code = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
 
-                return "Please provide better names for the following variables and functions:\n\n```"
-                  .. context.filetype
-                  .. "\n"
-                  .. code
-                  .. "\n```\n\n"
+                return "Please provide better names for the following variables and functions:\n\n```" .. context.filetype .. "\n" .. code .. "\n```\n\n"
               end,
               opts = {
                 contains_code = true,
