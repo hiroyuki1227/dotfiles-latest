@@ -9,7 +9,7 @@ local function load_colors()
   -- Get directory of this file
   local script_dir = debug.getinfo(1, "S").source:sub(2):match("(.*/)")
   local local_file = script_dir .. "active-colorscheme.sh"
-  local fallback_file = os.getenv("HOME") .. "/github/dotfiles-latest/neovim/neobean/lua/config/active-colorscheme.sh"
+  local fallback_file = os.getenv("HOME") .. "/.config/neovim/neobean/lua/config/active-colorscheme.sh"
 
   -- Pick first available file
   local active_file = vim.fn.filereadable(local_file) == 1 and local_file or fallback_file

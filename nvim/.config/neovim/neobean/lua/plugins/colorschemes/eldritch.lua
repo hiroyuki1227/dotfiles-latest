@@ -131,7 +131,19 @@ return {
         -- NormalFloat = { bg = colors["linkarzu_color10"] },
         NormalFloat = { bg = "NONE" },
 
-        FloatBorder = { bg = colors["linkarzu_color10"] },
+        -- Sets the border color of hover floating windows vim.lsp.buf.hover()
+        -- You need to have `lsp_doc_border = true` in noice.nvim
+        -- solution provided by @abhra-linux in my video:
+        -- https://youtu.be/SXKsIyYJIrU
+        FloatBorder = { fg = colors["linkarzu_color02"], bg = colors["linkarzu_color10"] },
+
+        -- KittyScrollbackNvimStatusWinNvimIcon xxx guifg=#87987e guibg=#0d1116
+        -- KittyScrollbackNvimStatusWinHeartIcon xxx guifg=#d55b54 guibg=#0d1116
+        -- KittyScrollbackNvimStatusWinKittyIcon xxx guifg=#754b33 guibg=#0d1116
+        KittyScrollbackNvimStatusWinNvimIcon = { fg = colors["linkarzu_color04"] },
+        KittyScrollbackNvimStatusWinHeartIcon = { fg = colors["linkarzu_color02"] },
+        KittyScrollbackNvimStatusWinKittyIcon = { fg = colors["linkarzu_color03"] },
+
         FloatTitle = { bg = colors["linkarzu_color10"] },
         NotifyBackground = { bg = colors["linkarzu_color10"] },
         NeoTreeNormalNC = { bg = colors["linkarzu_color10"] },

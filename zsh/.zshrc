@@ -30,8 +30,6 @@ fi
 [[ ! -f ~/.config/zsh/alias.sh ]] || source ~/.config/zsh/alias.sh
 #
 #
-#
-#
 export XDG_STATE_HOME="$HOME/.local/state"
 # NVIM_APPNAME
 # ===== Neovim AppName Switcher ===========================

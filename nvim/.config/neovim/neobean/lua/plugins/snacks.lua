@@ -186,6 +186,10 @@ return {
           if item.file:match("lazyvim/lua/config/keymaps%.lua") then
             item.score_add = (item.score_add or 0) - 30
           end
+          -- Demote my old kanata config file
+          if item.file:match("kanata/configs/macos%.kbd") then
+            item.score_add = (item.score_add or 0) - 30
+          end
           -- Boost the "neobean" keymaps file:
           -- if item.file:match("neobean/lua/config/keymaps%.lua") then
           --   item.score_add = (item.score_add or 0) + 100
@@ -347,43 +351,12 @@ return {
         lazy = false,
         sections = {
           { section = "header" },
-          { icon = " ", title = "Keymaps", section = "keys", indent = 2, padding = 1 },
+          { icon = " ", title = "Keymaps", section = "keys", indent = 4, padding = 1 },
           { icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
           { icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
           { section = "startup" },
         },
       },
-      --       dashboard = {
-      --         preset = {
-      --           keys = {
-      --             -- { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
-      --             -- { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-      --             -- { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
-      --             -- { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
-      --             -- {
-      --             --   icon = " ",
-      --             --   key = "c",
-      --             --   desc = "Config",
-      --             --   action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
-      --             -- },
-      --             { icon = " ", key = "s", desc = "Restore Session", section = "session" },
-      --             -- { icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
-      --             { icon = " ", key = "<esc>", desc = "Quit", action = ":qa" },
-      --           },
-      --           -- Font Name: ANSI Shadow
-      --           -- https://patorjk.com/software/taag
-      --           header = [[
-      -- ███╗   ██╗███████╗ ██████╗ ██████╗ ███████╗ █████╗ ███╗   ██╗
-      -- ████╗  ██║██╔════╝██╔═══██╗██╔══██╗██╔════╝██╔══██╗████╗  ██║
-      -- ██╔██╗ ██║█████╗  ██║   ██║██████╔╝█████╗  ███████║██╔██╗ ██║
-      -- ██║╚██╗██║██╔══╝  ██║   ██║██╔══██╗██╔══╝  ██╔══██║██║╚██╗██║
-      -- ██║ ╚████║███████╗╚██████╔╝██████╔╝███████╗██║  ██║██║ ╚████║
-      -- ╚═╝  ╚═══╝╚══════╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝
-      --
-      -- [Linkarzu.com]
-      --         ]],
-      --         },
-      --       },
     },
   },
 }

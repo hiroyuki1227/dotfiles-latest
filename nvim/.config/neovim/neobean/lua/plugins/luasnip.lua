@@ -342,10 +342,10 @@ return {
       snippets,
       s({
         trig = "dotfileslatest",
-        name = "Adds -> [my dotfiles](https://github.com/linkarzu/dotfiles-latest)",
-        desc = "Add link to https://github.com/linkarzu/dotfiles-latest",
+        name = "Adds -> [my dotfiles](https://github.com/hiroyuki1227/dotfiles-latest)",
+        desc = "Add link to https://github.com/hiroyuki1227/dotfiles-latest",
       }, {
-        t("[my dotfiles](https://github.com/linkarzu/dotfiles-latest)"),
+        t("[my dotfiles](https://github.com/hiroyuki1227/dotfiles-latest)"),
       })
     )
 
@@ -370,157 +370,6 @@ return {
         desc = "Adds a blank line in markdown file",
       }, {
         t('<div style="page-break-after: always; visibility: hidden"> pagebreak </div>'),
-      })
-    )
-
-    table.insert(
-      snippets,
-      s({
-        trig = "supportme",
-        name = "Inserts links (Ko-fi, Twitter, TikTok)",
-        desc = "Inserts links (Ko-fi, Twitter, TikTok)",
-      }, {
-        t({
-          "Join discord for free -> https://discord.gg/NgqMgwwtMH",
-          "If you want to support me by becoming a YouTube member",
-          "https://www.youtube.com/channel/UCrSIvbFncPSlK6AdwE2QboA/join",
-          "☕ Support me -> https://ko-fi.com/linkarzu",
-          "☑ My Twitter -> https://x.com/link_arzu",
-          "❤‍🔥 My tiktok -> https://www.tiktok.com/@linkarzu",
-          "My dotfiles (remember to star them) -> https://github.com/linkarzu/dotfiles-latest",
-          "A link to my resume -> https://resume.linkarzu.com/",
-        }),
-      })
-    )
-
-    table.insert(
-      snippets,
-      s({
-        trig = "discord",
-        name = "discord support",
-        desc = "discord support",
-      }, {
-        t({
-          "```txt",
-          "I have a members only discord, it's goal is to troubleshoot stuff related to my videos, and try to help users out",
-          "If you want to join, the link can be found below",
-          "https://www.youtube.com/channel/UCrSIvbFncPSlK6AdwE2QboA/join",
-          "```",
-        }),
-      })
-    )
-
-    -- Add a snippet for inserting a blogpost article template
-    table.insert(
-      snippets,
-      s({
-        trig = "blogposttemplate",
-        name = "Insert blog post template",
-        desc = "Insert blog post template with frontmatter and sections",
-      }, {
-        t({ "---", "title: " }),
-        i(1, ""),
-        t({ "", "description: " }),
-        i(2, ""),
-        t({
-          "",
-          "image:",
-          "  path: ./../../assets/img/imgs/250117-thux-simple-bar-sketchybar.avif",
-          "date: '2025-01-16 06:10:00 +0000'",
-          "categories:",
-          "  - macos",
-          "tags:",
-          "  - macos",
-          "  - tutorial",
-          "  - youtube",
-          "  - video",
-          "---",
-          "## Contents",
-          "",
-          "### Table of contents",
-          "",
-          "<!-- toc -->",
-          "",
-          "<!-- tocstop -->",
-          "",
-          "## YouTube video",
-          "",
-          "{% include embed/youtube.html id='' %}",
-          "",
-          "## Pre-requisites",
-          "",
-          "- List any here",
-          "",
-          "## You're a fraud, why do you ask for money, isn't YouTube Ads enough?",
-          "",
-          '- I explain all of this in the "about me page" link below:',
-          '  - [youre-a-fraud-why-do-you-ask-for-money-isnt-youtube-ads-enough](https://linkarzu.com/about/#youre-a-fraud-why-do-you-ask-for-money-isnt-youtube-ads-enough){:target="_blank"}',
-          "  - Above you'll also find links to my discord, social media, etc",
-          "",
-        }),
-      })
-    )
-
-    -- Add a snippet for inserting a video markdown template
-    table.insert(
-      snippets,
-      s({
-        trig = "videotemplate",
-        name = "Insert video markdown template",
-        desc = "Insert video markdown template",
-      }, {
-        t("## "),
-        i(1, "cursor"),
-        t(" video"),
-        t({ "", "", "All of the details and the demo are covered in the video:", "" }),
-        t({ "", "If you don't like watching videos, the keymaps are in " }),
-        t("[my dotfiles](https://github.com/linkarzu/dotfiles-latest)"),
-        t({
-          "",
-          "",
-          "```txt",
-          "Members only discord",
-          "https://www.youtube.com/channel/UCrSIvbFncPSlK6AdwE2QboA/join",
-          "",
-          "If you find this video helpful and want to support me",
-          "https://ko-fi.com/linkarzu",
-          "",
-          "Follow me on twitter",
-          "https://x.com/link_arzu",
-          "",
-          "My dotfiles (remember to star them)",
-          "https://github.com/linkarzu/dotfiles-latest",
-          "",
-          "Videos mentioned in this video:",
-          "",
-          "#linkarzu",
-          "",
-          "1:00 - VIDEO video 1",
-          "2:00 - VIDEO video 2",
-          "```",
-          "",
-          "Video timeline:",
-          "",
-          "```txt",
-          "0:00 -",
-          "```",
-          "",
-          "```txt",
-          "Join discord for free -> https://discord.gg/NgqMgwwtMH",
-          "If you want to support me by becoming a YouTube member",
-          "https://www.youtube.com/channel/UCrSIvbFncPSlK6AdwE2QboA/join",
-          "☕ Support me -> https://ko-fi.com/linkarzu",
-          "☑ My Twitter -> https://x.com/link_arzu",
-          "❤‍🔥 My tiktok -> https://www.tiktok.com/@linkarzu",
-          "Start your setap free trial (my affiliate link)",
-          "setapp.sjv.io/QjKK1a",
-          "Start your 1password trial  (my affiliate link)",
-          "https://www.dpbolvw.net/click-101327218-15917064",
-          "My dotfiles (remember to star them) -> https://github.com/linkarzu/dotfiles-latest",
-          "A link to my resume -> https://resume.linkarzu.com/",
-          "```",
-          "",
-        }),
       })
     )
 
