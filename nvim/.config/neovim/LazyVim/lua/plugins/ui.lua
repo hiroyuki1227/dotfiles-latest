@@ -246,63 +246,63 @@ return {
       },
     },
   },
-  -- {
-  --   "m4xshen/hardtime.nvim",
-  --   enabled = true,
-  --   dependencies = { "MunifTanjim/nui.nvim" },
-  --   -- Was told to use this event by m4xshen himself, in discord
-  --   -- https://discord.com/channels/1323810827220029441/1371572869838012487/1371660878344097832
-  --   event = "BufEnter",
-  --   keys = {
-  --     -- { "j", "v:count == 0 ? 'gj' : 'j'", mode = { "n", "x" }, expr = true, silent = true, desc = "Down" },
-  --     -- { "k", "v:count == 0 ? 'gk' : 'k'", mode = { "n", "x" }, expr = true, silent = true, desc = "Up" },
-  --   },
-  --   opts = function(_, opts)
-  --     -- make sure the default table exists
-  --     opts.restricted_keys = opts.restricted_keys or {}
-  --     -- do NOT restrict gj / gk
-  --     opts.restricted_keys["gj"] = false
-  --     opts.restricted_keys["gk"] = false
-  --   end,
-  --   -- マウスと矢印キーがキーボードのホーム キー列にない場合は、使用しないでください。
-  --   -- 5j 12-画面内での垂直方向の移動には相対ジャンプ (例: ) を使用します。
-  --   -- CTRL-U CTRL-D CTRL-B CTRL-F gg G画面外での垂直移動に使用します。
-  --   -- w W b B e E ge gE短距離の水平移動にはワードモーション（ ）を使用します。
-  --   -- f F t T , ; 0 ^ $中距離から長距離の水平移動に使用します。
-  --   -- ci{ y5j dap可能な限り、演算子 + モーション/テキスト オブジェクト (例: ) を使用します。
-  --   -- 括弧間を移動するには、%および 角括弧コマンド ( を参照)を使用します。:h [
-  --   -- "m4xshen/hardtime.nvim",
-  --   -- dependencies = { "MunifTanjim/nui.nvim" },
-  --   -- -- config = function()
-  --   -- opts = {
-  --   --   disable_filetypes = {
-  --   --     lazy = false, -- enable hardtime in lazy FileType
-  --   --     ["dapui*"] = false,
-  --   --     ["qf"] = true,
-  --   --     ["netrw"] = true,
-  --   --     ["NvimTree"] = true,
-  --   --     ["md"] = true,
-  --   --     ["markdown"] = true,
-  --   --     ["mason"] = true,
-  --   --     ["oil"] = true,
-  --   --   },
-  --   -- },
-  --   -- hints = {
-  --   --   ["k%^"] = {
-  --   --     message = function()
-  --   --       return "Use - instead of k^" -- return the hint message you want to display
-  --   --     end,
-  --   --     length = 2, -- the length of actual key strokes that matches this pattern
-  --   --   },
-  --   --   ["d[tTfF].i"] = { -- this matches d + {t/T/f/F} + {any character} + i
-  --   --     message = function(keys) -- keys is a string of key strokes that matches the pattern
-  --   --       return "Use " .. "c" .. keys:sub(2, 3) .. " instead of " .. keys
-  --   --       -- example: Use ct( instead of dt(i
-  --   --     end,
-  --   --     length = 4,
-  --   --   },
-  --   -- },
-  -- },
+  {
+    "m4xshen/hardtime.nvim",
+    enabled = true,
+    dependencies = { "MunifTanjim/nui.nvim" },
+    -- Was told to use this event by m4xshen himself, in discord
+    -- https://discord.com/channels/1323810827220029441/1371572869838012487/1371660878344097832
+    event = "BufEnter",
+    keys = {
+      -- { "j", "v:count == 0 ? 'gj' : 'j'", mode = { "n", "x" }, expr = true, silent = true, desc = "Down" },
+      -- { "k", "v:count == 0 ? 'gk' : 'k'", mode = { "n", "x" }, expr = true, silent = true, desc = "Up" },
+    },
+    opts = function(_, opts)
+      -- make sure the default table exists
+      opts.restricted_keys = opts.restricted_keys or {}
+      -- do NOT restrict gj / gk
+      opts.restricted_keys["gj"] = false
+      opts.restricted_keys["gk"] = false
+    end,
+    -- マウスと矢印キーがキーボードのホーム キー列にない場合は、使用しないでください。
+    -- 5j 12-画面内での垂直方向の移動には相対ジャンプ (例: ) を使用します。
+    -- CTRL-U CTRL-D CTRL-B CTRL-F gg G画面外での垂直移動に使用します。
+    -- w W b B e E ge gE短距離の水平移動にはワードモーション（ ）を使用します。
+    -- f F t T , ; 0 ^ $中距離から長距離の水平移動に使用します。
+    -- ci{ y5j dap可能な限り、演算子 + モーション/テキスト オブジェクト (例: ) を使用します。
+    -- 括弧間を移動するには、%および 角括弧コマンド ( を参照)を使用します。:h [
+    -- "m4xshen/hardtime.nvim",
+    -- dependencies = { "MunifTanjim/nui.nvim" },
+    -- -- config = function()
+    -- opts = {
+    --   disable_filetypes = {
+    --     lazy = false, -- enable hardtime in lazy FileType
+    --     ["dapui*"] = false,
+    --     ["qf"] = true,
+    --     ["netrw"] = true,
+    --     ["NvimTree"] = true,
+    --     ["md"] = true,
+    --     ["markdown"] = true,
+    --     ["mason"] = true,
+    --     ["oil"] = true,
+    --   },
+    -- },
+    -- hints = {
+    --   ["k%^"] = {
+    --     message = function()
+    --       return "Use - instead of k^" -- return the hint message you want to display
+    --     end,
+    --     length = 2, -- the length of actual key strokes that matches this pattern
+    --   },
+    --   ["d[tTfF].i"] = { -- this matches d + {t/T/f/F} + {any character} + i
+    --     message = function(keys) -- keys is a string of key strokes that matches the pattern
+    --       return "Use " .. "c" .. keys:sub(2, 3) .. " instead of " .. keys
+    --       -- example: Use ct( instead of dt(i
+    --     end,
+    --     length = 4,
+    --   },
+    -- },
+  },
   {
     "nvzone/showkeys",
     cmd = "ShowkeysToggle",
