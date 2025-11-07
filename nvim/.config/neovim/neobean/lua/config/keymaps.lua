@@ -82,7 +82,7 @@ end, { noremap = true, silent = true })
 -- vim.keymap.set("n", "<c-u>", "<c-u>zz")
 
 -- Quit or exit neovim, easier than to do <leader>qq
-vim.keymap.set({ "n", "v", "i" }, "<M-q>", "<cmd>wqa<cr>", { desc = "[P]Quit All" })
+vim.keymap.set({ "n", "v", "i" }, "<M-q>", "<cmd>q!<cr>", { desc = "[P]Quit All" })
 
 -- -- This, by default configured as <leader>sk but I run it too often lamw25wmal
 -- vim.keymap.set({ "n", "v", "i" }, "<M-k>", "<cmd>Telescope keymaps<cr>", { desc = "[P]Key Maps" })
@@ -309,7 +309,85 @@ vim.keymap.set("v", "gl", "$h", { desc = "[P]Go to the end of the line" })
 -- -- The system clipboard allows sharing data between Vim and other applications.
 -- -- Yanking with `"+y` copies text to both the unnamed register and system clipboard.
 -- -- The `"+` register represents the system clipboard.
+-- vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "[P]Yank to system clipboard" })
+--
+-- y to yank only when in my deeznuts scrollback config
+if vim.g.simpler_scrollback == "deeznuts" then
+  -- yank and quit when using my scrollback config
+  vim.keymap.set({ "n", "v" }, "y", [["+y<cmd>q!<cr>]], { desc = "[P]Yank to system clipboard + Quit" })
+  -- vim.keymap.set({ "n", "v" }, "q", "<cmd>q!<cr>", { desc = "[P]Quit" })
+end
+
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "[P]Yank to system clipboard" })
+
+-- HACK: Paste unformatted text from Neovim to Slack, Discord, Word or any other app
+-- https://youtu.be/S3drTCO7Ct4
+--
+-- NOTE: New method of yanking text without LF (Line Feed) characters
+-- This method is preferred because the old method requires a lot of edge cases,
+-- for example codeblocks, or blockquotes which use `>`
+--
+-- Prettier is what autoformats all my files, including the markdown files
+-- proseWrap: "always" is only enabled for markdown, which wraps all my markdown
+-- lines at 80 characters, even existing lines are autoformatted
+--
+-- So only for markdown files, I'm copying all the text, to a temp file, applying
+-- the prettier --prose-wrap never --write command on that file, then copying
+-- the text in that file to my system clipboard
+--
+-- This gives me text without LF characters that I can pate in slack, the
+-- browser, etc
+if vim.g.simpler_scrollback ~= "deeznuts" then
+  vim.keymap.set("v", "y", function()
+    -- Check if the current buffer's filetype is markdown
+    if vim.bo.filetype ~= "markdown" then
+      -- Not a Markdown file, copy the selection to the system clipboard
+      vim.cmd('normal! "+y')
+      -- Optionally, notify the user
+      vim.notify("Yanked to system clipboard", vim.log.levels.INFO)
+      return
+    end
+    -- Yank the selected text into register 'z' without affecting the unnamed register
+    vim.cmd('silent! normal! "zy')
+    -- Get the yanked text from register 'z'
+    local text = vim.fn.getreg("z")
+    -- Path to a temporary file (uses a unique temporary file name)
+    local temp_file = vim.fn.tempname() .. ".md"
+    -- Write the selected text to the temporary file
+    local file = io.open(temp_file, "w")
+    if file == nil then
+      vim.notify("Error: Cannot write to temporary file.", vim.log.levels.ERROR)
+      return
+    end
+    file:write(text)
+    file:close()
+    -- Run Prettier on the temporary file to format it
+    -- Adding > /dev/null 2>&1' because if the command produces output, I see that
+    -- in the neovim buffer
+    local cmd = 'prettier --prose-wrap never --write "' .. temp_file .. '" > /dev/null 2>&1'
+    local result = os.execute(cmd)
+    if result ~= 0 then
+      vim.notify("Error: Prettier formatting failed.", vim.log.levels.ERROR)
+      os.remove(temp_file)
+      return
+    end
+    -- Read the formatted text from the temporary file
+    file = io.open(temp_file, "r")
+    if file == nil then
+      vim.notify("Error: Cannot read from temporary file.", vim.log.levels.ERROR)
+      os.remove(temp_file)
+      return
+    end
+    local formatted_text = file:read("*all")
+    file:close()
+    -- Copy the formatted text to the system clipboard
+    vim.fn.setreg("+", formatted_text)
+    -- Delete the temporary file
+    os.remove(temp_file)
+    -- Notify the user
+    vim.notify("yanked markdown with --prose-wrap never", vim.log.levels.INFO)
+  end, { desc = "[P]Copy selection formatted with Prettier", noremap = true, silent = true })
+end
 
 -- Copy the current line and all diagnostics on that line to system clipboard
 vim.keymap.set("n", "yd", function()
@@ -473,73 +551,6 @@ end, { desc = "[P]Inline calculator" })
 --     end
 --   end,
 -- })
-
--- HACK: Paste unformatted text from Neovim to Slack, Discord, Word or any other app
--- https://youtu.be/S3drTCO7Ct4
---
--- NOTE: New method of yanking text without LF (Line Feed) characters
--- This method is preferred because the old method requires a lot of edge cases,
--- for example codeblocks, or blockquotes which use `>`
---
--- Prettier is what autoformats all my files, including the markdown files
--- proseWrap: "always" is only enabled for markdown, which wraps all my markdown
--- lines at 80 characters, even existing lines are autoformatted
---
--- So only for markdown files, I'm copying all the text, to a temp file, applying
--- the prettier --prose-wrap never --write command on that file, then copying
--- the text in that file to my system clipboard
---
--- This gives me text without LF characters that I can pate in slack, the
--- browser, etc
-vim.keymap.set("v", "y", function()
-  -- Check if the current buffer's filetype is markdown
-  if vim.bo.filetype ~= "markdown" then
-    -- Not a Markdown file, copy the selection to the system clipboard
-    vim.cmd('normal! "+y')
-    -- Optionally, notify the user
-    vim.notify("Yanked to system clipboard", vim.log.levels.INFO)
-    return
-  end
-  -- Yank the selected text into register 'z' without affecting the unnamed register
-  vim.cmd('silent! normal! "zy')
-  -- Get the yanked text from register 'z'
-  local text = vim.fn.getreg("z")
-  -- Path to a temporary file (uses a unique temporary file name)
-  local temp_file = vim.fn.tempname() .. ".md"
-  -- Write the selected text to the temporary file
-  local file = io.open(temp_file, "w")
-  if file == nil then
-    vim.notify("Error: Cannot write to temporary file.", vim.log.levels.ERROR)
-    return
-  end
-  file:write(text)
-  file:close()
-  -- Run Prettier on the temporary file to format it
-  -- Adding > /dev/null 2>&1' because if the command produces output, I see that
-  -- in the neovim buffer
-  local cmd = 'prettier --prose-wrap never --write "' .. temp_file .. '" > /dev/null 2>&1'
-  local result = os.execute(cmd)
-  if result ~= 0 then
-    vim.notify("Error: Prettier formatting failed.", vim.log.levels.ERROR)
-    os.remove(temp_file)
-    return
-  end
-  -- Read the formatted text from the temporary file
-  file = io.open(temp_file, "r")
-  if file == nil then
-    vim.notify("Error: Cannot read from temporary file.", vim.log.levels.ERROR)
-    os.remove(temp_file)
-    return
-  end
-  local formatted_text = file:read("*all")
-  file:close()
-  -- Copy the formatted text to the system clipboard
-  vim.fn.setreg("+", formatted_text)
-  -- Delete the temporary file
-  os.remove(temp_file)
-  -- Notify the user
-  vim.notify("yanked markdown with --prose-wrap never", vim.log.levels.INFO)
-end, { desc = "[P]Copy selection formatted with Prettier", noremap = true, silent = true })
 
 -- -- NOTE: Old (but working) method of yanking text without LF (Line Feed) characters
 -- --
@@ -3792,14 +3803,40 @@ local function create_next_n_days(n)
 end
 
 -- Create a daily note for the next day based on the current filename lamw26wmal
-vim.keymap.set("n", "<leader>fA", function()
+vim.keymap.set("n", "<leader>mA", function()
   create_next_n_days(1)
 end, { desc = "[P]Create next day's daily note from current file" })
 
 -- Create the next 7 daily notes (one week) lamw26wmal
-vim.keymap.set("n", "<leader>fW", function()
+vim.keymap.set("n", "<leader>mW", function()
   create_next_n_days(7)
 end, { desc = "[P]Create next week's daily notes from current file" })
+
+-- Create the next N daily notes (prompt) lamw26wmal
+vim.keymap.set("n", "<leader>mD", function()
+  -- Ask for number of days starting from tomorrow
+  vim.ui.input({ prompt = "How many days to create (starting tomorrow): ", default = "7" }, function(answer)
+    -- Validate empty input
+    if not answer or answer == "" then
+      vim.api.nvim_echo({ { "Creation cancelled", "WarningMsg" } }, false, {})
+      return
+    end
+    -- Convert to number
+    local n = tonumber(answer)
+    -- Validate number
+    if not n then
+      vim.api.nvim_echo({ { "Please enter a valid number", "ErrorMsg" } }, false, {})
+      return
+    end
+    -- Ensure integer > 0
+    n = math.floor(n)
+    if n <= 0 then
+      vim.api.nvim_echo({ { "Enter a number greater than zero", "ErrorMsg" } }, false, {})
+      return
+    end
+    create_next_n_days(n)
+  end)
+end, { desc = "[P]Create N next daily notes from current file" })
 
 -- - I have several `.md` documents that do not follow markdown guidelines
 -- - There are some old ones that have more than one H1 heading in them, so when I
@@ -3969,7 +4006,7 @@ end, { desc = "Decrease headings in visual selection" })
 -- This deletes all marks in the current buffer, including lowercase, uppercase, and numbered marks
 -- Fix should be applied on April 2024
 -- https://github.com/chentoast/marks.nvim/issues/13
-vim.keymap.set("n", "<leader>mD", function()
+vim.keymap.set("n", "<leader>mZ", function()
   -- Delete all marks in the current buffer
   vim.cmd("delmarks!")
   print("All marks deleted.")
