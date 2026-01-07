@@ -49,6 +49,7 @@ if command -v nvim &> /dev/null; then
   # 使用可能な Neovim プロファイル一覧
   nvim_appnames=(
     neovim
+    neovim/CodeOps
     neovim/AstroNvim
     neovim/nvchad
     neovim/LazyVim

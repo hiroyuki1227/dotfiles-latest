@@ -97,7 +97,7 @@ quick-terminal-screen = mouse
 quick-terminal-animation-duration = 0.1
 quick-terminal-autohide = false
 
-background-opacity = 0.7
+background-opacity = 0.8
 background-blur-radius = 20
 window-height = 54
 window-width = 164 
