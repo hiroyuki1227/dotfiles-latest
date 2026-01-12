@@ -1,0 +1,11 @@
+[default.extend-words]
+mozumasu = "mozumasu"
+shortcat = "shortcat"
+iterm = "iterm"
+args = "args"
+cose = "cose"
+ue = "ue"
+
+[default]
+detect = ["en", "ja"]
+extend-ignore-re = ["<cmd>.+<cr>", "<leader>.+\"", "<leader>.+`"]

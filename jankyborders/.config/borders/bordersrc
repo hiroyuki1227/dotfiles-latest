@@ -9,9 +9,9 @@ options=(
   active_color="$red"
   inactive_color="$transparent"
   hidpi=on
+  order=above
   style=round
-  width=3.0
-  blacklist="Screen Studio"
+  width=6.0
 )
 
 borders "${options[@]}"

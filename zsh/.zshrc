@@ -49,6 +49,7 @@ if command -v nvim &> /dev/null; then
   # 使用可能な Neovim プロファイル一覧
   nvim_appnames=(
     neovim
+    neovim/mozumasu
     neovim/CodeOps
     neovim/AstroNvim
     neovim/nvchad
@@ -82,3 +83,7 @@ fi
 export PATH="$PATH:/Users/hrsuda/.lmstudio/bin"
 # End of LM Studio CLI section
 
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
