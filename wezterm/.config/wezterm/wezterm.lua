@@ -42,6 +42,8 @@ if wezterm.config_builder then
 	config = wezterm.config_builder()
 end
 
+config.color_scheme = color_scheme_for_appearance(wezterm.gui.get_appearance())
+
 -- Start tmux when opening WezTerm
 -- config.default_prog = { "/bin/zsh", "-l", "-c", "--", 'tmux new -As base' }
 
@@ -110,7 +112,6 @@ config.colors = {
 	selection_fg = "#000000",
 }
 
-config.color_scheme = color_scheme_for_appearance(wezterm.gui.get_appearance())
 config.window_background_opacity = window_background_opacity
 config.macos_window_background_blur = 10
 config.hide_tab_bar_if_only_one_tab = true
