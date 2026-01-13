@@ -299,9 +299,35 @@ return {
         name = "Add TODO: item",
         desc = "Add TODO: item",
       }, {
-        t("<!-- TODO: "),
+        t("TODO: "),
         i(1),
-        t(" -->"),
+      })
+    )
+
+    table.insert(
+      snippets,
+      s({
+        trig = "vid",
+        name = "Add Vid-Id tag",
+        desc = "Add Vid-Id tag",
+      }, {
+        t("Vid-Id"),
+      })
+    )
+
+    -- Paste clipboard contents in link section, move cursor to ()
+    table.insert(
+      snippets,
+      s({
+        trig = "typl",
+        name = "typst link with clipboard",
+        desc = "typst link with clipboard",
+      }, {
+        t('#link("'),
+        f(clipboard, {}),
+        t('")['),
+        i(1),
+        t("]"),
       })
     )
 
@@ -342,10 +368,10 @@ return {
       snippets,
       s({
         trig = "dotfileslatest",
-        name = "Adds -> [my dotfiles](https://github.com/hiroyuki1227/dotfiles-latest)",
-        desc = "Add link to https://github.com/hiroyuki1227/dotfiles-latest",
+        name = "Adds -> [my dotfiles](https://github.com/linkarzu/dotfiles-latest)",
+        desc = "Add link to https://github.com/linkarzu/dotfiles-latest",
       }, {
-        t("[my dotfiles](https://github.com/hiroyuki1227/dotfiles-latest)"),
+        t("[my dotfiles](https://github.com/linkarzu/dotfiles-latest)"),
       })
     )
 
@@ -387,7 +413,7 @@ return {
           "☕ Support me -> https://ko-fi.com/linkarzu",
           "☑ My Twitter -> https://x.com/link_arzu",
           "❤‍🔥 My tiktok -> https://www.tiktok.com/@linkarzu",
-          "My dotfiles (remember to star them) -> https://github.com/hiroyuki1227/dotfiles-latest",
+          "My dotfiles (remember to star them) -> https://github.com/linkarzu/dotfiles-latest",
           "A link to my resume -> https://resume.linkarzu.com/",
         }),
       })
@@ -426,11 +452,24 @@ return {
           "",
           "image:",
           "  path: ./../../assets/img/imgs/250117-thux-simple-bar-sketchybar.avif",
-          "date: '2025-01-16 06:10:00 +0000'",
+          "date: '2026-",
+        }),
+        i(3, ""),
+        t({ " 06:10:00 +0000'" }),
+        t({
+          "",
           "categories:",
-          "  - macos",
+          "  - ",
+        }),
+        i(4, ""),
+        t({
+          "",
           "tags:",
-          "  - macos",
+          "  - ",
+        }),
+        i(5, ""),
+        t({
+          "",
           "  - tutorial",
           "  - youtube",
           "  - video",
@@ -446,10 +485,24 @@ return {
           "## YouTube video",
           "",
           "{% include embed/youtube.html id='' %}",
+          "Paste thumbnail here",
+        }),
+        i(6, ""),
+        t({
+          "",
           "",
           "## Pre-requisites",
           "",
           "- List any here",
+          "",
+          "## Community-driven promotion",
+          "",
+          "Do you want to promote yourself in my channel? I'm not talking about a company",
+          "like notion, brilliant, and all those other ones we're using to seeing. I'm",
+          "talking about you as a person, do you have a project, course, youtube channel or",
+          "product and trying to reach an audience?",
+          "",
+          'If interested, pricing and all the details can be found [in this other page](https://chirpy.home.linkarzu.com/about/#community-driven-promotion){:target="_blank"}',
           "",
           "## You're a fraud, why do you ask for money, isn't YouTube Ads enough?",
           "",
@@ -474,7 +527,7 @@ return {
         t(" video"),
         t({ "", "", "All of the details and the demo are covered in the video:", "" }),
         t({ "", "If you don't like watching videos, the keymaps are in " }),
-        t("[my dotfiles](https://github.com/hiroyuki1227/dotfiles-latest)"),
+        t("[my dotfiles](https://github.com/linkarzu/dotfiles-latest)"),
         t({
           "",
           "",
@@ -489,7 +542,7 @@ return {
           "https://x.com/link_arzu",
           "",
           "My dotfiles (remember to star them)",
-          "https://github.com/hiroyuki1227/dotfiles-latest",
+          "https://github.com/linkarzu/dotfiles-latest",
           "",
           "Videos mentioned in this video:",
           "",
@@ -516,7 +569,7 @@ return {
           "setapp.sjv.io/QjKK1a",
           "Start your 1password trial  (my affiliate link)",
           "https://www.dpbolvw.net/click-101327218-15917064",
-          "My dotfiles (remember to star them) -> https://github.com/hiroyuki1227/dotfiles-latest",
+          "My dotfiles (remember to star them) -> https://github.com/linkarzu/dotfiles-latest",
           "A link to my resume -> https://resume.linkarzu.com/",
           "```",
           "",
@@ -593,6 +646,46 @@ return {
     )
 
     ls.add_snippets("markdown", snippets)
+    -- Make Typst inherit Markdown snippets
+    ls.filetype_extend("typst", { "markdown" })
+
+    -- #####################################################################
+    --                         typst
+    -- #####################################################################
+
+    ls.add_snippets("typst", {
+      s({
+        trig = "typquote",
+        name = "Quote block",
+        desc = "Typst quote with attribution",
+      }, {
+        t({ '#quote(attribution: "' }),
+        i(1),
+        t({ '")[', "  " }),
+        i(2),
+        t({ "", "  #v(4pt)", "]" }),
+      }),
+
+      s({
+        trig = "typwarn",
+        name = "Warning block",
+        desc = "Typst warning callout",
+      }, {
+        t({ "#warning[", "  " }),
+        i(1),
+        t({ "", "  #v(4pt)", "]" }),
+      }),
+
+      s({
+        trig = "typsol",
+        name = "Solution block",
+        desc = "Typst solution callout",
+      }, {
+        t({ "#solution[", "  " }),
+        i(1),
+        t({ "", "  #v(4pt)", "]" }),
+      }),
+    })
 
     -- #####################################################################
     --                         all the filetypes

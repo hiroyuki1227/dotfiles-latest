@@ -1,8 +1,32 @@
 local wezterm = require("wezterm")
 local module = {}
 
+-- Returns color scheme dependant on operating system theme setting (dark/light)
+local function get_appearance()
+	if wezterm.gui then
+		return wezterm.gui.get_appearance()
+	end
+	return "Dark"
+end
+
+local function color_scheme_for_appearance(appearance)
+	if appearance:find("Dark") then
+		color_scheme_dir = { "~/.config/wezterm/themes" }
+		color_scheme = "Solarized Osaka"
+		-- return "Builtin Solarized Dark"
+		-- return "Tokyo Night"
+	else
+		color_scheme = "Solarized Osaka Light"
+		-- return "Builtin Solarized Light"
+		-- return "Tokyo Night Day"
+		-- return "Solarized Osaka light"
+	end
+	return color_scheme
+end
+
 local appearance = {
-	color_scheme = "Solarized Dark Higher Contrast",
+	color_scheme = color_scheme_for_appearance(get_appearance()),
+	-- color_scheme = "Solarized Dark Higher Contrast",
 	-- color_scheme = "Solarized Dark",
 	-- window title
 	window_decorations = "RESIZE",
@@ -30,7 +54,7 @@ local appearance = {
 	},
 
 	colors = {
-		background = "#1a1a2e",
+		-- background = "#1a1a2e",
 
 		-- 通常のタブバー透過設定（use_fancy_tab_bar = false用）
 		tab_bar = {

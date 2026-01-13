@@ -5,7 +5,8 @@ return {
     opts = {
       -- catppuccin catppuccin-latte, catppuccin-frappe, catppuccin-macchiato, catppuccin-mocha
       -- colorscheme = "catppuccin",
-      colorscheme = "eldritch",
+      -- colorscheme = "eldritch",
+      colorscheme = "solarized-osaka",
       -- colorscheme = "catppuccin-frappe",
       -- colorscheme = "Duskfox",
       -- colorscheme = "Nightfox",

@@ -91,6 +91,7 @@
 - [image.nvim](#imagenvim)
   * [Install image.nvim](#install-imagenvim)
   * [Install luarocks (optional)](#install-luarocks-optional)
+- [Increase numbers in vertical visual mode](#increase-numbers-in-vertical-visual-mode)
 
 <!-- tocstop -->
 
@@ -399,6 +400,24 @@ Do it in `~/github/dotfiles-latest/neovim/neobean/lua/plugins/core.lua`
 
 ### grug-far.nvim replacements
 
+- `\S` matches any **non-whitespace** character
+- `+` means: **One or more** of the preceding pattern
+-
+
+```regex
+\S+
+XX
+
+buffer-range=kanata/configs/glove80-subl.kbd:68:0-73:-1
+kanata/configs/glove80-subl.kbd
+  @adavin @amword @aexcel @arecut @ateams @ayoutu @awhats @asocia @a--obs @a1pass XX
+  XX XX XX XX XX XX XX XX XX XX XX
+  grv 1  2  3  4  5  6  7  8  9  0  -  =
+  XX XX  XX  XX  XX  XX  XX  XX  XX  XX  XX  XX  XX
+```
+
+---
+
 - Remember to use the `--multiline` flag
 - Make sure to include `spaces` in case a blank line has a space, otherwise you
   won't be able to match
@@ -416,6 +435,8 @@ Do it in `~/github/dotfiles-latest/neovim/neobean/lua/plugins/core.lua`
 <!-- prettier-ignore-end -->
 <!-- markdownlint-restore -->
 ```
+
+---
 
 - For this to work, just make sure to add a newline after `from` after pasting
   in the search bar for grug-far
@@ -1114,3 +1135,27 @@ magick
   `luarocks.nvim` one
 - Uncomment the lines at the top of the `plugins/image-nvim.lua` file
 - Just make sure they point to the right path
+
+## Increase numbers in vertical visual mode
+
+- Make your selection of the numbers you want to increase with `C+v`
+- Then press `g ctrl+a`
+
+```bash
+{Visual}g CTRL-A	Add [count] to the number or alphabetic character in
+			the highlighted text. If several lines are
+		        highlighted, each one will be incremented by an
+			additional [count] (so effectively creating a
+			[count] incrementing sequence).
+			For Example, if you have this list of numbers:
+				1. ~
+				1. ~
+				1. ~
+				1. ~
+			Move to the second "1." and Visually select three
+			lines, pressing g CTRL-A results in:
+				1. ~
+				2. ~
+				3. ~
+				4. ~
+```

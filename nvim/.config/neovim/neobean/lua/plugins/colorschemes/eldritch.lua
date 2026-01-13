@@ -91,6 +91,12 @@ return {
         -- horizontal line that goes across where cursor is
         CursorLine = { bg = colors["linkarzu_color13"] },
 
+        -- Line number on the left
+        LineNr = { fg = colors["linkarzu_color16"] },
+
+        -- Blink icon that shows in dictionary auto completions
+        BlinkCmpKindDict = { fg = colors["linkarzu_color16"] },
+
         -- Set cursor color, these will be called by the "guicursor" option in
         -- the options.lua file, which will be used by neovide
         Cursor = { bg = colors["linkarzu_color24"] },
@@ -101,7 +107,10 @@ return {
         ["@markup.strong"] = { fg = colors["linkarzu_color24"], bold = true },
 
         -- Inline code in markdown
-        ["@markup.raw.markdown_inline"] = { fg = colors["linkarzu_color02"] },
+        -- For fiambre (some day I'll create a condition for this)
+        -- ["@markup.raw.markdown_inline"] = { fg = colors["linkarzu_color02"] },
+        -- For batman
+        ["@markup.raw.markdown_inline"] = { fg = colors["linkarzu_color01"] },
         -- Background color of markdown folds
         -- Folded = { bg = colors["linkarzu_color04"] },
         -- Set this to NONE when handling transparency in the terminal and not
@@ -193,6 +202,13 @@ return {
         WinBar3 = { fg = colors["linkarzu_color24"], bold = true },
         -- StatusLine = { bg = colors["linkarzu_color10"] },
 
+        -- Harper and other diagnostic messages
+        DiagnosticVirtualTextError = { bg = colors["linkarzu_color11"], fg = colors["linkarzu_color10"] },
+        DiagnosticVirtualTextWarn = { bg = colors["linkarzu_color21"], fg = colors["linkarzu_color10"] },
+        DiagnosticVirtualTextInfo = { bg = colors["linkarzu_color18"], fg = colors["linkarzu_color10"] },
+        DiagnosticVirtualTextHint = { bg = colors["linkarzu_color02"], fg = colors["linkarzu_color10"] },
+        DiagnosticVirtualTextOk = { bg = colors["linkarzu_color16"], fg = colors["linkarzu_color10"] },
+
         DiagnosticInfo = { fg = colors["linkarzu_color03"] },
         DiagnosticHint = { fg = colors["linkarzu_color02"] },
         DiagnosticWarn = { fg = colors["linkarzu_color12"] },
@@ -230,6 +246,12 @@ return {
         TelescopeNormal = { fg = colors["linkarzu_color14"], bg = colors["linkarzu_color10"] },
         TelescopeMultiSelection = { fg = colors["linkarzu_color02"], bg = colors["linkarzu_color10"] },
         TelescopeSelection = { fg = colors["linkarzu_color14"], bg = colors["linkarzu_color13"] },
+
+        ["@markup.heading.1.typst"] = { fg = colors["linkarzu_color04"], bg = colors["linkarzu_color18"] },
+        ["@markup.heading.2.typst"] = { fg = colors["linkarzu_color02"], bg = colors["linkarzu_color19"] },
+        ["@markup.heading.3.typst"] = { fg = colors["linkarzu_color03"], bg = colors["linkarzu_color20"] },
+        ["@markup.heading.4.typst"] = { fg = colors["linkarzu_color01"], bg = colors["linkarzu_color21"] },
+        ["@markup.heading.5.typst"] = { fg = colors["linkarzu_color05"], bg = colors["linkarzu_color22"] },
       }
 
       -- Apply all highlight definitions at once
