@@ -31,7 +31,7 @@ config.font = wezterm.font_with_fallback({
 
 -- 背景の透過度とぼかし
 config.window_background_opacity = 0.7
-config.macos_window_background_blur = 13
+config.macos_window_background_blur = 20
 
 config.window_padding = {
 	left = 10,
@@ -39,6 +39,10 @@ config.window_padding = {
 	top = 10,
 	bottom = 5,
 }
+
+-- Window size
+config.initial_cols = 150
+config.initial_rows = 50
 
 -- QuickSelect patterns (SUPER + Space)
 config.quick_select_patterns = {

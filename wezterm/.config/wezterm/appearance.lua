@@ -41,7 +41,7 @@ local appearance = {
 
 	-- Tab
 	show_tabs_in_tab_bar = true,
-	hide_tab_bar_if_only_one_tab = false,
+	hide_tab_bar_if_only_one_tab = true,
 	tab_bar_at_bottom = false,
 	show_new_tab_button_in_tab_bar = false,
 	tab_max_width = 30,
