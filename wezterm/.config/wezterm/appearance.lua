@@ -11,8 +11,9 @@ end
 
 local function color_scheme_for_appearance(appearance)
 	if appearance:find("Dark") then
-		color_scheme_dir = { "~/.config/wezterm/themes" }
-		color_scheme = "Solarized Osaka"
+		-- color_scheme_dir = { "~/.config/wezterm/themes" }
+		-- color_scheme = "Solarized Osaka"
+		color_scheme = "Solarized Dark - Patched"
 		-- return "Builtin Solarized Dark"
 		-- return "Tokyo Night"
 	else

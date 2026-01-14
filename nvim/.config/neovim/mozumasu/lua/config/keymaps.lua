@@ -20,7 +20,11 @@ vim.api.nvim_set_keymap("i", "<C-i>", "<C-i>", { noremap = true })
 keymap("n", "+", "<C-a>", opts)
 keymap("n", "-", "<C-x>", opts)
 
+-- Jump list
+keymap("n", "<C-m>", "<C-i>", opts)
+
 -- Tab
+keymap("n", "te", ":tabedit", opts)
 keymap("n", "<tab>", ":tabnext<Return>", opts)
 keymap("n", "<s-tab>", ":tabprev<Return>", opts)
 

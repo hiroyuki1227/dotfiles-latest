@@ -28,9 +28,9 @@ config.font = wezterm.font_with_fallback({
 	},
 	-- "JetBrainsMono Nerd Font",
 })
-
+--
 -- 背景の透過度とぼかし
-config.window_background_opacity = 0.7
+config.window_background_opacity = 0.8
 config.macos_window_background_blur = 20
 
 config.window_padding = {
