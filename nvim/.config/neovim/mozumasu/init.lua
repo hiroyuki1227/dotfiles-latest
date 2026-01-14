@@ -1,5 +1,6 @@
 -- bootstrap lazy.nvim, LazyVim and your plugins
 require("config.lazy")
+require("config.highlights")
 -- python
 vim.g.python3_host_prog = "/opt/homebrew/bin/python3"
-vim.g.python_host_prog = "/opt/homebrew/bin/python4"
+vim.g.python_host_prog = "/opt/homebrew/bin/python3"

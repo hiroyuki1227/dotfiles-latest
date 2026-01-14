@@ -53,50 +53,14 @@ return {
     opts = {
       scroll = { enabled = false },
       dashboard = {
-        preset = {
-          keys = {
-            {
-              icon = " ",
-              key = "f",
-              desc = "Find File",
-              action = function()
-                local cwd = vim.fn.getcwd()
-                local hidden = cwd:match("dotfiles$") ~= nil
-                Snacks.picker.files({ cwd = cwd, hidden = hidden })
-              end,
-            },
-            { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-            {
-              icon = " ",
-              key = "g",
-              desc = "Find Text",
-              action = function()
-                local cwd = vim.fn.getcwd()
-                local hidden = cwd:match("dotfiles$") ~= nil
-                Snacks.picker.grep({ cwd = cwd, hidden = hidden })
-              end,
-            },
-            {
-              icon = " ",
-              key = "r",
-              desc = "Recent Files",
-              action = function()
-                Snacks.picker.recent()
-              end,
-            },
-            {
-              icon = " ",
-              key = "c",
-              desc = "Config",
-              action = function()
-                Snacks.picker.files({ cwd = vim.fn.stdpath("config"), hidden = true })
-              end,
-            },
-            { icon = " ", key = "s", desc = "Restore Session", section = "session" },
-            { icon = "󰒲 ", key = "x", desc = "Lazy Extras", action = ":LazyExtras" },
-            { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
-            { icon = " ", key = "q", desc = "Quit", action = ":qa" },
-          },
+        enabled = true,
+        lazy = false,
+        sections = {
+          { section = "header" },
+          { icon = " ", title = "Keymaps", section = "keys", indent = 4, padding = 1 },
+          { icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
+          { icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
+          { section = "startup" },
         },
       },
       image = {
@@ -128,12 +92,6 @@ return {
         },
       },
       picker = {
-        hidden = true,
-        ignore = true,
-        notifier = {
-          enabled = true,
-          top_down = false,
-        },
         win = {
           input = {
             keys = {
