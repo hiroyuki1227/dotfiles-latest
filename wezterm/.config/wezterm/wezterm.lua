@@ -20,17 +20,17 @@ config.font_size = 15.0
 config.font = wezterm.font_with_fallback({
 	{
 		family = "SF Mono",
-		weight = "Bold",
+		-- weight = "Bold",
 	},
 	{
 		family = "UDEV Gothic NF",
-		weight = "Bold",
+		-- weight = "Bold",
 	},
 	-- "JetBrainsMono Nerd Font",
 })
 --
 -- 背景の透過度とぼかし
-config.window_background_opacity = 0.8
+config.window_background_opacity = 0.7
 config.macos_window_background_blur = 20
 
 config.window_padding = {

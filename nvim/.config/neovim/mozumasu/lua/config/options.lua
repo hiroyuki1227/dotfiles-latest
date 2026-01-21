@@ -4,8 +4,9 @@
 
 -- クリップボード連携を無効化（TextYankPostでヤンク時のみ連携する）
 -- LazyVimのデフォルト: vim.opt.clipboard = "unnamedplus"
-vim.opt.clipboard = ""
-
+vim.schedule(function()
+  vim.opt.clipboard = "unnamedplus"
+end)
 -- 編集中のファイルパスを右上に表示
 -- vim.opt.winbar = "%=%m %f"
 -- vim標準スペルチェックから日本語を除外
@@ -16,6 +17,9 @@ vim.opt.spellfile = {
   vim.fn.stdpath("config") .. "/spell/en.utf-8.add",
   vim.fn.stdpath("data") .. "/spell/local.utf-8.add",
 }
+
+-- Enable mouse mode, can be useful for resizing splits for example!
+vim.opt.mouse = "a"
 
 -- Enable this option to avoid conflicts with Prettier.
 vim.g.lazyvim_prettier_needs_config = true
@@ -28,6 +32,31 @@ vim.opt.splitright = true
 -- open window at bottom side when horizontal split
 vim.opt.splitbelow = true
 
+-- Enbale breakindent
+vim.opt.breakindent = true
+
+-- Keep singlecolumn width
+vim.opt.signcolumn = "yes:1"
+
+-- Use Space instad of tabs
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 2
+vim.tabstop = 2
+vim.opt.softtabstop = 2
+vim.smarttab = true
+vim.smartindent = true
+vim.autoindent = true
+vim.opt.list = true
+vim.opt.listchars = {
+  tab = "  ",
+  -- eol = "↲",
+  trail = "▸",
+  -- extends = "⟩",
+  -- precedes = "⟨",
+  nbsp = "␣",
+  -- space = "␣",
+}
+--
 --
 -- Help
 --

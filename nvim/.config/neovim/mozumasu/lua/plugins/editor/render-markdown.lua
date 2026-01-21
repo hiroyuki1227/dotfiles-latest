@@ -12,6 +12,8 @@
 
 return {
   "MeanderingProgrammer/render-markdown.nvim",
+  dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+  ft = { "markdown" },
   enabled = true,
   -- Moved highlight creation out of opts as suggested by plugin maintainer
   -- There was no issue, but it was creating unnecessary noise when ran
@@ -63,6 +65,9 @@ return {
     },
     heading = {
       sign = false,
+      -- width = "block",
+      -- left_pad = 0,
+      -- right_pad = 5,
       icons = { "󰎤 ", "󰎧 ", "󰎪 ", "󰎭 ", "󰎱 ", "󰎳 " },
       backgrounds = {
         "Headline1Bg",
@@ -84,7 +89,7 @@ return {
     code = {
       -- if I'm not using yabai, I cannot make the color of the codeblocks
       -- transparent, so just disabling all rendering 😢
-      style = "none",
+      style = "full",
     },
   },
 }

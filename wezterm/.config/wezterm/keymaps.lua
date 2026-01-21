@@ -81,7 +81,7 @@ local function set_pane_width_percent(percent)
 	end)
 end
 
-local leader = { key = "q", mods = "CTRL", timeout_milliseconds = 2000 }
+local leader = { key = "a", mods = "CTRL", timeout_milliseconds = 2000 }
 
 local keys = {
 	-- AltキーをMetaキーとして扱いつつ、バックスラッシュ機能（Alt+¥）は維持する
