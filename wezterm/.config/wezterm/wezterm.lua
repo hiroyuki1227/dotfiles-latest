@@ -20,11 +20,11 @@ config.font_size = 15.0
 config.font = wezterm.font_with_fallback({
 	{
 		family = "SF Mono",
-		-- weight = "Bold",
+		weight = "Bold",
 	},
 	{
 		family = "UDEV Gothic NF",
-		-- weight = "Bold",
+		weight = "Bold",
 	},
 	-- "JetBrainsMono Nerd Font",
 })
