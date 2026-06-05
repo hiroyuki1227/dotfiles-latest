@@ -5,10 +5,7 @@ start-at-login = true
 after-login-command = []
 
 # 'after-startup-command' is run after 'after-login-command'
-after-startup-command = [
-"exec-and-forget sketchybar",
-'exec-and-forget borders',
-]
+after-startup-command = ['exec-and-forget borders']
 
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
 enable-normalization-flatten-containers = true
@@ -50,12 +47,12 @@ preset = 'qwerty'
 #                 Monitor pattern is the same as for 'workspace-to-monitor-force-assignment'.
 #                 See: https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
 [gaps]
-inner.horizontal = 3
-inner.vertical =   3
-outer.left =       3
-outer.bottom =     3
-outer.top =        3
-outer.right =      3
+inner.horizontal = 10
+inner.vertical =   10 
+outer.left =       10 
+outer.bottom =     10
+outer.top =        40
+outer.right =      10
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -131,12 +128,12 @@ alt-n = 'workspace N'
 # alt-p = 'workspace P'
 alt-q = 'workspace Q'
 alt-r = 'workspace R'
-alt-s = 'workspace S'
+# alt-s = 'workspace S'
 # alt-t = 'workspace T'
 alt-u = 'workspace U'
 # alt-v = 'workspace V'
 alt-w = 'workspace W'
-alt-x = 'workspace X'
+# alt-x = 'workspace X' use wezterm hotkey with raycast
 alt-y = 'workspace Y'
 alt-z = 'workspace Z'
 
@@ -175,9 +172,23 @@ alt-shift-y = 'move-node-to-workspace Y'
 alt-shift-z = 'move-node-to-workspace Z'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
-# alt-tab = 'workspace-back-and-forth'
+alt-tab = 'workspace-back-and-forth'
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
 alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+
+# See: https://nikitabobko.github.io/AeroSpace/commands#focus-monitor
+# cmd-ctrl-h is also converted to cmd-backspace
+cmd-backspace = 'focus-monitor left'
+cmd-ctrl-l = 'focus-monitor right'
+cmd-ctrl-k = 'focus-monitor up'
+cmd-ctrl-j = 'focus-monitor down'
+
+# See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-monitor
+# cmd-ctrl-shift-h is also converted to cmd-shift-backspace
+cmd-shift-backspace = 'move-node-to-monitor left'
+cmd-ctrl-shift-l = 'move-node-to-monitor right'
+cmd-ctrl-shift-k = 'move-node-to-monitor up'
+cmd-ctrl-shift-j = 'move-node-to-monitor down'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 alt-shift-semicolon = 'mode service'
@@ -200,7 +211,7 @@ run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
 if.app-id = 'com.tinyspeck.slackmacgap'
-run = 'move-node-to-workspace S'
+run = 'move-node-to-workspace 3'
 
 [[on-window-detected]]
 if.app-id = 'com.spotify.client'

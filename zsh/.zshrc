@@ -78,7 +78,13 @@ if command -v nvim &> /dev/null; then
   vim() { nvim "$@"; }
 fi
 
+function brew() {
+  command brew "$@" 
 
+  if [[ $* =~ "upgrade" ]] || [[ $* =~ "update" ]] || [[ $* =~ "outdated" ]]; then
+    sketchybar --trigger brew_update
+  fi
+}
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/hrsuda/.lmstudio/bin"
 # End of LM Studio CLI section

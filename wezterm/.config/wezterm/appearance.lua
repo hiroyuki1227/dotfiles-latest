@@ -16,9 +16,11 @@ local function color_scheme_for_appearance(appearance)
 		-- return "Builtin Solarized Dark"
 		-- return "Tokyo Night"
 		return "tokyonight_night"
+		-- return "Solarized Dark Higher Contrast"
 	else
 		-- color_scheme_dir = { "~/.config/wezterm/themes" }
 		-- return "Builtin Solarized Light"
+		-- return "Solarized Dark Higher Contrast"
 		return "tokyonight_day"
 		-- return "Solarized Osaka light"
 	end

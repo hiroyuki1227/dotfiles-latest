@@ -17,14 +17,13 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   spec = {
     -- add LazyVim and import its plugins
-    -- { "LazyVim/LazyVim", import = "lazyvim.plugins", opts = { colorscheme = "solarized-osaka" } },
-    { "LazyVim/LazyVim", import = "lazyvim.plugins", opts = { colorscheme = "tokyonight" } },
+    { "LazyVim/LazyVim", import = "lazyvim.plugins", opts = { colorscheme = "solarized-osaka" } },
     -- { "LazyVim/LazyVim", import = "lazyvim.plugins", opts = { colorscheme = "zenbones" } },
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     -- LazyExtra
     { import = "lazyvim.plugins.extras.linting.eslint" },
     { import = "lazyvim.plugins.extras.formatting.prettier" },
-    { import = "lazyvim.plugins.extras.formatting.biome" },
+    { import = "lazyvim.plugins.extras.lang.typescript.biome" },
     { import = "lazyvim.plugins.extras.ai.copilot" },
     { import = "lazyvim.plugins.extras.coding.luasnip" },
     -- LazyExtra util
@@ -63,7 +62,7 @@ require("lazy").setup({
     version = false, -- always use the latest git commit
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
-  install = { colorscheme = { "zenbones", "tokyonight", "habamax" } },
+  install = { colorscheme = { "tokyonight", "habamax", "zenbones" } },
   checker = {
     enabled = true, -- check for plugin updates periodically
     notify = false, -- notify on update
