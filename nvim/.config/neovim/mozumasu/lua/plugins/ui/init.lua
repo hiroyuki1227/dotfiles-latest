@@ -9,7 +9,8 @@ return {
       styles = {
         comments = { italic = true },
         keywords = { italic = true },
-        sidebars = "dark",
+        -- sidebars = "dark",
+        sidebars = "transparent",
         floats = "transparent",
       },
       sidebars = { "qf", "help" },

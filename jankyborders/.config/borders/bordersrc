@@ -11,7 +11,7 @@ options=(
   hidpi=on
   order=above
   style=round
-  width=6.0
+  width=10.0
 )
 
 borders "${options[@]}"

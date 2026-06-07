@@ -1,8 +1,8 @@
 # config-file = ghostty-theme
-# config-file = solarized_osaka_dark
+config-file = solarized_osaka_dark
 # theme = "Solarized Dark - Patched"
 
-theme = "tokyonight"
+# theme = "tokyonight"
 # theme = "catppuccin-mocha"
 
 # Some shaders can be found in this repo, they're usually uploaded to discord
@@ -59,6 +59,7 @@ window-inherit-working-directory = true
 # font-family = "CodeNewRoman Nerd Font Mono"
 # font-family = "SF Mono Square"
 font-family = "SF Mono"
+font-family = "UDEV Gothic NF"
 # font-family = "SF Mono"
 # font-family = "SpaceMono Nerd Font Mono"
 
@@ -126,7 +127,8 @@ wait-after-command = false
 #
 # Keybinds settings
 #
-# keybind = global:cmd+s=toggle_quick_terminal
+# keybind = 
+# global:cmd+s=toggle_quick_terminal
 keybind = cmd+s=toggle_quick_terminal
 keybind = super+i=inspector:toggle
 keybind = super+r=reload_config 
