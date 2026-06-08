@@ -300,14 +300,6 @@ on-mode-changed = []
   if.app-id = 'company.thebrowser.Browser'  # The Browser
   run       = 'move-node-to-workspace 2'
 
-# [[on-window-detected]]
-#   if.app-id = 'com.google.Chrome'           # Google Chrome
-#   run       = 'move-node-to-workspace 2'
-
-# [[on-window-detected]]
-#   if.app-id = 'org.mozilla.firefox'         # Firefox
-#   run       = 'move-node-to-workspace 2'
-
 [[on-window-detected]]
   if.app-name-regex-substring = 'Edge|Chrome|Firefox|Safari'         # Firefox
   run       = 'move-node-to-workspace 2'
@@ -357,6 +349,6 @@ on-mode-changed = []
   run       = ['layout floating','move-node-to-workspace 4']
 
 [[on-window-detected]]
-  if.app-name-regex-substring = 'Cursor|Xcode|Code|Intellij|JetBrains'         # Environment Editor
+  if.app-name-regex-substring = 'Code - Insiders|Cursor|Xcode|Intellij|JetBrains'         # Environment Editor
   run       = 'move-node-to-workspace 5'
 
