@@ -28,7 +28,7 @@ local function color_scheme_for_appearance(appearance)
 end
 
 local function get_color_sceheme_dir()
-	return { "~/.config/wezterm/wezterm/themes/" }
+	return { "~/.config/wezterm/themes/" }
 end
 
 local appearance = {
