@@ -65,9 +65,9 @@ automatically-unhide-macos-hidden-apps = true
 # This config version is only available since 'config-version = 2'
 # Fallback value (if you omit the key): persistent-workspaces = []
 
-persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B",
-                         "C", "D", "E", "F", "G", "I", "M", "N", "O", "P", "Q",
-                         "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"] #, "A", "B",
+                         # "C", "D", "E", "F", "G", "I", "M", "N", "O", "P", "Q",
+                         # "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 
 # A callback that runs every time binding mode changes
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -148,19 +148,19 @@ on-mode-changed = []
   ctrl-cmd-minus = 'resize smart -50'
   ctrl-cmd-equal = 'resize smart +50'
 
-  # Browser
-  ctrl-cmd-b = 'workspace B'
-  # Music
-  ctrl-cmd-m = 'workspace M'
-  # Terminal
-  ctrl-cmd-t = 'workspace T'
-  # Email (+ Slack)
-  ctrl-cmd-e = 'workspace E'
-  # Code
-  ctrl-cmd-c = 'workspace C'
-  # Secondary
-  ctrl-cmd-s = 'workspace S'
-
+  # # Browser
+  # ctrl-cmd-b = 'workspace B'
+  # # Music
+  # ctrl-cmd-m = 'workspace M'
+  # # Terminal
+  # ctrl-cmd-t = 'workspace T'
+  # # Email (+ Slack)
+  # ctrl-cmd-e = 'workspace E'
+  # # Code
+  # ctrl-cmd-c = 'workspace C'
+  # # Secondary
+  # ctrl-cmd-s = 'workspace S'
+  #
   # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
   ctrl-cmd-1 = 'workspace 1'
   ctrl-cmd-2 = 'workspace 2'
@@ -171,18 +171,18 @@ on-mode-changed = []
   ctrl-cmd-7 = 'workspace 7'
   ctrl-cmd-8 = 'workspace 8'
   ctrl-cmd-9 = 'workspace 9'
-  ctrl-cmd-a = 'workspace A'
-  ctrl-cmd-g = 'workspace G'
-  ctrl-cmd-i = 'workspace I'
-  ctrl-cmd-o = 'workspace O'
-  ctrl-cmd-q = 'workspace Q'
-  ctrl-cmd-r = 'workspace R'
-  ctrl-cmd-u = 'workspace U'
-  ctrl-cmd-v = 'workspace V'
-  ctrl-cmd-w = 'workspace W'
-  ctrl-cmd-x = 'workspace X'
-  ctrl-cmd-y = 'workspace Y'
-  ctrl-cmd-z = 'workspace Z'
+  # ctrl-cmd-a = 'workspace A'
+  # ctrl-cmd-g = 'workspace G'
+  # ctrl-cmd-i = 'workspace I'
+  # ctrl-cmd-o = 'workspace O'
+  # ctrl-cmd-q = 'workspace Q'
+  # ctrl-cmd-r = 'workspace R'
+  # ctrl-cmd-u = 'workspace U'
+  # ctrl-cmd-v = 'workspace V'
+  # ctrl-cmd-w = 'workspace W'
+  # ctrl-cmd-x = 'workspace X'
+  # ctrl-cmd-y = 'workspace Y'
+  # ctrl-cmd-z = 'workspace Z'
 
   # Disabled
   # ctrl-cmd-d = 'workspace D' // system-wide Mac shortcut to open Dictionary
@@ -197,24 +197,24 @@ on-mode-changed = []
   ctrl-alt-7 = 'move-node-to-workspace 7'
   ctrl-alt-8 = 'move-node-to-workspace 8'
   ctrl-alt-9 = 'move-node-to-workspace 9'
-  ctrl-alt-a = 'move-node-to-workspace A'
-  ctrl-alt-b = 'move-node-to-workspace B'
-  ctrl-alt-c = 'move-node-to-workspace C'
-  ctrl-alt-e = 'move-node-to-workspace E'
-  ctrl-alt-g = 'move-node-to-workspace G'
-  ctrl-alt-i = 'move-node-to-workspace I'
-  ctrl-alt-m = 'move-node-to-workspace M'
-  ctrl-alt-o = 'move-node-to-workspace O'
-  ctrl-alt-q = 'move-node-to-workspace Q'
-  ctrl-alt-r = 'move-node-to-workspace R'
-  ctrl-alt-s = 'move-node-to-workspace S'
-  ctrl-alt-t = 'move-node-to-workspace T'
-  ctrl-alt-u = 'move-node-to-workspace U'
-  ctrl-alt-v = 'move-node-to-workspace V'
-  ctrl-alt-w = 'move-node-to-workspace W'
-  ctrl-alt-x = 'move-node-to-workspace X'
-  ctrl-alt-y = 'move-node-to-workspace Y'
-  ctrl-alt-z = 'move-node-to-workspace Z'
+  # ctrl-alt-a = 'move-node-to-workspace A'
+  # ctrl-alt-b = 'move-node-to-workspace B'
+  # ctrl-alt-c = 'move-node-to-workspace C'
+  # ctrl-alt-e = 'move-node-to-workspace E'
+  # ctrl-alt-g = 'move-node-to-workspace G'
+  # ctrl-alt-i = 'move-node-to-workspace I'
+  # ctrl-alt-m = 'move-node-to-workspace M'
+  # ctrl-alt-o = 'move-node-to-workspace O'
+  # ctrl-alt-q = 'move-node-to-workspace Q'
+  # ctrl-alt-r = 'move-node-to-workspace R'
+  # ctrl-alt-s = 'move-node-to-workspace S'
+  # ctrl-alt-t = 'move-node-to-workspace T'
+  # ctrl-alt-u = 'move-node-to-workspace U'
+  # ctrl-alt-v = 'move-node-to-workspace V'
+  # ctrl-alt-w = 'move-node-to-workspace W'
+  # ctrl-alt-x = 'move-node-to-workspace X'
+  # ctrl-alt-y = 'move-node-to-workspace Y'
+  # ctrl-alt-z = 'move-node-to-workspace Z'
 
   ctrl-alt-f = 'fullscreen'
   # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
@@ -225,7 +225,7 @@ on-mode-changed = []
   ctrl-cmd-tab = 'workspace-back-and-forth'
 
   # See: https://nikitabobko.github.io/AeroSpace/commands#mode
-  ctrl-alt-space = [
+  ctrl-alt-semicolon = [
     'mode service',
     'exec-and-forget sketchybar --trigger aerospace_mode_change MODE=service',
   ]
@@ -300,17 +300,21 @@ on-mode-changed = []
   if.app-id = 'company.thebrowser.Browser'  # The Browser
   run       = 'move-node-to-workspace 2'
 
-[[on-window-detected]]
-  if.app-id = 'com.google.Chrome'           # Google Chrome
-  run       = 'move-node-to-workspace 2'
+# [[on-window-detected]]
+#   if.app-id = 'com.google.Chrome'           # Google Chrome
+#   run       = 'move-node-to-workspace 2'
+
+# [[on-window-detected]]
+#   if.app-id = 'org.mozilla.firefox'         # Firefox
+#   run       = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
-  if.app-id = 'org.mozilla.firefox'         # Firefox
+  if.app-name-regex-substring = 'Edge|Chrome|Firefox'         # Firefox
   run       = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
   if.app-id = 'us.zoom.xos'                 # Zoom
-  run       = 'move-node-to-workspace S'
+  run       = 'move-node-to-workspace 9'
 
 [[on-window-detected]]
   if.app-id = 'com.amazon.aiv.AIVApp'       # Amazon Prime Video
@@ -318,18 +322,18 @@ on-mode-changed = []
 
 [[on-window-detected]]
   if.app-id = 'com.apple.Music'             # Apple Music
-  run       = 'move-node-to-workspace M'
+  run       = ['layout floating','move-node-to-workspace 8']
 
 [[on-window-detected]]
   if.app-id = 'com.spotify.client'          # Spotify
-  run       = 'move-node-to-workspace M'
+  run       = ['layout floating','move-node-to-workspace 8']
 
 [[on-window-detected]]
   if.app-id = 'com.mitchellh.ghostty'       # Ghostty
   run       = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
-  if.app-id = 'com.kovidgoyal.kitty'        # Kitty
+  if.app-id = 'net.kovidgoyal.kitty'        # Kitty
   run       = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
@@ -337,42 +341,22 @@ on-mode-changed = []
   run       = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
-  if.app-id = 'com.microsoft.Outlook'
-  run       = 'move-node-to-workspace E'
+  if.app-name-regex-substring = 'Outlook|Teams'         # Firefox
+  run       = 'move-node-to-workspace 3'
 
 [[on-window-detected]]
   if.app-id = 'com.tinyspeck.slackmacgap'
-  run       = 'move-node-to-workspace E'
-
-[[on-window-detected]]
-  if.app-id = 'com.obsidian'
-  run       = 'move-node-to-workspace E'
-
-[[on-window-detected]]
-  if.app-id = 'com.microsoft.Terms'
-  run       = 'move-node-to-workspace E'
-
-[[on-window-detected]]
-  if.app-id = 'com.microsoft.Word'
-  run       = 'move-node-to-workspace W'
-
-[[on-window-detected]]
-  if.app-id = 'com.microsoft.Excel'
-  run       = 'move-node-to-workspace W'
-
-[[on-window-detected]]
-  if.app-id = 'com.microsoft.PowerPoint'
-  run       = 'move-node-to-workspace W'
-
-[[on-window-detected]]
-  if.app-id = 'com.microsoft.VSCode'
   run       = 'move-node-to-workspace 5'
 
 [[on-window-detected]]
-  if.app-id = 'com.jetbrains.intellij'
-  run       = 'move-node-to-workspace C'
+  if.app-id = 'com.obsidian'
+  run       = 'move-node-to-workspace 5'
 
 [[on-window-detected]]
-  if.app-id = 'com.jetbrains.cwm.guest'
-  run       = 'move-node-to-workspace C'
+  if.app-name-regex-substring = 'Word|Excel|Powerpoint'         # Firefox
+  run       = ['layout floating','move-node-to-workspace 4']
+
+[[on-window-detected]]
+  if.app-name-regex-substring = 'Cursor|Xcode|Code|Intellij|JetBrains'         # Environment Editor
+  run       = 'move-node-to-workspace 5'
 

@@ -16,5 +16,6 @@ sbar.add("item", {
 	label = { drawing = false },
 	padding_left = 1,
 	padding_right = 1,
+	-- click_script = "sketchybar -m --set $NAME popup.drawing toggle",
 	click_script = "$CONFIG_DIR/helpers/menus/bin/menus -s 0",
 })

@@ -1,5 +1,5 @@
 return {
-	text = "SF Pro Display", -- Used for text
+	text = "SF Pro Display JP", -- Used for text
 	numbers = "SF Mono", -- Used for numbers
 
 	-- Unified font style map
