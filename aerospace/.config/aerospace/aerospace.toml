@@ -309,7 +309,7 @@ on-mode-changed = []
 #   run       = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
-  if.app-name-regex-substring = 'Edge|Chrome|Firefox'         # Firefox
+  if.app-name-regex-substring = 'Edge|Chrome|Firefox|Safari'         # Firefox
   run       = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
