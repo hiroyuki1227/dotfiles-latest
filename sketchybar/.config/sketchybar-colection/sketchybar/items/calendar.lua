@@ -9,6 +9,7 @@ local cal = sbar.add("item", {
     font = {
       family = settings.font.numbers,
       style = settings.font.style_map["Bold"],
+      size = 14,
     },
   },
   label = {
@@ -49,5 +50,5 @@ end)
 
 -- english date
 cal:subscribe({ "forced", "routine", "system_woke" }, function(env)
-  cal:set { icon = os.date "%a %d %b %I:%M %p", label = icons.separators.left .. " " .. icons.calendar }
+  cal:set { icon = os.date "%a %d %b %H:%M", label = icons.separators.left .. " " .. icons.calendar }
 end)

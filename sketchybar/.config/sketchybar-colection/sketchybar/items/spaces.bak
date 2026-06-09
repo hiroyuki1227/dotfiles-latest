@@ -13,7 +13,7 @@ sbar.exec("aerospace list-workspaces --all", function(spaces)
         padding_right = 4,
       },
       label = {
-        font = "sketchybar-app-font-bg:Regular:12.0",
+        font = "sketchybar-app-font-bg:Regular:14.0",
         string = "—",
         color = colors.label.color,
         highlight_color = colors.label.highlight,

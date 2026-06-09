@@ -1,5 +1,6 @@
 local icons = require "icons"
 local colors = require("colors").sections.media
+local settings = require "settings"
 
 local spotify = sbar.add("item", {
   position = "right",
@@ -8,7 +9,12 @@ local spotify = sbar.add("item", {
     max_chars = 40,
     padding_left = 8,
     string = "—",
-    color = colors.label
+    color = colors.label,
+    font = {
+      family = settings.font.text,
+      style = settings.font.style_map["Bold"],
+      size = 14,
+    },
   },
   label = {
     string = icons.separators.left .. " " .. icons.music,

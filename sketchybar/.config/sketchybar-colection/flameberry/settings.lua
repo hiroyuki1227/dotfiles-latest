@@ -11,7 +11,7 @@ return {
 	widget_bracket_bg = {
 		color = colors.transparent,
 		border_width = 0,
-		corner_radius = 32,
+		corner_radius = 31,
 		height = 32,
 	},
 }
