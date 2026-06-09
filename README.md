@@ -36,16 +36,22 @@ ps aux | fzf --height 40% --layout=reverse --prompt="Select process to kill: " |
 -- https://github.com/hiroyuki1227/dotfiles-latest/blob/main/.config/nvim/lua/hiroyuki1227/keymaps.lua
 ```
 
-# heading 1
+## Aerospace Setup
 
-## heading 2
+### Homebrew installation(Preferred)
 
-### heading 3
+```bash
+brew install --cask nikitabobko/tap/aerospace
+```
 
-#### heading 4
-
-##### heading 5
-
-###### heading 6
+##
 
 ; End of file
+
+```
+
+```
+
+```
+
+```

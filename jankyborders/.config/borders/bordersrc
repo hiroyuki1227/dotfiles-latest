@@ -6,7 +6,7 @@ blue="0xff7aa2f7"
 transparent="0x00000000"
 
 options=(
-  active_color="$red"
+  active_color="$blue"
   inactive_color="$transparent"
   hidpi=on
   order=above

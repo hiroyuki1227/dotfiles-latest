@@ -12,16 +12,17 @@ end
 local function color_scheme_for_appearance(appearance)
 	if appearance:find("Dark") then
 		-- return "Solarized Osaka"
-		-- return "Solarized Dark - Patched"
+		return "Solarized Dark - Patched"
 		-- return "Builtin Solarized Dark"
 		-- return "Tokyo Night"
-		return "tokyonight_night"
+		-- return "tokyonight_night"
 		-- return "Solarized Dark Higher Contrast"
 	else
 		-- color_scheme_dir = { "~/.config/wezterm/themes" }
+		return "Solarized Dark - Patched"
 		-- return "Builtin Solarized Light"
 		-- return "Solarized Dark Higher Contrast"
-		return "tokyonight_day"
+		-- return "tokyonight_day"
 		-- return "Solarized Osaka light"
 	end
 	-- return "Solarized Osaka"

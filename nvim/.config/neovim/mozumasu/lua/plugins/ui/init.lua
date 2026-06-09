@@ -1,5 +1,6 @@
 return {
   {
+    -- "folke/tokyonight.nvim",
     "craftzdog/solarized-osaka.nvim",
     branch = "main",
     lazy = true, -- Load on startup
