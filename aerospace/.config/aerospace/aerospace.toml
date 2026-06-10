@@ -81,9 +81,13 @@ on-mode-changed = []
 [workspace-to-monitor-force-assignment]
     1 = 1
     2 = 'main'                        # Main Monitor [system settings -> Displays -> Use as]
-    3 = ['secondary', 'dell']         # Secondary Monitor [system settings -> Displays -> Use as]
-    4 = 'built-in'                    # Case insesitive regex substring
-    5 = '^built-in retina display$'   # Case sensitive regex match
+    3 = ['built-in','^built-in retina display$']  # Case insesitive regex substring
+    4 = ['built-in','^built-in retina display$']  # Case insesitive regex substring
+    5 = ['secondary', 'dell']         # Secondary Monitor [system settings -> Displays -> Use as]
+    6 = ['secondary', 'dell']         # Secondary Monitor [system settings -> Displays -> Use as]
+    7 = ['secondary', 'dell']         # Secondary Monitor [system settings -> Displays -> Use as]
+    M = ['secondary', 'dell']         # Secondary Monitor [system settings -> Displays -> Use as]
+    T = ['secondary', 'dell']         # Secondary Monitor [system settings -> Displays -> Use as]
 
 [gaps]
     inner.horizontal = 30
