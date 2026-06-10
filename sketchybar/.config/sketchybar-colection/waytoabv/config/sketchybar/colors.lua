@@ -1,0 +1,52 @@
+return {
+	black = 0xff181819,
+	white = 0xfff8f8f2,
+	red = 0xffFF9580,
+	green = 0xff8AFF80,
+	blue = 0xff5199ba,
+	yellow = 0xffFFFF80,
+	orange = 0xffFFCA80,
+	pink = 0xffFF80BF,
+	purple = 0xff9580FF,
+	other_purple = 0xff302c45,
+	cyan = 0xff80FFEA,
+	grey = 0xff7f8490,
+	dirty_white = 0xc8cad3f5,
+	dark_grey = 0xff2b2736,
+	transparent = 0x00000000,
+
+	-- カラーコードのカスタマイズ例:
+	--   シンプルに白/グレー系のテーマを使っている場合:
+	--     english  = colors.white  (または 0xffffffff)
+	--     japanese = colors.red    (または 0xffff6b6b)
+	--
+	--   Catppuccin Mocha テーマの場合:
+	--     english  = 0xff89b4fa   -- blue
+	--     japanese = 0xfffab387   -- peach
+	--
+	--   Gruvbox テーマの場合:
+	--     english  = 0xff83a598   -- aqua
+	--     japanese = 0xfffa8d2f   -- orange
+	ime = {
+		english = 0xff5194e, -- 青系
+		japanese = 0xffec8a2b, -- orenge系
+	},
+
+	bar = {
+		bg = 0xff11111b,
+		border = 0xff2c2e34,
+	},
+	popup = {
+		bg = 0xc02c2e34,
+		border = 0xff74c7ec,
+	},
+	bg1 = 0x603c3e4f,
+	bg2 = 0x60494d64,
+
+	with_alpha = function(color, alpha)
+		if alpha > 1.0 or alpha < 0.0 then
+			return color
+		end
+		return (color & 0x00ffffff) | (math.floor(alpha * 255.0) << 24)
+	end,
+}

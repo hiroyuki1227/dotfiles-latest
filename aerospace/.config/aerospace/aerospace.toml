@@ -50,11 +50,12 @@ on-focus-changed = [
 automatically-unhide-macos-hidden-apps = false
 
 exec-on-workspace-change = ['/bin/bash', '-c',
-    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE'
+    'sketchybar --trigger aerospace_workspace_change AEROSPACE_FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE AEROSPACE_PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE',
+    # 'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE'
 ]
 # List of workspaces that should stay alive even when they contain no windows,
 # even when they are invisible.
-# This config version is only available since 'config-version = 2'
+# Thjs config version is only available since 'config-version = 2'
 # Fallback value (if you omit the key): persistent-workspaces = []
 persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "M", "T"]
                          # "C", "D", "E", "F", "G", "I", "M", "N", "O", "P", "Q",
@@ -141,10 +142,10 @@ PATH = '/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
     alt-comma = 'layout accordion horizontal vertical'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#focus
-    alt-h = 'focus left'
-    alt-j = 'focus down'
-    alt-k = 'focus up'
-    alt-l = 'focus right'
+    alt-h = 'focus left --boundaries all-monitors-outer-frame'
+    alt-j = 'focus down --boundaries all-monitors-outer-frame'
+    alt-k = 'focus up --boundaries all-monitors-outer-frame'
+    alt-l = 'focus right --boundaries all-monitors-outer-frame'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#move
     alt-shift-h = 'move left'
