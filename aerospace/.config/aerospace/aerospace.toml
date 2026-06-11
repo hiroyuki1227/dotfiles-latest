@@ -269,6 +269,10 @@ run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.apple.AppStore'
+run = ['layout floating', 'move-node-to-workspace 9']
+
+[[on-window-detected]]
+if.app-id = 'com.raycast.macos'       # Message
 run = ['layout floating']
 
 [[on-window-detected]]
@@ -276,8 +280,24 @@ if.app-id = 'com.amazon.aiv.AIVApp'
 run = ['layout floating']
 
 [[on-window-detected]]
+if.app-id = 'com.apple.TV'
+run = ['layout floating']
+
+[[on-window-detected]]
 if.app-id = 'com.logi.optionplus'       # Logi Options+
 run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.apple.MobileSMS'       # Message
+run = ['layout floating', 'move-node-to-workspace 9']
+
+[[on-window-detected]]
+if.app-id = 'com.apple.ActivityMonitor'       # Active Monitr
+run = ['layout floating', 'move-node-to-workspace 9']
+
+[[on-window-detected]]
+if.app-id = 'com.apple.iCal'       # Active Monitr
+run = ['layout floating', 'move-node-to-workspace 9']
 
 [[on-window-detected]]
 if.app-id = 'com.github.wez.wezterm'
