@@ -3,6 +3,7 @@ local settings = require("settings")
 
 PLUGINS_DIR = os.getenv("HOME") .. "/.config/sketchybar/widgets"
 
+sbar.add("item", { position = "right", width = settings.group_paddings })
 local input_source = sbar.add("item", "input_source", {
 	position = "right",
 	icon = {
@@ -16,6 +17,12 @@ local input_source = sbar.add("item", "input_source", {
 	},
 	label = { drawing = false },
 	script = "$PLUGIN_DIR/input_source.lua",
+	background = {
+		color = colors.transparent,
+		height = 30,
+		-- border_color = colors.cyan,
+		-- corner_radius = 32,
+	},
 	update_freq = 1,
 })
 

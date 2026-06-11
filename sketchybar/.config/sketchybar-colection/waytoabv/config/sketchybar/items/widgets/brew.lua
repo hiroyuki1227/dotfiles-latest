@@ -11,7 +11,7 @@ local settings = require("settings")
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 local brew = sbar.add("item", "brew", {
 	position = "right",
-	icon = { string = icons.brew or "🍺" },
+	icon = { string = "􀐛" or "🍺" },
 	label = { string = "…" },
 	update_freq = 3600, -- 1時間ごとに routine イベントを受け取る
 	popup = { align = "right" },

@@ -36,10 +36,15 @@ local icons = {
 			router = "􁓤",
 		},
 		media = {
-			back = "􀊊",
-			forward = "􀊌",
-			play_pause = "􀊈",
+			back = "􀊎", -- SF Symbol: backward.end.fill
+			play_pause = "􀊔", -- SF Symbol: playpause.fill
+			forward = "􀊐", -- SF Symbol: forward.end.fill
 		},
+		-- media = {
+		-- 	back = "􀊊",
+		-- 	forward = "􀊌",
+		-- 	play_pause = "􀊈",
+		-- },
 	},
 
 	-- Alternative NerdFont icons
@@ -79,10 +84,15 @@ local icons = {
 			router = "󱂇",
 		},
 		media = {
-			back = "",
-			forward = "",
-			play_pause = "",
+			back = "􀊎", -- SF Symbol: backward.end.fill
+			play_pause = "􀊔", -- SF Symbol: playpause.fill
+			forward = "􀊐", -- SF Symbol: forward.end.fill
 		},
+		-- media = {
+		-- 	back = "",
+		-- 	forward = "",
+		-- 	play_pause = "",
+		-- },
 	},
 }
 

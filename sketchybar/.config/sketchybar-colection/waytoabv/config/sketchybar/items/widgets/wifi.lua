@@ -68,7 +68,13 @@ local wifi_bracket = sbar.add("bracket", "widgets.wifi.bracket", {
 	wifi_up.name,
 	wifi_down.name,
 }, {
-	background = { color = colors.bg1 },
+	-- background = { color = colors.bg1 },
+	background = {
+		color = colors.transparent,
+		height = 30,
+		-- border_color = colors.cyan,
+		-- corner_radius = 32,
+	},
 	popup = { align = "center", height = 30 },
 })
 
@@ -105,6 +111,10 @@ local hostname = sbar.add("item", {
 		width = popup_width / 2,
 	},
 	label = {
+		font = {
+			family = settings.font.numbers,
+			style = settings.font.style_map["Semibold"],
+		},
 		max_chars = 20,
 		string = "????????????",
 		width = popup_width / 2,
@@ -120,6 +130,10 @@ local ip = sbar.add("item", {
 		width = popup_width / 2,
 	},
 	label = {
+		font = {
+			family = settings.font.numbers,
+			style = settings.font.style_map["Semibold"],
+		},
 		string = "???.???.???.???",
 		width = popup_width / 2,
 		align = "right",
@@ -134,6 +148,10 @@ local mask = sbar.add("item", {
 		width = popup_width / 2,
 	},
 	label = {
+		font = {
+			family = settings.font.numbers,
+			style = settings.font.style_map["Semibold"],
+		},
 		string = "???.???.???.???",
 		width = popup_width / 2,
 		align = "right",
@@ -148,6 +166,10 @@ local router = sbar.add("item", {
 		width = popup_width / 2,
 	},
 	label = {
+		font = {
+			family = settings.font.numbers,
+			style = settings.font.style_map["Semibold"],
+		},
 		string = "???.???.???.???",
 		width = popup_width / 2,
 		align = "right",

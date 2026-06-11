@@ -1,4 +1,3 @@
-local media = require("items.media")
 local app_icons = require("helpers.app_icons")
 
 media:subscribe("media_change", function(env)

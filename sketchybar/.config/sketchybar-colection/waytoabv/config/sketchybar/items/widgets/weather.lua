@@ -27,7 +27,10 @@ local weather_info = sbar.add("bracket", "widgets.weather.info", {
 	weather_icon.name,
 }, {
 	background = {
-		color = colors.bg1,
+		color = colors.transparent,
+		-- border_color = colors.cyan,
+		-- corner_radius = 32,
+		height = 30,
 	},
 	popup = { align = "center", height = 30 },
 })

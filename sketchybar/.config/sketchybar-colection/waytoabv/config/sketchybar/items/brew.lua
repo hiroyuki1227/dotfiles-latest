@@ -3,14 +3,15 @@
 -- 対応シェルスクリプト: brewbar.sh (アイテム追加・設定・イベント購読)
 
 local colors = require("colors")
--- local icons = require("icons")
--- local settings = require("userconfig")
+local icons = require("icons")
+local settings = require("settings")
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- カスタムイベントを登録
 -- 対応: sketchybar --add event brew_update
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 sbar.add("event", "brew_update")
+sbar.add("item", { position = "right", width = settings.group_paddings })
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- メインアイテムを追加・設定
@@ -22,13 +23,19 @@ local brew = sbar.add("item", "brew", {
 	click_script = "sketchybar --set brew popup.drawing=toggle",
 	icon = {
 		string = "􀐛",
-		color = colors.blue,
+		color = colors.green,
 	},
 	update_freq = 30,
 	padding_right = 15,
 	popup = {
 		align = "right",
 		height = 20,
+	},
+	background = {
+		color = colors.transparent,
+		-- border_color = colors.cyan,
+		height = 30,
+		-- corner_radius = 32,
 	},
 })
 
@@ -61,9 +68,10 @@ end)
 local brew_details = sbar.add("item", "brew.details", {
 	position = "popup." .. brew.name,
 	background = {
-		corner_radius = 12,
 		padding_left = 5,
-		padding_right = 10,
+		padding_right = 5,
+		color = colors.bg1,
+		border_width = 1,
 	},
 	click_script = "sketchybar --set brew popup.drawing=off",
 })

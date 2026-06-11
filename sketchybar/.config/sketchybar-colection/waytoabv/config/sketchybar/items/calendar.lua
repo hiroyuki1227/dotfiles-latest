@@ -2,7 +2,7 @@ local settings = require("settings")
 local colors = require("colors")
 
 -- Padding item required because of bracket
-sbar.add("item", { position = "right", width = settings.group_paddings })
+-- sbar.add("item", { position = "right", width = settings.group_paddings })
 
 local cal = sbar.add("item", {
 	icon = {
@@ -16,8 +16,9 @@ local cal = sbar.add("item", {
 	},
 	label = {
 		color = colors.white,
-		padding_right = 8,
-		width = 49,
+		-- color = colors.green,
+		padding_right = 20,
+		width = 60,
 		align = "right",
 		font = {
 			family = settings.font.numbers,
@@ -29,11 +30,11 @@ local cal = sbar.add("item", {
 	update_freq = 30,
 	padding_left = 1,
 	padding_right = 1,
-	background = {
-		color = colors.bg2,
-		border_color = colors.black,
-		border_width = 1,
-	},
+	-- background = {
+	-- 	color = colors.transparent,
+	-- 	border_color = colors.gray,
+	-- 	border_width = 3,
+	-- },
 	click_script = "open -a 'Calendar'",
 })
 
@@ -42,7 +43,8 @@ sbar.add("bracket", { cal.name }, {
 	background = {
 		color = colors.transparent,
 		height = 30,
-		border_color = colors.grey,
+		-- border_color = colors.cyan,
+		-- corner_radius = 32,
 	},
 })
 
@@ -51,5 +53,5 @@ sbar.add("item", { position = "right", width = settings.group_paddings })
 
 cal:subscribe({ "forced", "routine", "system_woke" }, function(env)
 	-- cal:set({ icon = os.date("%a /%d %b."), label = os.date("%H:%M") })
-	cal:set({ icon = os.date("%y/%m/%d %b."), label = os.date("%H:%M") })
+	cal:set({ icon = os.date("%b %d,20%y (%a) "), label = os.date(" %H:%M") })
 end)

@@ -6,6 +6,7 @@ return {
 	-- Unified font style map
 	style_map = {
 		["Regular"] = "Regular",
+		["Light"] = "Light",
 		["Semibold"] = "Semibold",
 		["Bold"] = "Bold",
 		["Heavy"] = "Heavy",

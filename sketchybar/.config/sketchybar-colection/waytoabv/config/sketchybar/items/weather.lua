@@ -34,7 +34,9 @@ local function update()
 	sbar.exec("curl -s --max-time 5 '" .. WTTR_URL .. "'", function(out)
 		local temp = out and out:gsub("^%s*(.-)%s*$", "%1") or ""
 		if temp ~= "" and not temp:lower():find("unknown") then
-			weather:set({ label = { string = temp } })
+			weather:set({
+				label = { string = temp },
+			})
 		end
 	end)
 end

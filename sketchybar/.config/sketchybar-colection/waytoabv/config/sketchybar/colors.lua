@@ -13,6 +13,7 @@ return {
 	grey = 0xff7f8490,
 	dirty_white = 0xc8cad3f5,
 	dark_grey = 0xff2b2736,
+	lightblack = 0x8a262323,
 	transparent = 0x00000000,
 
 	-- カラーコードのカスタマイズ例:
@@ -28,7 +29,7 @@ return {
 	--     english  = 0xff83a598   -- aqua
 	--     japanese = 0xfffa8d2f   -- orange
 	ime = {
-		english = 0xff5194e, -- 青系
+		english = 0xff5199ba, -- 青系
 		japanese = 0xffec8a2b, -- orenge系
 	},
 
