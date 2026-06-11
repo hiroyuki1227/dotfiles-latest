@@ -84,18 +84,18 @@ on-mode-changed = []
     2 = 'main'                        # Main Monitor [system settings -> Displays -> Use as]
     3 = ['built-in','^built-in retina display$']  # Case insesitive regex substring
     4 = ['built-in','^built-in retina display$']  # Case insesitive regex substring
-    5 = ['secondary', 'dell']         # Secondary Monitor [system settings -> Displays -> Use as]
-    6 = ['secondary', 'dell']         # Secondary Monitor [system settings -> Displays -> Use as]
-    7 = ['secondary', 'dell']         # Secondary Monitor [system settings -> Displays -> Use as]
-    M = ['secondary', 'dell']         # Secondary Monitor [system settings -> Displays -> Use as]
-    T = ['secondary', 'dell']         # Secondary Monitor [system settings -> Displays -> Use as]
+    5 = ['secondary']         # Secondary Monitor [system settings -> Displays -> Use as]
+    6 = ['secondary']         # Secondary Monitor [system settings -> Displays -> Use as]
+    7 = ['secondary']         # Secondary Monitor [system settings -> Displays -> Use as]
+    M = ['secondary']         # Secondary Monitor [system settings -> Displays -> Use as]
+    T = ['secondary']         # Secondary Monitor [system settings -> Displays -> Use as]
 
 [gaps]
     inner.horizontal = 30
     inner.vertical =   30
     outer.left =       30
-    outer.bottom =     [{monitor.'^built-in retina display$' = 20}, 30]
-    outer.top =        [{monitor.'^build-in retina display$' = 20}, 60]
+    outer.bottom =     [{monitor.'^Built-in.Display$' = 5}, {monitor.'^built-in retina display$' = 5}, 30]
+    outer.top =        [{monitor.'^Built-in.Display$' = 5}, {monitor.'^build-in retina display$' = 5}, 50]
     outer.right =      30
 
 

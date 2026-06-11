@@ -1,6 +1,8 @@
 local colors = require("colors")
 local settings = require("settings")
 
+PLUGINS_DIR = os.getenv("HOME") .. "/.config/sketchybar/widgets"
+
 local input_source = sbar.add("item", "input_source", {
 	position = "right",
 	icon = {
@@ -26,7 +28,9 @@ input_source:subscribe("routine", function(env)
 		function(current_input)
 			-- local icon = (current_input:gsub("%s+", "") == "ABC") and "􀂕" or "􀜟"
 			-- local icon = (current_input:gsub("%s+", "") == "ABC") and "ABC" or "あ"
-			local icon = (current_input:gsub("%s+", "") == "ABC") and "􀂕" or "🅙"
+			local icon = (current_input:gsub("%s+", "") == "ABC") and "🇺🇸" or "🇯🇵"
+			-- sbar.set("input_source", { icon = { string = icon } })
+			-- local icon = (current_input:gsub("%s+", "") == "ABC") and "􀂕" or "🅙"
 			sbar.set("input_source", { icon = { string = icon } })
 		end
 	)
