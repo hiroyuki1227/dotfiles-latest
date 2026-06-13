@@ -1,11 +1,11 @@
 -- items/widgets/brew.lua
--- Brew アップデート情報を表示するウィジェット（ポップアップ内）
+-- Widget to display Brew update information (inside the popup)
 
 local colors = require("colors")
 local icons = require("icons")
 local settings = require("settings")
 
--- ポップアップ内に表示する各パッケージ行を動的に生成するヘルパー
+-- Helper to dynamically generate each package row in the popup
 local function add_package_item(name, current_ver, new_ver, index)
 	local item_name = "brew.widget.pkg." .. index
 
@@ -32,17 +32,17 @@ local function add_package_item(name, current_ver, new_ver, index)
 			color = colors.transparent,
 			border_color = colors.transparent,
 		},
-		click_script = "", -- 行クリックは何もしない（brew.lua 側で処理）
+		click_script = "", -- Row click does nothing (handled on the brew.lua side)
 	})
 end
 
--- ウィジェットのポップアップヘッダー
+-- Widget popup header
 local brew_header = sbar.add("item", "brew.widget.header", {
 	position = "popup.brew",
 	width = 280,
 	align = "center",
 	label = {
-		string = "Brew アップデート",
+		string = "Brew Updates",
 		font = {
 			family = settings.font.text,
 			style = "Bold",
@@ -62,7 +62,7 @@ local brew_header = sbar.add("item", "brew.widget.header", {
 	padding_right = 0,
 })
 
--- 区切り線
+-- Separator
 local brew_separator = sbar.add("item", "brew.widget.sep", {
 	position = "popup.brew",
 	width = 280,
@@ -74,13 +74,13 @@ local brew_separator = sbar.add("item", "brew.widget.sep", {
 	label = { drawing = false },
 })
 
--- 「すべて更新」ボタン
+-- "Update All" button
 local brew_update_all = sbar.add("item", "brew.widget.update_all", {
 	position = "popup.brew",
 	width = 280,
 	align = "center",
 	label = {
-		string = "  すべて更新",
+		string = "  Update All",
 		font = {
 			family = settings.font.text,
 			style = "Bold",
@@ -104,25 +104,25 @@ local brew_update_all = sbar.add("item", "brew.widget.update_all", {
 	click_script = "brew upgrade && sketchybar --trigger brew_update",
 })
 
--- パッケージ一覧を描画する公開関数
--- packages: { {name, current, new}, ... } の配列
+-- Public function to render the package list
+-- packages: array of { {name, current, new}, ... }
 local M = {}
 
 function M.render(packages)
-	-- 既存のパッケージ行をすべて削除してから再描画
+	-- Remove all existing package rows before rerendering
 	for i = 1, 50 do
 		local n = "brew.widget.pkg." .. i
 		sbar.remove(n)
 	end
 
 	if #packages == 0 then
-		-- アップデートなし
+		-- No updates available
 		sbar.add("item", "brew.widget.pkg.1", {
 			position = "popup.brew",
 			width = 280,
 			align = "center",
 			label = {
-				string = "すべて最新です ✓",
+				string = "All up to date ✓",
 				color = colors.green,
 				font = { size = 13 },
 			},

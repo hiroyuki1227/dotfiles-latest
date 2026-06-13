@@ -1,36 +1,36 @@
 -- items/brew.lua
--- メインの Brew アイテム
---   ・バーにアイコン＋件数を表示
---   ・クリックでポップアップ表示 & brew upgrade 実行
---   ・12 時間ごとに自動で outdated チェック
+-- Main Brew Item
+--   - Displays icon + count in the bar
+--   - Clicking toggles popup & executes brew upgrade
+--   - Automatically checks for outdated packages every 12 hours
 
 local colors = require("colors")
 local icons = require("icons")
 local settings = require("settings")
-local brew_widget = require("items.widgets.brew") -- ウィジェット側
+local brew_widget = require("items.widgets.brew") -- Widget side
 
 -- ------------------------------------------------------------------ --
---  定数
+--  Constants
 -- ------------------------------------------------------------------ --
-local CHECK_INTERVAL = 12 * 60 * 60 -- 12 時間（秒）
+local CHECK_INTERVAL = 12 * 60 * 60 -- 12 hours (seconds)
 
 -- ------------------------------------------------------------------ --
---  内部状態
+--  Internal State
 -- ------------------------------------------------------------------ --
 local state = {
 	outdated = {}, -- { {name, current, new}, ... }
 	checking = false,
 }
 
--- brew アイテムへの参照（モジュールレベルで保持し、クロージャ問題を回避）
+-- Reference to the brew item (held at module level to avoid closure issues)
 local brew
 
 -- ------------------------------------------------------------------ --
---  ヘルパー：バーの表示を更新
---  モジュールレベルの brew を直接参照するため引数なし
+--  Helper: Update the bar display
+--  Directly references module-level 'brew', so no arguments needed
 -- ------------------------------------------------------------------ --
 local function update_display()
-	-- まだ brew オブジェクトが登録されていなければスキップ
+	-- Skip if the brew object is not registered yet
 	if not brew then
 		return
 	end
@@ -40,7 +40,7 @@ local function update_display()
 	if state.checking then
 		brew:set({
 			icon = { string = icons.brew, color = colors.grey },
-			label = { string = "確認中…", color = colors.grey },
+			label = { string = "Checking…", color = colors.grey },
 		})
 		return
 	end
@@ -48,25 +48,25 @@ local function update_display()
 	if count == 0 then
 		brew:set({
 			icon = { string = icons.package, color = colors.green },
-			label = { string = "最新", color = colors.green },
+			label = { string = "Up to date", color = colors.green },
 		})
 	else
 		brew:set({
 			icon = { string = icons.update, color = colors.yellow },
-			label = { string = count .. " 件", color = colors.yellow },
+			label = { string = count .. " updates", color = colors.yellow },
 		})
 	end
 end
 
 -- ------------------------------------------------------------------ --
---  brew outdated を非同期で実行してパースする
+--  Asynchronously fetch and parse 'brew outdated'
 -- ------------------------------------------------------------------ --
 local function fetch_outdated()
 	state.checking = true
 	update_display()
 
-	-- 1. 環境変数のPATHにHomebrewのパスを明示的に追加して実行する
-	local wrapped_cmd = '/bin/zsh -c "brew outdated --json" 2>&1'
+	-- 1. Explicitly add Homebrew path to PATH environment variable and execute
+	local wrapped_cmd = '/bin/zsh -c "brew outdated --verbose" 2>&1'
 
 	sbar.exec(wrapped_cmd, function(output)
 		local log = io.open("/tmp/sketchybar_brew_debug.log", "w")
@@ -76,12 +76,12 @@ local function fetch_outdated()
 			log:write("\n=== parsed packages ===\n")
 		end
 
-		-- タイポを確実に修正 (outdeted -> outdated)
+		-- Ensure typo is fixed (outdeted -> outdated)
 		state.outdated = {}
 
-		-- output が空、または nil の場合は解析をスキップ
+		-- Skip parsing if output is empty or nil
 		if output and output ~= "" then
-			-- 2. 頑丈な2ステップパース処理
+			-- 2. Robust 2-step parsing process
 			for package_json in output:gmatch("{(.-)}") do
 				local name = package_json:match('"name"%s*:%s*"([^"]+)"')
 				local installed = package_json:match('"installed_versions"%s*:%s*%[%s*"([^"]+)"')
@@ -105,14 +105,14 @@ local function fetch_outdated()
 			log:close()
 		end
 
-		-- 3. 状態を戻して描画をキック
+		-- 3. Reset state and trigger rendering
 		state.checking = false
 		update_display()
 		brew_widget.render(state.outdated)
 	end)
 end
 -- ------------------------------------------------------------------ --
---  アイテム本体を登録
+--  Register Main Item
 -- ------------------------------------------------------------------ --
 brew = sbar.add("item", "brew", {
 	position = "right",
@@ -146,7 +146,7 @@ brew = sbar.add("item", "brew", {
 		height = 26,
 	},
 
-	-- ポップアップの設定
+	-- Popup Settings
 	popup = {
 		align = "right",
 		background = {
@@ -158,16 +158,16 @@ brew = sbar.add("item", "brew", {
 		y_offset = 4,
 	},
 
-	-- 12 時間ごとに自動チェック用のトリガー
+	-- Trigger for automatic check every 12 hours
 	update_freq = CHECK_INTERVAL,
-	script = "~/.config/sketchybar/items/brew.lua", -- 自身を再実行
+	script = "~/.config/sketchybar/items/brew.lua", -- Re-execute self
 })
 
--- ポップアップの開閉状態を Lua 側で管理
+-- Manage popup open/close state on the Lua side
 local popup_open = false
 
 -- ------------------------------------------------------------------ --
---  クリック：ポップアップ開閉 & 更新実行
+--  Click: Toggle popup & execute update
 -- ------------------------------------------------------------------ --
 brew:subscribe("mouse.clicked", function(env)
 	if popup_open then
@@ -181,7 +181,7 @@ brew:subscribe("mouse.clicked", function(env)
 	end
 end)
 
--- ポップアップ外クリックで閉じる
+-- Close popup when clicking outside
 brew:subscribe("mouse.exited.global", function(env)
 	if popup_open then
 		popup_open = false
@@ -189,19 +189,19 @@ brew:subscribe("mouse.exited.global", function(env)
 	end
 end)
 
--- 定期実行（update_freq が発火したとき）
+-- Periodic execution (when update_freq triggers)
 brew:subscribe("routine", function(_)
 	fetch_outdated()
 end)
 
--- 外部トリガー "brew_update"（brew upgrade 完了後などに発火）
+-- External trigger "brew_update" (fired after brew upgrade completes, etc.)
 brew:subscribe("brew_update", function(_)
 	fetch_outdated()
 end)
 
--- 起動時に即チェック
+-- Check immediately on system wake
 brew:subscribe("system_woke", function(_)
 	fetch_outdated()
 end)
 
-fetch_outdated() -- 初回チェック
+fetch_outdated() -- Initial check
