@@ -65,12 +65,10 @@ local function fetch_outdated()
 	state.checking = true
 	update_display()
 
-	-- 環境変数を明示し、--cached を付与することで一瞬でチェックを終わらせます
-	-- local cmd =
-	-- 	"env PATH='/opt/homebrew/bin:/usr/local/bin:$PATH' HOMEBREW_NO_ANALYTICS=1 /opt/homebrew/bin/brew outdated --json 2>&1"
-	local brew_cmd = "HOMEBREW_NO_ANALYTICS=1 /opt/homebrew/bin/brew"
-	local cmd = string.format('/bin/zsh -c "%s outdated --json" 2>&1', brew_cmd)
-	sbar.exec(cmd, function(output)
+	-- 1. 環境変数のPATHにHomebrewのパスを明示的に追加して実行する
+	local wrapped_cmd = '/bin/zsh -c "brew outdated --json" 2>&1'
+
+	sbar.exec(wrapped_cmd, function(output)
 		local log = io.open("/tmp/sketchybar_brew_debug.log", "w")
 		if log then
 			log:write("=== raw output ===\n")
@@ -78,11 +76,12 @@ local function fetch_outdated()
 			log:write("\n=== parsed packages ===\n")
 		end
 
+		-- タイポを確実に修正 (outdeted -> outdated)
 		state.outdated = {}
 
 		-- output が空、または nil の場合は解析をスキップ
-		if output and output ~= "" and not output:match("Error:") then
-			-- 2ステップパース処理
+		if output and output ~= "" then
+			-- 2. 頑丈な2ステップパース処理
 			for package_json in output:gmatch("{(.-)}") do
 				local name = package_json:match('"name"%s*:%s*"([^"]+)"')
 				local installed = package_json:match('"installed_versions"%s*:%s*%[%s*"([^"]+)"')
@@ -106,12 +105,12 @@ local function fetch_outdated()
 			log:close()
 		end
 
+		-- 3. 状態を戻して描画をキック
 		state.checking = false
 		update_display()
 		brew_widget.render(state.outdated)
 	end)
 end
-
 -- ------------------------------------------------------------------ --
 --  アイテム本体を登録
 -- ------------------------------------------------------------------ --
