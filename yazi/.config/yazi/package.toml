@@ -1,7 +1,7 @@
-[[plugin.deps]]
-use = "yazi-rs/plugins:smart-paste"
-rev = "1962818"
-hash = "3f8d49413bc8691b4c652eb417a20178"
-
-[flavor]
+[plugin]
 deps = []
+
+[[flavor.deps]]
+use = "BennyOe/tokyo-night"
+rev = "8e6296f"
+hash = "d9da921c3bd37ba32ee27a8a7a40461f"

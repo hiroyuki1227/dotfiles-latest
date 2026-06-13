@@ -1,246 +1,379 @@
--- media.lua
--- 対応アプリ: Spotify / Apple Music / Google Chrome / Safari / Firefox / Arc / Brave / Opera
--- 機能:
---   - アートワーク縮小表示 (通常時)
---   - マウスホバーでアートワーク拡大
---   - ホバー時にタイトル・アーティスト表示
---   - ポップアップで再生コントロール (前/再生停止/次)
---   - アプリアイコンをラベル左に表示
-
-local icons = require("icons")
 local colors = require("colors")
 local settings = require("settings")
-local app_icons = require("helpers.app_icons")
+local icons = require("icons")
 
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- 対応ホワイトリスト
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-local whitelist = {
-	["Spotify"] = true,
-	["Music"] = true,
-	["Google Chrome"] = true,
-	["Safari"] = true,
-	["Firefox"] = true,
-	["Arc"] = true,
-	["Brave Browser"] = true,
-	["Opera"] = true,
-	["Chromium"] = true,
-}
+-- For position="center", earlier-added items render to the LEFT.
+-- Bar layout: playpause → artwork → title
 
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- アートワーク (メインアイテム)
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-local COVER_SCALE_NORMAL = 0.70
-local COVER_SCALE_HOVER = 0.95
-
-local media_cover = sbar.add("item", "media.cover", {
-	position = "right",
-	drawing = false,
-	updates = true,
-	padding_left = 4,
-	padding_right = 4,
-	background = {
-		image = {
-			string = "media.artwork",
-			scale = COVER_SCALE_NORMAL,
-		},
-		color = colors.transparent,
-	},
-	label = { drawing = false },
-	icon = { drawing = false },
-	popup = {
-		align = "center",
-		horizontal = true,
-		height = 30,
-	},
-})
-
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- アプリアイコン
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-local media_app = sbar.add("item", "media.app", {
-	position = "right",
-	drawing = false,
-	padding_left = 0,
-	padding_right = 0,
-	width = 0,
-	label = { drawing = false },
+local playpause = sbar.add("item", "center.media.playpause", {
+	position = "center",
 	icon = {
-		font = { family = settings.font.text, size = 13.0 },
-		color = colors.white,
-		y_offset = 0,
-	},
-})
-
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- アーティスト名 (上段)
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-local media_artist = sbar.add("item", "media.artist", {
-	position = "right",
-	drawing = false,
-	padding_left = 3,
-	padding_right = 0,
-	width = 0,
-	icon = { drawing = false },
-	label = {
-		width = 0,
-		font = {
-			family = settings.font.text,
-			style = settings.font.style_map["Regular"],
-			size = 9.0,
-		},
-		color = colors.with_alpha(colors.white, 0.6),
-		max_chars = 20,
-		y_offset = 6,
-	},
-})
-
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- 曲タイトル (下段)
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-local media_title = sbar.add("item", "media.title", {
-	position = "right",
-	drawing = false,
-	padding_left = 3,
-	padding_right = 4,
-	icon = { drawing = false },
-	label = {
-		width = 0,
+		string = icons.media.play,
 		font = {
 			family = settings.font.text,
 			style = settings.font.style_map["Semibold"],
-			size = 11.0,
+			size = 14,
 		},
-		color = colors.white,
-		max_chars = 18,
-		y_offset = -5,
+		color = colors.with_alpha(colors.accent, 0.45),
+		padding_left = 4,
+		padding_right = 4,
 	},
-})
-
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- ポップアップ: 再生コントロール
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-sbar.add("item", "media.popup.back", {
-	position = "popup." .. media_cover.name,
-	icon = { string = icons.media.back },
-	label = { drawing = false },
-	click_script = "nowplaying-cli previous",
-})
-
-sbar.add("item", "media.popup.play", {
-	position = "popup." .. media_cover.name,
-	icon = { string = icons.media.play_pause },
 	label = { drawing = false },
 	click_script = "nowplaying-cli togglePlayPause",
 })
 
-sbar.add("item", "media.popup.next", {
-	position = "popup." .. media_cover.name,
-	icon = { string = icons.media.forward },
+local artwork = sbar.add("item", "center.media.artwork", {
+	position = "center",
+	background = {
+		image = {
+			string = "",
+			scale = 0.23,
+			corner_radius = 4,
+		},
+		color = colors.transparent,
+		border_width = 0,
+		height = 22,
+		corner_radius = 4,
+	},
+	icon = { drawing = false },
+	label = { drawing = false },
+	drawing = false,
+	padding_left = 4,
+	padding_right = 2,
+})
+
+local media = sbar.add("item", "center.media", {
+	position = "center",
+	icon = { drawing = false },
+	scroll_texts = false,
+	label = {
+		string = "It's pretty silent",
+		font = {
+			family = settings.font.text,
+			style = settings.font.style_map["Bold"],
+			size = 14,
+		},
+		-- color = colors.with_alpha(colors.white, 0.30),
+		color = colors.white,
+		padding_left = 4,
+		padding_right = 4,
+	},
+	popup = {
+		align = "center",
+		horizontal = true,
+		background = {
+			color = colors.popup.bg,
+			-- color = colors.transparent,
+			corner_radius = 9,
+			border_width = 1,
+			border_color = colors.popup.border,
+			height = 56,
+		},
+	},
+	update_freq = 1,
+	updates = true,
+})
+
+local popup_artwork = sbar.add("item", "popup.center.media.art", {
+	position = "popup.center.media",
+	background = {
+		image = { string = "", scale = 0.5, corner_radius = 6 },
+		color = colors.transparent,
+		border_width = 0,
+		height = 48,
+		corner_radius = 6,
+	},
+	icon = { drawing = false },
+	label = { drawing = false },
+	drawing = false,
+	padding_left = 10,
+	padding_right = 6,
+})
+
+local popup_title = sbar.add("item", "popup.center.media.title", {
+	position = "popup.center.media",
+	icon = { drawing = false },
+	label = {
+		string = "",
+		font = {
+			family = settings.font.text,
+			style = settings.font.style_map["Semibold"],
+			size = 14,
+		},
+		color = 0xffffffff,
+		padding_left = 4,
+		padding_right = 4,
+	},
+})
+
+local popup_artist = sbar.add("item", "popup.center.media.artist", {
+	position = "popup.center.media",
+	icon = { drawing = false },
+	label = {
+		string = "",
+		font = {
+			family = settings.font.text,
+			style = settings.font.style_map["Semibold"],
+			size = 14,
+		},
+		color = colors.with_alpha(colors.white, 0.55),
+		padding_left = 2,
+		padding_right = 10,
+	},
+})
+
+local popup_prev = sbar.add("item", "popup.center.media.prev", {
+	position = "popup.center.media",
+	icon = {
+		string = icons.media.back,
+		font = {
+			family = settings.font.text,
+			style = settings.font.style_map["Bold"],
+			size = 14,
+		},
+		color = colors.with_alpha(colors.accent, 0.85),
+		padding_left = 12,
+		padding_right = 8,
+	},
+	label = { drawing = false },
+	click_script = "nowplaying-cli previous",
+})
+
+local popup_playpause = sbar.add("item", "popup.center.media.playpause", {
+	position = "popup.center.media",
+	icon = {
+		string = icons.media.play,
+		font = {
+			family = settings.font.text,
+			style = settings.font.style_map["Semibold"],
+			size = 14,
+		},
+		color = colors.accent,
+		padding_left = 8,
+		padding_right = 8,
+	},
+	label = { drawing = false },
+	click_script = "nowplaying-cli togglePlayPause",
+})
+
+local popup_next = sbar.add("item", "popup.center.media.next", {
+	position = "popup.center.media",
+	icon = {
+		string = icons.media.forward,
+		font = {
+			family = settings.font.text,
+			style = settings.font.style_map["Semibold"],
+			size = 14,
+		},
+		color = colors.with_alpha(colors.accent, 0.85),
+		padding_left = 8,
+		padding_right = 12,
+	},
 	label = { drawing = false },
 	click_script = "nowplaying-cli next",
 })
 
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- テキスト幅アニメーション
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-local interrupt = 0
+local current_track_key = nil
+local artwork_counter = 0
+local last_label_state = nil
+local last_play_state = nil
 
-local function animate_detail(detail)
-	if not detail then
-		interrupt = interrupt - 1
+local SHOW_ARTWORK = true
+local MAX_LABEL_CHARS = SHOW_ARTWORK and 20 or 24
+
+local function truncate(s, n)
+	local len = utf8.len(s) or #s
+	if len <= n then
+		return s
 	end
-	if interrupt > 0 and not detail then
+	local cut = utf8.offset(s, n) or n
+	return s:sub(1, cut - 1) .. "…"
+end
+
+-- U+2003 EM SPACE — invisible, ~"M"-width, so short titles still hold
+-- close to the full pill width and the center pill stops shifting.
+local PAD_CHAR = "\xe2\x80\x83"
+
+local function pad_to(s, n)
+	local len = utf8.len(s) or #s
+	if len < n then
+		return s .. string.rep(PAD_CHAR, n - len)
+	end
+	return s
+end
+
+local function update_track_info(title, artist)
+	local key = (title or "") .. "|" .. (artist or "")
+	if key == current_track_key then
 		return
 	end
+	current_track_key = key
 
-	sbar.animate("tanh", 30, function()
-		local w = detail and "dynamic" or 0
-		media_artist:set({ label = { width = w } })
-		media_title:set({ label = { width = w } })
-		media_app:set({ drawing = detail })
+	popup_title:set({ label = { string = title or "" } })
+	popup_artist:set({ label = { string = artist or "" } })
+
+	artwork_counter = artwork_counter + 1
+	local path = string.format("/tmp/sketchybar_art_%d.jpg", artwork_counter)
+	local cmd = string.format(
+		"nowplaying-cli get artworkData 2>/dev/null | base64 -D > %q 2>/dev/null; "
+			.. "if [ -s %q ]; then sips -Z 96 %q >/dev/null 2>&1; echo ok; else rm -f %q; fi",
+		path,
+		path,
+		path,
+		path
+	)
+	sbar.exec(cmd, function(out)
+		if current_track_key ~= key then
+			return
+		end
+		if out and out:match("ok") then
+			if SHOW_ARTWORK then
+				artwork:set({
+					drawing = true,
+					background = { image = { drawing = true, string = path } },
+					icon = { drawing = false },
+				})
+			end
+			popup_artwork:set({
+				drawing = true,
+				background = { image = { drawing = true, string = path } },
+			})
+		else
+			artwork:set({ drawing = false })
+			popup_artwork:set({ drawing = false })
+		end
 	end)
 end
 
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- media_change イベント
--- INFO のフィールドは文字列キーで安全にアクセスする
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-media_cover:subscribe("media_change", function(env)
-	local info = env.INFO
-	if type(info) ~= "table" then
+local function show_idle_artwork()
+	if not SHOW_ARTWORK then
+		artwork:set({ drawing = false })
 		return
 	end
+	artwork:set({
+		drawing = true,
+		background = { image = { drawing = false } },
+		icon = {
+			drawing = true,
+			string = ":music:",
+			font = {
+				family = "sketchybar-app-font",
+				style = "Regular",
+				size = 14.0,
+			},
+			color = colors.with_alpha(colors.accent, 0.45),
+			padding_left = 4,
+			padding_right = 4,
+		},
+	})
+end
 
-	-- フィールドを文字列キーで安全に取得
-	local app = tostring(info["app"] or "")
-	local state = tostring(info["state"] or "")
-	local artist = tostring(info["artist"] or "")
-	local title = tostring(info["title"] or "")
+local function clear_track_info()
+	current_track_key = nil
+	show_idle_artwork()
+	popup_artwork:set({ drawing = false })
+	popup_title:set({ label = { string = "" } })
+	popup_artist:set({ label = { string = "" } })
+end
 
-	-- デバッグ用 (動作確認後コメントアウト可)
-	print("[media] app=" .. app .. " state=" .. state .. " title=" .. title)
-
-	-- ホワイトリスト外は無視
-	if not whitelist[app] then
+local function set_play_icon(playing)
+	if playing == last_play_state then
 		return
 	end
+	last_play_state = playing
+	local glyph = playing and icons.media.pause or icons.media.play
+	local color = playing and colors.accent or colors.with_alpha(colors.accent, 0.45)
+	playpause:set({ icon = { string = glyph, color = color } })
+	popup_playpause:set({ icon = { string = glyph } })
+end
 
-	local playing = (state == "playing")
-
-	if playing then
-		local app_icon = app_icons[app] or "󰎈"
-
-		media_app:set({ icon = { string = app_icon } })
-		media_artist:set({ drawing = true, label = { string = artist } })
-		media_title:set({ drawing = true, label = { string = title } })
-		media_cover:set({ drawing = true })
-
-		animate_detail(true)
-		interrupt = interrupt + 1
-		sbar.delay(5, function()
-			animate_detail(false)
+local function set_label(text, faded, animate)
+	text = pad_to(text, MAX_LABEL_CHARS)
+	local key = (faded and "f|" or "n|") .. text
+	if key == last_label_state then
+		return
+	end
+	last_label_state = key
+	local color = faded and colors.with_alpha(colors.white, faded) or 0xffffffff
+	if animate then
+		sbar.animate("tanh", 10, function()
+			media:set({ label = { string = text, color = color } })
 		end)
 	else
-		media_cover:set({ drawing = false, popup = { drawing = false } })
-		media_artist:set({ drawing = false })
-		media_title:set({ drawing = false })
-		media_app:set({ drawing = false })
-		interrupt = 0
+		media:set({ label = { string = text, color = color } })
 	end
-end)
+end
 
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- マウスホバー: アートワーク拡大 + テキスト展開
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-media_cover:subscribe("mouse.entered", function(_)
-	sbar.animate("tanh", 15, function()
-		media_cover:set({
-			background = { image = { scale = COVER_SCALE_HOVER } },
-		})
+local function set_idle()
+	clear_track_info()
+	set_play_icon(false)
+	set_label("It's pretty silent in here...", 0.5, true)
+end
+
+local function set_track(title, artist, playing)
+	local display = truncate(title .. (artist ~= "" and (" – " .. artist) or ""), MAX_LABEL_CHARS)
+
+	update_track_info(title, artist)
+	set_play_icon(playing)
+	set_label(display, not playing and 0.5 or false, true)
+end
+
+local function poll()
+	sbar.exec("nowplaying-cli get playbackRate title artist", function(out)
+		local rate_str, title, artist = out:match("([^\n]*)\n([^\n]*)\n([^\n]*)")
+		local rate = tonumber(rate_str) or 0
+		title = title and title:gsub("^%s*(.-)%s*$", "%1") or ""
+		artist = artist and artist:gsub("^%s*(.-)%s*$", "%1") or ""
+
+		if title ~= "" and title ~= "null" then
+			set_track(title, artist, rate > 0)
+		else
+			set_idle()
+		end
 	end)
-	interrupt = interrupt + 1
-	animate_detail(true)
-end)
+end
 
-media_cover:subscribe("mouse.exited", function(_)
-	sbar.animate("tanh", 15, function()
-		media_cover:set({
-			background = { image = { scale = COVER_SCALE_NORMAL } },
-		})
+local function poll_after(cmd)
+	sbar.exec(cmd, function()
+		poll()
+		sbar.exec("sleep 0.4 && true", function()
+			poll()
+		end)
 	end)
-	animate_detail(false)
+end
+
+local function toggle_popup()
+	media:set({ popup = { drawing = "toggle" } })
+end
+
+media:subscribe({ "routine", "system_woke", "media_change" }, poll)
+media:subscribe("mouse.clicked", toggle_popup)
+artwork:subscribe("mouse.clicked", toggle_popup)
+
+local function optimistic_toggle()
+	if last_play_state ~= nil then
+		local now_playing = not last_play_state
+		set_play_icon(now_playing)
+		if last_label_state then
+			local text = last_label_state:sub(3)
+			last_label_state = nil
+			set_label(text, not now_playing and 0.45 or false, false)
+		end
+	end
+	poll_after("nowplaying-cli togglePlayPause")
+end
+
+playpause:subscribe("mouse.clicked", optimistic_toggle)
+popup_playpause:subscribe("mouse.clicked", optimistic_toggle)
+popup_prev:subscribe("mouse.clicked", function()
+	poll_after("nowplaying-cli previous")
+end)
+popup_next:subscribe("mouse.clicked", function()
+	poll_after("nowplaying-cli next")
 end)
 
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- クリック: ポップアップトグル
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-media_cover:subscribe("mouse.clicked", function(_)
-	local is_open = media_cover:query().popup.drawing
-	media_cover:set({ popup = { drawing = not is_open } })
+media:subscribe("mouse.exited.global", function()
+	media:set({ popup = { drawing = false } })
 end)
 
--- ポップアップ外クリックで閉じる
-media_title:subscribe("mouse.exited.global", function(_)
-	media_cover:set({ popup = { drawing = false } })
-end)
+poll()

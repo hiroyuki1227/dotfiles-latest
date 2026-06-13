@@ -32,7 +32,7 @@ sbar.default({
 		border_color = colors.bg2,
 		image = {
 			corner_radius = 9,
-			border_color = colors.lightblack,
+			border_color = colors.bg2,
 			border_width = 1,
 		},
 	},

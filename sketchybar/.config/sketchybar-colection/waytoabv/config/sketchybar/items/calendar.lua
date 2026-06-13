@@ -1,57 +1,47 @@
 local settings = require("settings")
 local colors = require("colors")
 
--- Padding item required because of bracket
--- sbar.add("item", { position = "right", width = settings.group_paddings })
-
-local cal = sbar.add("item", {
+-- Date right beside the time.
+local date = sbar.add("item", "date", {
+	position = "center",
 	icon = {
+		string = os.date("%a, %b %d, %Y"),
 		color = colors.white,
-		padding_left = 8,
+		padding_left = 0,
+		padding_right = 0,
 		font = {
+			-- family = settings.font.text,
 			family = settings.font.numbers,
-			style = settings.font.style_map["Semibold"],
-			size = 14.0,
+			style = settings.font.style_map["Bold"],
+			size = 15.0,
 		},
 	},
-	label = {
-		color = colors.white,
-		-- color = colors.green,
-		padding_right = 20,
-		width = 60,
-		align = "right",
+	label = { drawing = false },
+	update_freq = 3600,
+})
+
+-- Time sits just right of the notch spacer.
+local time = sbar.add("item", "time", {
+	position = "center",
+	icon = {
+		string = os.date("%H:%M"),
+		color = colors.accent,
+		padding_left = 5,
+		padding_right = 5,
 		font = {
+			-- family = settings.font.text,
 			family = settings.font.numbers,
-			style = settings.font.style_map["Semibold"],
-			size = 14.0,
+			style = settings.font.style_map["Bold"],
+			size = 15.0,
 		},
 	},
-	position = "right",
+	label = { drawing = false },
 	update_freq = 30,
-	padding_left = 1,
-	padding_right = 1,
-	-- background = {
-	-- 	color = colors.transparent,
-	-- 	border_color = colors.gray,
-	-- 	border_width = 3,
-	-- },
-	click_script = "open -a 'Calendar'",
 })
 
--- Double border for calendar using a single item bracket
-sbar.add("bracket", { cal.name }, {
-	background = {
-		color = colors.transparent,
-		height = 30,
-		-- border_color = colors.cyan,
-		-- corner_radius = 32,
-	},
-})
-
--- Padding item required because of bracket
-sbar.add("item", { position = "right", width = settings.group_paddings })
-
-cal:subscribe({ "forced", "routine", "system_woke" }, function(env)
-	-- cal:set({ icon = os.date("%a /%d %b."), label = os.date("%H:%M") })
-	cal:set({ icon = os.date("%b %d,20%y (%a) "), label = os.date(" %H:%M") })
+time:subscribe({ "forced", "routine", "system_woke" }, function(env)
+	time:set({ icon = { string = os.date("%H:%M") } })
+end)
+date:subscribe({ "forced", "routine", "system_woke" }, function(env)
+	date:set({ icon = { string = os.date("%a, %b %d, %Y") } })
 end)

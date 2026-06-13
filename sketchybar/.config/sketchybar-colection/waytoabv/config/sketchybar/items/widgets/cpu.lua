@@ -49,7 +49,7 @@ cpu:subscribe("cpu_update", function(env)
 
 	cpu:set({
 		graph = { color = color },
-		label = "cpu " .. env.total_load .. "%",
+		label = "CPU " .. env.total_load .. "%",
 	})
 end)
 
@@ -62,8 +62,8 @@ sbar.add("bracket", "widgets.cpu.bracket", { cpu.name }, {
 	background = {
 		color = colors.transparent,
 		height = 30,
-		-- border_color = colors.cyan,
-		-- corner_radius = 32,
+		border_color = colors.transparent,
+		corner_radius = 32,
 	},
 })
 

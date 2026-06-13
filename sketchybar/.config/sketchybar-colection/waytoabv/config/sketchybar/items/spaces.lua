@@ -1,177 +1,265 @@
 local colors = require("colors")
-local icons = require("icons")
 local settings = require("settings")
 local app_icons = require("helpers.app_icons")
 
-local spaces = {}
+-- Window manager backend. Swap to spaces_rift / spaces_aerospace and restart
+-- sketchybar to switch. Both modules expose: events, list_workspaces_cmd(),
+-- fetch_state_cmd(), click_cmd(id).
+local backend = require("items.spaces_aerospace")
+-- local backend = require("items.spaces_rift")
 
-for i = 1, 10, 1 do
-	local space = sbar.add("space", "space." .. i, {
-		space = i,
-		icon = {
-			font = { family = settings.font.numbers },
-			string = i,
-			padding_left = 15,
-			padding_right = 8,
-			color = colors.white,
-			highlight_color = colors.red,
-		},
+-- Horizontal padding (in px) on each side of a space pill. Tweak to change pill widths.
+local pill_padding = {
+	inactive = 14, -- small dark ovals (no apps + not focused)
+	active_empty = 24, -- focused workspace with no apps
+	active_icons = 18, -- focused workspace with apps (padding around the app icons)
+}
+
+-- Gap between the workspace number and the app icons in a focused-with-apps pill.
+local number_icon_gap = 6
+
+local function exec_to_table(cmd)
+	local handle = io.popen(cmd)
+	if not handle then
+		return {}
+	end
+	local result = handle:read("*a")
+	handle:close()
+	local lines = {}
+	for line in result:gmatch("[^\n]+") do
+		lines[#lines + 1] = line
+	end
+	return lines
+end
+
+local space_items = {}
+local space_names = {}
+local space_state = {}
+local space_drawn = {}
+-- Coalesce rapid events: if an update arrives while one is in-flight, mark
+-- dirty and re-run after — never drop. Dropping caused the bracket to settle
+-- to a stale state on rapid switches; overlapping animations on top of that
+-- caused the pill bg to flicker mid-resize.
+-- Timestamped instead of boolean so a lost sbar.exec callback can't strand
+-- the lock; after LOCK_TIMEOUT_S the next event proceeds anyway.
+local update_in_flight_at = 0
+local update_dirty = false
+local LOCK_TIMEOUT_S = 3
+
+local function build_space_set(icons, selected, ws_label)
+	local has_icons = icons ~= ""
+	local should_draw = selected or has_icons
+	local show_number = selected and ws_label ~= nil and ws_label ~= ""
+
+	local pad
+	if not selected then
+		pad = pill_padding.inactive
+	elseif has_icons then
+		pad = pill_padding.active_icons
+	else
+		pad = pill_padding.active_empty
+	end
+
+	-- The space character between glyphs has different vertical metrics
+	-- than the app icons themselves, which shifts multi-icon labels visually.
+	-- Compensate only when there is more than one icon.
+	local multi_icon = has_icons and icons:find(" ") ~= nil
+	local label_y = multi_icon and -1 or 0
+
+	local icon_padding_right
+	if has_icons and show_number then
+		icon_padding_right = number_icon_gap
+	elseif has_icons then
+		icon_padding_right = 0
+	else
+		icon_padding_right = pad
+	end
+
+	return {
+		drawing = should_draw,
 		label = {
-			padding_right = 20,
-			color = colors.grey,
-			highlight_color = colors.white,
-			font = "sketchybar-app-font:Regular:16.0",
-			y_offset = -1,
+			string = selected and has_icons and icons or "",
+			color = colors.base,
+			drawing = has_icons,
+			padding_left = 0,
+			padding_right = has_icons and pad or 0,
+			y_offset = label_y,
 		},
-		padding_right = 1,
-		padding_left = 1,
-		background = {
-			color = colors.bg1,
-			border_width = 1,
-			height = 26,
-			border_color = colors.black,
-		},
-		popup = { background = { border_width = 5, border_color = colors.black } },
-	})
-
-	spaces[i] = space
-
-	-- Single item bracket for space items to achieve double border on highlight
-	local space_bracket = sbar.add("bracket", { space.name }, {
-		background = {
-			color = colors.transparent,
-			border_color = colors.bg2,
-			height = 28,
-			border_width = 2,
-		},
-	})
-
-	-- Padding space
-	sbar.add("space", "space.padding." .. i, {
-		space = i,
-		script = "",
-		width = settings.group_paddings,
-	})
-
-	local space_popup = sbar.add("item", {
-		position = "popup." .. space.name,
-		padding_left = 5,
-		padding_right = 0,
-		background = {
+		icon = {
+			string = show_number and ws_label or "",
+			color = colors.base,
 			drawing = true,
-			image = {
-				corner_radius = 9,
-				scale = 0.2,
-			},
+			padding_left = pad,
+			padding_right = icon_padding_right,
 		},
-	})
+		background = {
+			color = selected and colors.accent or colors.bg2,
+		},
+	}
+end
 
-	space:subscribe("space_change", function(env)
-		local selected = env.SELECTED == "true"
-		local color = selected and colors.grey or colors.bg2
-		space:set({
-			icon = { highlight = selected },
-			label = { highlight = selected },
-			background = { border_color = selected and colors.black or colors.bg2 },
-		})
-		space_bracket:set({
-			background = { border_color = selected and colors.grey or colors.bg2 },
-		})
-	end)
+local function update_all_spaces()
+	local now = os.time()
+	if update_in_flight_at ~= 0 and (now - update_in_flight_at) < LOCK_TIMEOUT_S then
+		update_dirty = true
+		return
+	end
+	update_in_flight_at = now
 
-	space:subscribe("mouse.clicked", function(env)
-		if env.BUTTON == "other" then
-			space_popup:set({ background = { image = "space." .. env.SID } })
-			space:set({ popup = { drawing = "toggle" } })
-		else
-			local op = (env.BUTTON == "right") and "--destroy" or "--focus"
-			sbar.exec("yabai -m space " .. op .. " " .. env.SID)
+	sbar.exec(backend.fetch_state_cmd(), function(output)
+		update_in_flight_at = 0
+
+		local workspace_icons = {}
+		local seen = {}
+		local focused = ""
+		local parsing_windows = true
+
+		for line in output:gmatch("[^\n]+") do
+			if line == "---" then
+				parsing_windows = false
+			elseif parsing_windows then
+				local ws, app = line:match("^(.-)|(.+)$")
+				if ws then
+					if not workspace_icons[ws] then
+						workspace_icons[ws] = ""
+						seen[ws] = {}
+					end
+					local lookup = app_icons[app]
+					local icon = ((lookup == nil) and app_icons["default"] or lookup)
+					if not seen[ws][icon] then
+						if workspace_icons[ws] == "" then
+							workspace_icons[ws] = icon
+						else
+							workspace_icons[ws] = workspace_icons[ws] .. " " .. icon
+						end
+						seen[ws][icon] = true
+					end
+				end
+			else
+				focused = line:gsub("%s+", "")
+			end
 		end
-	end)
 
-	space:subscribe("mouse.exited", function(_)
-		space:set({ popup = { drawing = false } })
+		local changed = {}
+		for ws, space in pairs(space_items) do
+			local icons = workspace_icons[ws] or ""
+			local selected = ws == focused
+			local key = (selected and "1|" or "0|") .. icons
+			if space_state[ws] ~= key then
+				local was_drawn = space_drawn[ws] or false
+				local now_drawn = selected or icons ~= ""
+				space_state[ws] = key
+				space_drawn[ws] = now_drawn
+				changed[#changed + 1] = {
+					space = space,
+					icons = icons,
+					selected = selected,
+					label = backend.display_label(ws),
+					drawing_flipped = was_drawn ~= now_drawn,
+				}
+			end
+		end
+
+		if #changed > 0 then
+			-- Layout changes (drawing, padding, label.string) apply instantly
+			-- so the bracket bg never gets caught half-resized when a second
+			-- switch arrives mid-animation. The accent ↔ bg2 background color
+			-- still animates so the active-state swap reads as smooth.
+			-- Skip the color animation when drawing flipped — animating from
+			-- the prior color to accent on a workspace that just appeared
+			-- causes a visible bg2 flash on the first frame.
+			local to_animate = {}
+			for _, c in ipairs(changed) do
+				local props = build_space_set(c.icons, c.selected, c.label)
+				if c.drawing_flipped then
+					c.space:set(props)
+				else
+					local target_color = props.background.color
+					props.background = nil
+					c.space:set(props)
+					to_animate[#to_animate + 1] = { space = c.space, color = target_color }
+				end
+			end
+			if #to_animate > 0 then
+				sbar.animate("tanh", 8, function()
+					for _, t in ipairs(to_animate) do
+						t.space:set({ background = { color = t.color } })
+					end
+				end)
+			end
+		end
+
+		if update_dirty then
+			update_dirty = false
+			update_all_spaces()
+		end
 	end)
 end
 
-local space_window_observer = sbar.add("item", {
+local workspaces = exec_to_table(backend.list_workspaces_cmd())
+
+for i, workspace in ipairs(workspaces) do
+	local space = sbar.add("item", "space." .. workspace:gsub("%s+", "_"), {
+		icon = {
+			font = { family = settings.font.text, style = settings.font.style_map["Bold"], size = 12 },
+			string = "",
+			color = colors.white,
+			padding_left = 9,
+			padding_right = 9,
+			y_offset = 0,
+			drawing = true,
+		},
+		label = {
+			string = "",
+			font = "sketchybar-app-font:Regular:14.0",
+			color = colors.base,
+			padding_left = 0,
+			padding_right = 0,
+			y_offset = -1,
+			drawing = false,
+		},
+		background = {
+			color = colors.bg2,
+			corner_radius = 16,
+			-- height = 19,
+			height = 28,
+		},
+		padding_left = 6,
+		padding_right = 0,
+		drawing = false,
+		click_script = backend.click_cmd(workspace),
+	})
+
+	space_items[workspace] = space
+	space_names[i] = space.name
+end
+
+-- Invisible spacer that extends the left bracket background past the last space,
+-- adding visual padding on the right end of the spaces pill.
+sbar.add("item", "spaces.right_pad", {
+	width = 0,
+	icon = { drawing = false },
+	label = { drawing = false },
+	background = { drawing = false },
+})
+
+local observer = sbar.add("item", {
 	drawing = false,
 	updates = true,
+	update_freq = 5,
 })
 
-local spaces_indicator = sbar.add("item", {
-	padding_left = -3,
-	padding_right = 0,
-	icon = {
-		padding_left = 8,
-		padding_right = 9,
-		color = colors.grey,
-		string = icons.switch.on,
-	},
-	label = {
-		width = 0,
-		padding_left = 0,
-		padding_right = 8,
-		string = "Spaces",
-		color = colors.bg1,
-	},
-	background = {
-		color = colors.with_alpha(colors.grey, 0.0),
-		border_color = colors.with_alpha(colors.bg1, 0.0),
-	},
-})
-
-space_window_observer:subscribe("space_windows_change", function(env)
-	local icon_line = ""
-	local no_app = true
-	for app, count in pairs(env.INFO.apps) do
-		no_app = false
-		local lookup = app_icons[app]
-		local icon = ((lookup == nil) and app_icons["Default"] or lookup)
-		icon_line = icon_line .. icon
-	end
-
-	if no_app then
-		icon_line = " —"
-	end
-	sbar.animate("tanh", 10, function()
-		spaces[env.INFO.space]:set({ label = icon_line })
-	end)
+-- routine fires every update_freq seconds — backstop against window manager
+-- state changes (move-window, window close on inactive workspace, etc.) that
+-- don't trigger one of the push events the backend lists.
+local subscribed_events = { "routine" }
+for _, ev in ipairs(backend.events) do
+	subscribed_events[#subscribed_events + 1] = ev
+end
+observer:subscribe(subscribed_events, function(env)
+	update_all_spaces()
 end)
 
-spaces_indicator:subscribe("swap_menus_and_spaces", function(env)
-	local currently_on = spaces_indicator:query().icon.value == icons.switch.on
-	spaces_indicator:set({
-		icon = currently_on and icons.switch.off or icons.switch.on,
-	})
-end)
+update_all_spaces()
 
-spaces_indicator:subscribe("mouse.entered", function(env)
-	sbar.animate("tanh", 30, function()
-		spaces_indicator:set({
-			background = {
-				color = { alpha = 1.0 },
-				border_color = { alpha = 1.0 },
-			},
-			icon = { color = colors.bg1 },
-			label = { width = "dynamic" },
-		})
-	end)
-end)
-
-spaces_indicator:subscribe("mouse.exited", function(env)
-	sbar.animate("tanh", 30, function()
-		spaces_indicator:set({
-			background = {
-				color = { alpha = 0.0 },
-				border_color = { alpha = 0.0 },
-			},
-			icon = { color = colors.grey },
-			label = { width = 0 },
-		})
-	end)
-end)
-
-spaces_indicator:subscribe("mouse.clicked", function(env)
-	sbar.trigger("swap_menus_and_spaces")
-end)
+return space_names

@@ -3,14 +3,14 @@ local settings = require("settings")
 
 PLUGINS_DIR = os.getenv("HOME") .. "/.config/sketchybar/widgets"
 
-sbar.add("item", { position = "right", width = settings.group_paddings })
+-- sbar.add("item", { position = "right", width = settings.group_paddings })
 local input_source = sbar.add("item", "input_source", {
 	position = "right",
 	icon = {
 		string = "􀂕",
 		font = {
 			family = settings.font.text,
-			style = "Regular",
+			style = settings.font.style_map["Regular"],
 			size = 20.0,
 		},
 		color = colors.white,
@@ -20,8 +20,8 @@ local input_source = sbar.add("item", "input_source", {
 	background = {
 		color = colors.transparent,
 		height = 30,
-		-- border_color = colors.cyan,
-		-- corner_radius = 32,
+		border_color = colors.cyan,
+		corner_radius = 32,
 	},
 	update_freq = 1,
 })

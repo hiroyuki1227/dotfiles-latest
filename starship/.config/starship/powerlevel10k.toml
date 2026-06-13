@@ -41,7 +41,7 @@ $docker_context\
 $fill \
 $battery\
 $memory_usage\
-[](#1C3A5E)$time[ ](#1C3A5E)$cmd_duration
+$time$cmd_duration
 [ 》](bold orange)\
 """
 
@@ -190,7 +190,7 @@ format = '$symbol [${ram}]($style) '
 disabled = false
 time_format = "%R"                                      # Hour:Minute Format
 style = "bg:#1d2230"
-format = '[[ 󱑍 $time ](bg:#1C3A5E fg:#8DFBD2)]($style)'
+format = '[[ 󱑍 $time ](fg:#8DFBD2)]($style)'
 
 [nodejs]
 symbol = " "
