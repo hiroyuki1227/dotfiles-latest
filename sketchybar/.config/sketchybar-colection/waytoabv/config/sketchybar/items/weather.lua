@@ -4,30 +4,30 @@ local colors = require("colors")
 local WTTR_URL = "https://wttr.in/?format=%t&m"
 
 local weather = sbar.add("item", "center.weather", {
-	-- position = "center",
-	-- icon = {
-	-- 	string = "􀆭",
-	-- 	color = colors.accent,
-	-- 	padding_left = 5,
-	-- 	padding_right = 2,
-	-- 	font = {
-	-- 		family = settings.font.text,
-	-- 		style = settings.font.style_map["Bold"],
-	-- 		size = 13.0,
-	-- 	},
-	-- },
-	-- label = {
-	-- 	string = "--°",
-	-- 	color = colors.white,
-	-- 	padding_left = 2,
-	-- 	padding_right = 6,
-	-- 	font = {
-	-- 		family = settings.font.text,
-	-- 		style = settings.font.style_map["Bold"],
-	-- 		size = 12.0,
-	-- 	},
-	-- },
-	-- update_freq = 1800,
+	position = "right",
+	icon = {
+		string = "􀆭",
+		color = colors.accent,
+		padding_left = 5,
+		padding_right = 2,
+		font = {
+			family = settings.font.tet,
+			style = settings.font.style_map["Bold"],
+			size = 13.0,
+		},
+	},
+	label = {
+		string = "--°",
+		color = colors.white,
+		padding_left = 2,
+		padding_right = 6,
+		font = {
+			family = settings.font.text,
+			style = settings.font.style_map["Bold"],
+			size = 12.0,
+		},
+	},
+	update_freq = 1800,
 })
 
 local function update()

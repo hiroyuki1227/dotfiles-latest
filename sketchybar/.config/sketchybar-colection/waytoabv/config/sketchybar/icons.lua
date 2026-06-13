@@ -40,7 +40,10 @@ local icons = {
 			play_pause = "􀊔", -- SF Symbol: playpause.fill
 			forward = "􀊐", -- SF Symbol: forward.end.fill
 		},
-		-- media = {
+		-- icons.lua に追加
+		brew = "󰿈", -- Nerd Fonts: mdi-beer (または好みのアイコン)
+		package = "󰏗", -- mdi-package-variant
+		update = "󰚰", -- mdi-update	-- media = {
 		-- 	back = "􀊊",
 		-- 	forward = "􀊌",
 		-- 	play_pause = "􀊈",
@@ -88,7 +91,10 @@ local icons = {
 			play_pause = "􀊔", -- SF Symbol: playpause.fill
 			forward = "􀊐", -- SF Symbol: forward.end.fill
 		},
-		-- media = {
+		-- icons.lua に追加
+		brew = "󰿈", -- Nerd Fonts: mdi-beer (または好みのアイコン)
+		package = "󰏗", -- mdi-package-variant
+		update = "󰚰", -- mdi-update	-- media = {
 		-- 	back = "",
 		-- 	forward = "",
 		-- 	play_pause = "",

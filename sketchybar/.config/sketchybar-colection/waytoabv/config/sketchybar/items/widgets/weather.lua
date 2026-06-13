@@ -17,6 +17,7 @@ local weather_icon = sbar.add("item", "widgets.weather.icon", {
 	label = {
 		font = {
 			family = settings.font.numbers,
+			style = settings.font.style_map["Semibold"],
 		},
 		string = "...°",
 	},
