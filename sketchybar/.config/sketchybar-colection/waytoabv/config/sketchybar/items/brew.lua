@@ -30,6 +30,11 @@ local brew
 --  モジュールレベルの brew を直接参照するため引数なし
 -- ------------------------------------------------------------------ --
 local function update_display()
+	-- まだ brew オブジェクトが登録されていなければスキップ
+	if not brew then
+		return
+	end
+
 	local count = #state.outdated
 
 	if state.checking then
@@ -42,12 +47,12 @@ local function update_display()
 
 	if count == 0 then
 		brew:set({
-			icon = { string = icons.brew, color = colors.green },
+			icon = { string = icons.package, color = colors.green },
 			label = { string = "最新", color = colors.green },
 		})
 	else
 		brew:set({
-			icon = { string = icons.brew, color = colors.yellow },
+			icon = { string = icons.update, color = colors.yellow },
 			label = { string = count .. " 件", color = colors.yellow },
 		})
 	end
@@ -60,32 +65,39 @@ local function fetch_outdated()
 	state.checking = true
 	update_display()
 
-	local brew_cmd = "/opt/homebrew/bin/brew"
-
-	-- --json でパース（--verbose は brew の内部バグでエラーになるため使わない）
-	sbar.exec(brew_cmd .. " outdated --json 2>&1", function(output)
+	-- 環境変数を明示し、--cached を付与することで一瞬でチェックを終わらせます
+	-- local cmd =
+	-- 	"env PATH='/opt/homebrew/bin:/usr/local/bin:$PATH' HOMEBREW_NO_ANALYTICS=1 /opt/homebrew/bin/brew outdated --json 2>&1"
+	local brew_cmd = "HOMEBREW_NO_ANALYTICS=1 /opt/homebrew/bin/brew"
+	local cmd = string.format('/bin/zsh -c "%s outdated --json" 2>&1', brew_cmd)
+	sbar.exec(cmd, function(output)
 		local log = io.open("/tmp/sketchybar_brew_debug.log", "w")
 		if log then
 			log:write("=== raw output ===\n")
-			log:write(output .. "\n")
+			log:write((output or "nil") .. "\n")
 			log:write("\n=== parsed packages ===\n")
 		end
 
 		state.outdated = {}
 
-		-- formulae をパース: "name": "xxx" の次の installed_versions と current_version を取得
-		for name, installed, current in
-			output:gmatch(
-				'"name":%s*"([^"]+)"[^{]-"installed_versions":%s*%[%s*"([^"]+)"[^%]]*%][^}]-"current_version":%s*"([^"]+)"'
-			)
-		do
-			table.insert(state.outdated, {
-				name = name,
-				current = installed,
-				new = current,
-			})
-			if log then
-				log:write("  OK: " .. name .. " " .. installed .. " -> " .. current .. "\n")
+		-- output が空、または nil の場合は解析をスキップ
+		if output and output ~= "" and not output:match("Error:") then
+			-- 2ステップパース処理
+			for package_json in output:gmatch("{(.-)}") do
+				local name = package_json:match('"name"%s*:%s*"([^"]+)"')
+				local installed = package_json:match('"installed_versions"%s*:%s*%[%s*"([^"]+)"')
+				local current = package_json:match('"current_version"%s*:%s*"([^"]+)"')
+
+				if name and installed and current then
+					table.insert(state.outdated, {
+						name = name,
+						current = installed,
+						new = current,
+					})
+					if log then
+						log:write("  OK: " .. name .. " " .. installed .. " -> " .. current .. "\n")
+					end
+				end
 			end
 		end
 
@@ -149,10 +161,10 @@ brew = sbar.add("item", "brew", {
 
 	-- 12 時間ごとに自動チェック用のトリガー
 	update_freq = CHECK_INTERVAL,
-	script = "$CONFIG_DIR/items/brew.lua", -- 自身を再実行
+	script = "~/.config/sketchybar/items/brew.lua", -- 自身を再実行
 })
 
--- ポップアップの開閉状態を Lua 側で管理（POPUP_DRAWING 環境変数は不安定なため使わない）
+-- ポップアップの開閉状態を Lua 側で管理
 local popup_open = false
 
 -- ------------------------------------------------------------------ --
@@ -160,11 +172,9 @@ local popup_open = false
 -- ------------------------------------------------------------------ --
 brew:subscribe("mouse.clicked", function(env)
 	if popup_open then
-		-- 閉じる
 		popup_open = false
 		brew:set({ popup = { drawing = false } })
 	else
-		-- 開く
 		popup_open = true
 		brew_widget.render(state.outdated)
 		brew:set({ popup = { drawing = true } })
@@ -180,23 +190,17 @@ brew:subscribe("mouse.exited.global", function(env)
 	end
 end)
 
--- ------------------------------------------------------------------ --
---  定期実行（update_freq が発火したとき）
--- ------------------------------------------------------------------ --
+-- 定期実行（update_freq が発火したとき）
 brew:subscribe("routine", function(_)
 	fetch_outdated()
 end)
 
--- ------------------------------------------------------------------ --
---  外部トリガー "brew_update"（brew upgrade 完了後などに発火）
--- ------------------------------------------------------------------ --
+-- 外部トリガー "brew_update"（brew upgrade 完了後などに発火）
 brew:subscribe("brew_update", function(_)
 	fetch_outdated()
 end)
 
--- ------------------------------------------------------------------ --
---  起動時に即チェック
--- ------------------------------------------------------------------ --
+-- 起動時に即チェック
 brew:subscribe("system_woke", function(_)
 	fetch_outdated()
 end)
