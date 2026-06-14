@@ -1,7 +1,7 @@
-local colors = require("colors")
 local settings = require("settings")
 
 local front_app = sbar.add("item", "front_app", {
+	padding_left = -2,
 	display = "active",
 	icon = { drawing = false },
 	label = {
@@ -14,9 +14,14 @@ local front_app = sbar.add("item", "front_app", {
 })
 
 front_app:subscribe("front_app_switched", function(env)
-	front_app:set({ label = { string = env.INFO } })
+	front_app:set({
+		label = {
+			---@type number
+			string = env.INFO,
+		},
+	})
 end)
 
-front_app:subscribe("mouse.clicked", function(env)
+front_app:subscribe("mouse.clicked", function(_)
 	sbar.trigger("swap_menus_and_spaces")
 end)

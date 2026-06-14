@@ -3,7 +3,7 @@ local colors = require("colors")
 
 local WTTR_URL = "https://wttr.in/?format=%t&m"
 
-local weather = sbar.add("item", "weather", {
+local weather = sbar.add("item", "center.weather", {
 	position = "center",
 	icon = {
 		string = "􀆭",
@@ -11,9 +11,9 @@ local weather = sbar.add("item", "weather", {
 		padding_left = 5,
 		padding_right = 2,
 		font = {
-			family = settings.font.text,
+			family = settings.font.numbers,
 			style = settings.font.style_map["Bold"],
-			size = 15.0,
+			size = 14.0,
 		},
 	},
 	label = {
@@ -22,9 +22,9 @@ local weather = sbar.add("item", "weather", {
 		padding_left = 2,
 		padding_right = 6,
 		font = {
-			family = settings.font.text,
+			family = settings.font.numbers,
 			style = settings.font.style_map["Bold"],
-			size = 15.0,
+			size = 14.0,
 		},
 	},
 	update_freq = 1800,
@@ -34,9 +34,7 @@ local function update()
 	sbar.exec("curl -s --max-time 5 '" .. WTTR_URL .. "'", function(out)
 		local temp = out and out:gsub("^%s*(.-)%s*$", "%1") or ""
 		if temp ~= "" and not temp:lower():find("unknown") then
-			weather:set({
-				label = { string = temp },
-			})
+			weather:set({ label = { string = temp } })
 		end
 	end)
 end

@@ -11,15 +11,3 @@ function menubar_section(items)
 		},
 	})
 end
-
-function menubar_section2(items)
-	local _ = sbar.add("bracket2", items, {
-		background = {
-			color = colors.bar.bg,
-			corner_radius = 16,
-			height = 28,
-			border_width = 1,
-			border_color = colors.bar.border,
-		},
-	})
-end

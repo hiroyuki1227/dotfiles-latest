@@ -11,7 +11,7 @@ local playpause = sbar.add("item", "center.media.playpause", {
 		string = icons.media.play,
 		font = {
 			family = settings.font.text,
-			style = settings.font.style_map["Semibold"],
+			style = settings.font.style_map["Bold"],
 			size = 14,
 		},
 		color = colors.with_alpha(colors.accent, 0.45),
@@ -63,7 +63,6 @@ local media = sbar.add("item", "center.media", {
 		horizontal = true,
 		background = {
 			color = colors.popup.bg,
-			-- color = colors.transparent,
 			corner_radius = 9,
 			border_width = 1,
 			border_color = colors.popup.border,
@@ -97,7 +96,7 @@ local popup_title = sbar.add("item", "popup.center.media.title", {
 		string = "",
 		font = {
 			family = settings.font.text,
-			style = settings.font.style_map["Semibold"],
+			style = settings.font.style_map["Bold"],
 			size = 14,
 		},
 		color = 0xffffffff,
@@ -113,7 +112,7 @@ local popup_artist = sbar.add("item", "popup.center.media.artist", {
 		string = "",
 		font = {
 			family = settings.font.text,
-			style = settings.font.style_map["Semibold"],
+			style = settings.font.style_map["Bold"],
 			size = 14,
 		},
 		color = colors.with_alpha(colors.white, 0.55),
@@ -145,7 +144,7 @@ local popup_playpause = sbar.add("item", "popup.center.media.playpause", {
 		string = icons.media.play,
 		font = {
 			family = settings.font.text,
-			style = settings.font.style_map["Semibold"],
+			style = settings.font.style_map["Bold"],
 			size = 14,
 		},
 		color = colors.accent,
@@ -162,7 +161,7 @@ local popup_next = sbar.add("item", "popup.center.media.next", {
 		string = icons.media.forward,
 		font = {
 			family = settings.font.text,
-			style = settings.font.style_map["Semibold"],
+			style = settings.font.style_map["Bold"],
 			size = 14,
 		},
 		color = colors.with_alpha(colors.accent, 0.85),

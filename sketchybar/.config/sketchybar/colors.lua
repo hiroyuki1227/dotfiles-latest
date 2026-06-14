@@ -28,8 +28,7 @@ local themes = {
 		transparent = 0x00000000,
 		accent = 0xffeed49f,
 
-		--bar = { bg = 0xff181926, border = 0xff45475a },
-		bar = { bg = 0x4a181a22, border = 0x2ab0b8cc },
+		bar = { bg = 0xff181926, border = 0xff45475a },
 		popup = { bg = 0xf0181926, border = 0xff45475a },
 		bg1 = 0x60000000,
 		bg2 = 0x90000000,
@@ -63,8 +62,7 @@ local themes = {
 		transparent = 0x00000000,
 		accent = 0xffebbcba,
 
-		bar = { bg = 0x4a181a22, border = 0x2ab0b8cc },
-		-- bar = { bg = 0xcc0b0a10, border = 0xff26233a },
+		bar = { bg = 0xcc0b0a10, border = 0xff26233a },
 		popup = { bg = 0xf01f1d2e, border = 0xff26233a },
 		bg1 = 0x601f1d2e,
 		bg2 = 0x901f1d2e,
@@ -98,8 +96,7 @@ local themes = {
 		transparent = 0x00000000,
 		accent = 0xffea9a97,
 
-		-- bar = { bg = 0xd02a273f, border = 0xff393552 },
-		bar = { bg = 0x4a181a22, border = 0x2ab0b8cc },
+		bar = { bg = 0xd02a273f, border = 0xff393552 },
 		popup = { bg = 0xf02a273f, border = 0xff393552 },
 		bg1 = 0x602a273f,
 		bg2 = 0x902a273f,
@@ -133,8 +130,7 @@ local themes = {
 		transparent = 0x00000000,
 		accent = 0xffcba6f7,
 
-		-- bar = { bg = 0xff11111b, border = 0xffcba6f7 },
-		bar = { bg = 0x4a181a22, border = 0x2ab0b8cc },
+		bar = { bg = 0xff11111b, border = 0xffcba6f7 },
 		popup = { bg = 0xff11111b, border = 0xffcba6f7 },
 		bg1 = 0x33ffffff,
 		bg2 = 0x55ffffff,
@@ -169,8 +165,7 @@ local themes = {
 		transparent = 0x00000000,
 		accent = 0xffeb96b9,
 
-		-- bar = { bg = 0x00000000, border = 0x00000000 },
-		bar = { bg = 0x4a181a22, border = 0x2ab0b8cc },
+		bar = { bg = 0x00000000, border = 0x00000000 },
 		popup = { bg = 0xff0f1117, border = 0xffeb96b9 },
 		-- bg1 = 0xff0f1117,
 		-- bg1 = 0xff040c0c,
@@ -208,8 +203,7 @@ local themes = {
 		transparent = 0x00000000,
 		accent = 0xffe63946,
 
-		bar = { bg = 0x4a181a22, border = 0x2ab0b8cc },
-		-- bar = { bg = 0x00000000, border = 0x00000000 },
+		bar = { bg = 0x00000000, border = 0x00000000 },
 		popup = { bg = 0xff0a0606, border = 0xffe63946 },
 		bg1 = 0xff000000,
 		bg2 = 0xff200a0a,
@@ -230,40 +224,3 @@ theme.with_alpha = function(color, alpha)
 end
 
 return theme
---
--- {
--- 	black = 0xff181819,
--- 	white = 0xfff8f8f2,
--- 	red = 0xffFF9580,
--- 	green = 0xff8AFF80,
--- 	blue = 0xff5199ba,
--- 	yellow = 0xffFFFF80,
--- 	orange = 0xffFFCA80,
--- 	pink = 0xffFF80BF,
--- 	purple = 0xff9580FF,
--- 	other_purple = 0xff302c45,
--- 	cyan = 0xff80FFEA,
--- 	grey = 0xff7f8490,
--- 	dirty_white = 0xc8cad3f5,
--- 	dark_grey = 0xff2b2736,
--- 	lightblack = 0x8a262323,
--- 	transparent = 0x00000000,
---
--- 	bar = {
--- 		bg = 0xff11111b,
--- 		border = 0xff2c2e34,
--- 	},
--- 	popup = {
--- 		bg = 0xc02c2e34,
--- 		border = 0xff74c7ec,
--- 	},
--- 	bg1 = 0x603c3e4f,
--- 	bg2 = 0x60494d64,
---
--- 	with_alpha = function(color, alpha)
--- 		if alpha > 1.0 or alpha < 0.0 then
--- 			return color
--- 		end
--- 		return (color & 0x00ffffff) | (math.floor(alpha * 255.0) << 24)
--- 	end,
--- }

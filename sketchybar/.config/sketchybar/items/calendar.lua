@@ -2,18 +2,17 @@ local settings = require("settings")
 local colors = require("colors")
 
 -- Date right beside the time.
-local date = sbar.add("item", "date", {
+local date = sbar.add("item", "center.date", {
 	position = "center",
 	icon = {
-		string = os.date("%a, %b %d, %Y"),
+		string = os.date("%b %d %a"),
 		color = colors.white,
 		padding_left = 0,
 		padding_right = 0,
 		font = {
-			-- family = settings.font.text,
 			family = settings.font.numbers,
 			style = settings.font.style_map["Bold"],
-			size = 15.0,
+			size = 14.0,
 		},
 	},
 	label = { drawing = false },
@@ -21,7 +20,7 @@ local date = sbar.add("item", "date", {
 })
 
 -- Time sits just right of the notch spacer.
-local time = sbar.add("item", "time", {
+local time = sbar.add("item", "center.time", {
 	position = "center",
 	icon = {
 		string = os.date("%H:%M"),
@@ -29,10 +28,9 @@ local time = sbar.add("item", "time", {
 		padding_left = 5,
 		padding_right = 5,
 		font = {
-			-- family = settings.font.text,
 			family = settings.font.numbers,
 			style = settings.font.style_map["Bold"],
-			size = 15.0,
+			size = 14.0,
 		},
 	},
 	label = { drawing = false },
@@ -42,6 +40,7 @@ local time = sbar.add("item", "time", {
 time:subscribe({ "forced", "routine", "system_woke" }, function(env)
 	time:set({ icon = { string = os.date("%H:%M") } })
 end)
+
 date:subscribe({ "forced", "routine", "system_woke" }, function(env)
-	date:set({ icon = { string = os.date("%a, %b %d, %Y") } })
+	date:set({ icon = { string = os.date("%a %b %d %Y") } })
 end)

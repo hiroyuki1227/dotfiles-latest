@@ -221,8 +221,7 @@ for i, workspace in ipairs(workspaces) do
 		background = {
 			color = colors.bg2,
 			corner_radius = 16,
-			-- height = 19,
-			height = 28,
+			height = 19,
 		},
 		padding_left = 6,
 		padding_right = 0,

@@ -7,8 +7,9 @@ local icons = {
 		apple = "􀣺",
 		gear = "􀍟",
 		cpu = "􀫥",
+		memory = "􀫦",
+		disk = "􀤂",
 		clipboard = "􀉄",
-		calendar = "􀉉 ",
 
 		switch = {
 			on = "􁏮",
@@ -36,19 +37,14 @@ local icons = {
 			disconnected = "􀙈",
 			router = "􁓤",
 		},
+		ethernet = "󰈀",
 		media = {
-			back = "􀊎", -- SF Symbol: backward.end.fill
-			play_pause = "􀊔", -- SF Symbol: playpause.fill
-			forward = "􀊐", -- SF Symbol: forward.end.fill
+			back = "􀊊",
+			forward = "􀊌",
+			play_pause = "􀊈",
+			play = "􀊃",
+			pause = "􀊆",
 		},
-		-- icons.lua に追加
-		brew = "󰿈", -- Nerd Fonts: mdi-beer (または好みのアイコン)
-		package = "󰏗", -- mdi-package-variant
-		update = "󰚰", -- mdi-update	-- media = {
-		-- 	back = "􀊊",
-		-- 	forward = "􀊌",
-		-- 	play_pause = "􀊈",
-		-- },
 	},
 
 	-- Alternative NerdFont icons
@@ -58,14 +54,14 @@ local icons = {
 		apple = "",
 		gear = "",
 		cpu = "",
-		clipboard = "",
-		calendar = "􀉉 ",
+		memory = "",
+		disk = "󰋊",
+		clipboard = "Missing Icon",
 
 		switch = {
 			on = "󱨥",
 			off = "󱨦",
 		},
-
 		volume = {
 			_100 = "",
 			_66 = "",
@@ -79,28 +75,23 @@ local icons = {
 			_50 = "",
 			_25 = "",
 			_0 = "",
-			charging = "󰂄",
+			charging = "",
 		},
 		wifi = {
 			upload = "",
 			download = "",
 			connected = "󰖩",
 			disconnected = "󰖪",
-			router = "󱂇",
+			router = "Missing Icon",
 		},
+		ethernet = "󰈀",
 		media = {
-			back = "􀊎", -- SF Symbol: backward.end.fill
-			play_pause = "􀊔", -- SF Symbol: playpause.fill
-			forward = "􀊐", -- SF Symbol: forward.end.fill
+			back = "",
+			forward = "",
+			play_pause = "",
+			play = "",
+			pause = "",
 		},
-		-- icons.lua に追加
-		brew = "󰿈", -- Nerd Fonts: mdi-beer (または好みのアイコン)
-		package = "󰏗", -- mdi-package-variant
-		update = "󰚰", -- mdi-update	-- media = {
-		-- 	back = "",
-		-- 	forward = "",
-		-- 	play_pause = "",
-		-- },
 	},
 }
 
