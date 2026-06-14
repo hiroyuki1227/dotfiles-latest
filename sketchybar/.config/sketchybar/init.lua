@@ -11,8 +11,6 @@ require("default")
 require("items")
 sbar.end_config()
 
--- sbar.exec("pkill -f 'ime.sh' 2>/dev/null; '$HOME/.config/sketchybar/ime.sh' &")
---
--- Run the event loop of the sketchybar module (without this there will be no
--- callback functions executed in the lua module)
+sbar.hotload(true)
+
 sbar.event_loop()
