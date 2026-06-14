@@ -1,7 +1,0 @@
-require("items.apple")
-require("items.calendar")
-require("items.messages")
-require("items.widgets")
-require("items.front_apps")
-require("items.spaces_minimal")
-require("items.media")
