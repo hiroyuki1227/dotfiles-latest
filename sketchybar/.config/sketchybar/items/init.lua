@@ -65,26 +65,57 @@ local logical_width = tonumber(res_raw:match("(%d+)")) or 0
 --     ノッチ物理幅 ≒ 420px → 論理 420 ÷ 2.0 = 210pt
 -- ──────────────────────────────────────────────
 local MODELS = {
-	-- 14インチ MBP: 物理 3024 × 1964、ノッチ物理幅 ≒ 420px
-	["MacBookPro18,3"] = { phys_w = 3024, notch_phys = 420 },
-	["MacBookPro18,4"] = { phys_w = 3024, notch_phys = 420 },
-	["MacBookPro19,2"] = { phys_w = 3024, notch_phys = 420 },
-	["MacBookPro19,3"] = { phys_w = 3024, notch_phys = 420 },
-	["MacBookPro21,3"] = { phys_w = 3024, notch_phys = 420 },
-	["MacBookPro21,4"] = { phys_w = 3024, notch_phys = 420 },
-	-- 16インチ MBP: 物理 3456 × 2234、ノッチ物理幅 ≒ 460px
-	["MacBookPro18,1"] = { phys_w = 3456, notch_phys = 460 },
-	["MacBookPro18,2"] = { phys_w = 3456, notch_phys = 460 },
-	["MacBookPro19,0"] = { phys_w = 3456, notch_phys = 460 },
-	["MacBookPro19,1"] = { phys_w = 3456, notch_phys = 460 },
-	["MacBookPro21,1"] = { phys_w = 3456, notch_phys = 460 },
-	["MacBookPro21,2"] = { phys_w = 3456, notch_phys = 460 },
-	-- MacBook Air 13" M2/M3: 物理 2560 × 1664、ノッチ物理幅 ≒ 320px
-	["MacBookAir14,2"] = { phys_w = 2560, notch_phys = 320 },
-	["MacBookAir15,3"] = { phys_w = 2560, notch_phys = 320 },
-	-- MacBook Air 15" M2/M3: 物理 2880 × 1864、ノッチ物理幅 ≒ 360px
-	["MacBookAir15,4"] = { phys_w = 2880, notch_phys = 360 },
-	["MacBookAir16,1"] = { phys_w = 2880, notch_phys = 360 },
+	-- ── MacBook Pro 14インチ ──────────────────────────────────
+	-- 物理解像度: 3024 × 1964、ノッチ物理幅 ≒ 420px
+	-- M1 Pro/Max (2021)
+	["Mac18,3"] = { phys_w = 3024, notch_phys = 420 },
+	["Mac18,4"] = { phys_w = 3024, notch_phys = 420 },
+	-- M2 Pro/Max (2023) ← Mac14,9 はここ
+	["Mac14,5"] = { phys_w = 3024, notch_phys = 420 },
+	["Mac14,9"] = { phys_w = 3024, notch_phys = 420 },
+	-- M3 / M3 Pro / M3 Max (2023)
+	["Mac15,3"] = { phys_w = 3024, notch_phys = 420 },
+	["Mac15,6"] = { phys_w = 3024, notch_phys = 420 },
+	["Mac15,8"] = { phys_w = 3024, notch_phys = 420 },
+	["Mac15,10"] = { phys_w = 3024, notch_phys = 420 },
+	-- M4 / M4 Pro / M4 Max (2024)
+	["Mac16,1"] = { phys_w = 3024, notch_phys = 420 },
+	["Mac16,8"] = { phys_w = 3024, notch_phys = 420 },
+	["Mac16,6"] = { phys_w = 3024, notch_phys = 420 },
+
+	-- ── MacBook Pro 16インチ ──────────────────────────────────
+	-- 物理解像度: 3456 × 2234、ノッチ物理幅 ≒ 460px
+	-- M1 Pro/Max (2021)
+	["Mac18,1"] = { phys_w = 3456, notch_phys = 460 },
+	["Mac18,2"] = { phys_w = 3456, notch_phys = 460 },
+	-- M2 Pro/Max (2023)
+	["Mac14,6"] = { phys_w = 3456, notch_phys = 460 },
+	["Mac14,10"] = { phys_w = 3456, notch_phys = 460 },
+	-- M3 Pro/Max (2023)
+	["Mac15,7"] = { phys_w = 3456, notch_phys = 460 },
+	["Mac15,9"] = { phys_w = 3456, notch_phys = 460 },
+	["Mac15,11"] = { phys_w = 3456, notch_phys = 460 },
+	-- M4 Pro/Max (2024)
+	["Mac16,5"] = { phys_w = 3456, notch_phys = 460 },
+	["Mac16,7"] = { phys_w = 3456, notch_phys = 460 },
+
+	-- ── MacBook Air 13インチ ──────────────────────────────────
+	-- 物理解像度: 2560 × 1664、ノッチ物理幅 ≒ 310px
+	-- M2 (2022)
+	["Mac14,2"] = { phys_w = 2560, notch_phys = 310 },
+	-- M3 (2024) ← Mac15,12 はここ
+	["Mac15,12"] = { phys_w = 2560, notch_phys = 310 },
+	-- M4 (2025)
+	["Mac16,12"] = { phys_w = 2560, notch_phys = 310 },
+
+	-- ── MacBook Air 15インチ ──────────────────────────────────
+	-- 物理解像度: 2880 × 1864、ノッチ物理幅 ≒ 360px
+	-- M2 (2023)
+	["Mac14,15"] = { phys_w = 2880, notch_phys = 360 },
+	-- M3 (2024)
+	["Mac15,13"] = { phys_w = 2880, notch_phys = 360 },
+	-- M4 (2025)
+	["Mac16,13"] = { phys_w = 2880, notch_phys = 360 },
 }
 
 local notch_width = 220 -- フォールバック
