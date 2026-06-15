@@ -45,6 +45,9 @@ local icons = {
 			play = "􀊃",
 			pause = "􀊆",
 		},
+		brew = "󰿈", -- Nerd Fonts: mdi-beer (または好みのアイコン)
+		package = "󰏗", -- mdi-package-variant
+		update = "󰚰", -- mdi-update	-- media = {
 	},
 
 	-- Alternative NerdFont icons
@@ -92,6 +95,9 @@ local icons = {
 			play = "",
 			pause = "",
 		},
+		brew = "󰿈", -- Nerd Fonts: mdi-beer (または好みのアイコン)
+		package = "󰏗", -- mdi-package-variant
+		update = "󰚰", -- mdi-update	-- media = {
 	},
 }
 
