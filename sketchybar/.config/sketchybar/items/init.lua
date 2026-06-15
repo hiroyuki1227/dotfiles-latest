@@ -164,16 +164,18 @@ sbar.add("item", "center.external_gap", {
 })
 
 -- ──────────────── CENTER — RIGHT of notch ─────────────────────
-require("items.weather")
-require("items.calendar")
-require("items.brew")
+require("items.widgets.weather")
 
 -- ─────────────────────────── RIGHT ────────────────────────────
+require("items.calendar")
 require("items.widgets.input")
+require("items.brew")
 require("items.widgets.battery")
 require("items.widgets.volume")
 require("items.widgets.wifi")
 require("items.widgets.bluetooth")
+-- require("items.widgets.ram")
+require("items.widgets.cpu")
 
 -- ══════════════════════════════════════════════════════════════
 -- BRACKETS — drawn after all items are created
@@ -194,15 +196,15 @@ sbar.add("bracket", "bracket.left", { "apple.logo", "/space\\..*/", "spaces.righ
 -- Center notch pill: media — [notch] — time + date
 -- The pill background spans both halves; the notch hardware creates the visual gap.
 sbar.add("bracket", "bracket.media", {
-	"/^center\\.media.*/",
 	"center.notch",
-	"center.weather",
-	"center.time",
-	"center.date",
+	"/^center\\.media.*/",
+	"/^widgets\\.weather.*/",
+	-- "center.time",
+	-- "center.date",
 }, {
 	background = {
-		color = colors.bg3,
-		corner_radius = 4,
+		color = colors.bg0,
+		corner_radius = 16,
 		height = 24,
 		border_width = 0,
 	},
@@ -210,12 +212,16 @@ sbar.add("bracket", "bracket.media", {
 
 -- Right pill: WiFi + Bluetooth + Volume + Battery
 sbar.add("bracket", "bracket.right", {
-	"brew",
-	"input_source",
+	-- "input_source",
+	"widgets.cpu",
 	"widgets.wifi",
 	"widgets.bluetooth",
 	"widgets.volume",
 	"widgets.battery",
+	-- "/'brew\\.*/",
+	-- "center.weather",
+	-- "center.time",
+	-- "center.date",
 }, {
 	background = {
 		color = colors.bg1,

@@ -1,69 +1,41 @@
 #!/bin/bash
-# 現在の日時を取得（東京時間）
-current_date=$(date +"%Y-%m-%d")
 
-# Open-Meteo API から東京の天気データを取得
-# - latitude/longitude: 東京
-# - current: 現在の気象データ
-# - wind_speed_10m_unit: km/h (元スクリプトに合わせる)
-# - timezone: Asia/Tokyo (時刻をJSTで返す)
-weather_data=$(curl -s \
-  "https://api.open-meteo.com/v1/forecast\
-?latitude=35.6895\
-&longitude=139.6917\
-&current=temperature_2m,weather_code,wind_speed_10m,cloud_cover,visibility\
-&wind_speed_unit=kmh\
-&timezone=Asia%2FTokyo")
+# Aktuelles Datum bestimmen
+current_date=$(date -u +"%Y-%m-%d")
 
-# 各フィールドを抽出
-temperature=$(echo "$weather_data" | jq -r '.current.temperature_2m')
-weather_code=$(echo "$weather_data" | jq -r '.current.weather_code')
-wind_speed=$(echo "$weather_data" | jq -r '.current.wind_speed_10m')
-cloud_cover=$(echo "$weather_data" | jq -r '.current.cloud_cover')
-visibility=$(echo "$weather_data" | jq -r '.current.visibility')
-current_time=$(echo "$weather_data" | jq -r '.current.time')
+# Wetterdaten von der API abrufen
+weather_data=$(curl -s "https://api.brightsky.dev/weather?lat=50.801&lon=12.7133&date=${current_date}")
 
-# ---------------------------------------------------------------------------
-# WMO Weather Code → condition / icon に変換
-# (BrightSky の condition/icon に相当するマッピング)
-# https://open-meteo.com/en/docs#weathervariables
-# ---------------------------------------------------------------------------
-get_condition_and_icon() {
-  local code=$1
-  case $code in
-  0) echo "clear-day|clear-day" ;;
-  1) echo "mostly-clear|partly-cloudy-day" ;;
-  2) echo "partly-cloudy|partly-cloudy-day" ;;
-  3) echo "overcast|cloudy" ;;
-  45 | 48) echo "fog|fog" ;;
-  51 | 53 | 55) echo "drizzle|rain" ;;
-  56 | 57) echo "freezing-drizzle|sleet" ;;
-  61 | 63 | 65) echo "rain|rain" ;;
-  66 | 67) echo "freezing-rain|sleet" ;;
-  71 | 73 | 75 | 77) echo "snow|snow" ;;
-  80 | 81 | 82) echo "rain-showers|rain" ;;
-  85 | 86) echo "snow-showers|snow" ;;
-  95) echo "thunderstorm|thunderstorm" ;;
-  96 | 99) echo "thunderstorm-hail|thunderstorm" ;;
-  *) echo "unknown|unknown" ;;
-  esac
-}
+# Aktuelle Zeit in UTC bestimmen
+current_time=$(date -u +"%Y-%m-%dT%H:%M:%S%z")
+current_minute=$(date -u +"%M")
 
-mapping=$(get_condition_and_icon "$weather_code")
-condition="${mapping%%|*}"
-icon="${mapping##*|}"
+# Berechne die richtige volle Stunde basierend auf der aktuellen Minute
+if [ "$current_minute" -le 30 ]; then
+  correct_hour=$(date -u +"%Y-%m-%dT%H:00:00+00:00")
+else
+  correct_hour=$(date -u -r $(( $(date -u +%s) + 3600 )) +"%Y-%m-%dT%H:00:00+00:00")
+fi
 
-# 視程をメートル→キロメートルに変換して表示
-visibility_km=$(echo "$visibility" | awk '{printf "%.1f km", $1 / 1000}')
+# Daten extrahieren
+temperature=$(echo "$weather_data" | jq -r --arg correct_hour "$correct_hour" '
+    .weather[] | select(.timestamp == $correct_hour) | .temperature')
+icon=$(echo "$weather_data" | jq -r --arg correct_hour "$correct_hour" '
+    .weather[] | select(.timestamp == $correct_hour) | .icon')
+condition=$(echo "$weather_data" | jq -r --arg correct_hour "$correct_hour" '
+    .weather[] | select(.timestamp == $correct_hour) | .condition')
+wind_speed=$(echo "$weather_data" | jq -r --arg correct_hour "$correct_hour" '
+    .weather[] | select(.timestamp == $correct_hour) | .wind_speed')
+cloud_cover=$(echo "$weather_data" | jq -r --arg correct_hour "$correct_hour" '
+    .weather[] | select(.timestamp == $correct_hour) | .cloud_cover')
+visibility=$(echo "$weather_data" | jq -r --arg correct_hour "$correct_hour" '
+    .weather[] | select(.timestamp == $correct_hour) | .visibility')
 
-# ---------------------------------------------------------------------------
-# 結果を出力（元スクリプトのフォーマットに合わせる）
-# ---------------------------------------------------------------------------
-echo "Station Name: Tokyo, Japan"
+# Ergebnisse auf separaten Zeilen ausgeben
+echo "Station Name: St. Egdidien/Kuhschnappel"
 echo "Condition: ${condition}"
 echo "Icon: ${icon}"
 echo "Temperature: ${temperature}°C"
-echo "Wind Speed: ${wind_speed} km/h"
-echo "Cloud Cover: ${cloud_cover}%"
-echo "Visibility: ${visibility_km}"
-echo "Time: ${current_time} JST"
+echo "Wind Speed: ${wind_speed}"
+echo "Cloud Cover: ${cloud_cover}"
+echo "Visibility: ${visibility}"

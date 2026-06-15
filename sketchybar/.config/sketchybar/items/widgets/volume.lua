@@ -1,66 +1,119 @@
-local icons = require("icons")
 local colors = require("colors")
+local icons = require("icons")
 local settings = require("settings")
 
-local volume = sbar.add("item", "widgets.volume", {
+local volume_widget = sbar.add("item", "widgets.volume", {
 	position = "right",
 	icon = {
-		string = icons.volume._100,
+		string = icons.volume._0,
+		width = 35,
+		align = "center",
 		font = {
-			style = settings.font.style_map["Bold"],
+			style = settings.font.style_map["Regular"],
 			size = 14.0,
 		},
-		color = colors.green,
-		padding_left = 8,
-		padding_right = 4,
+		padding_left = 0,
+		padding_right = 0,
 	},
 	label = {
-		string = "--%",
+		string = "",
+		width = 0,
 		font = {
 			family = settings.font.numbers,
 			style = settings.font.style_map["Bold"],
 			size = 14.0,
 		},
-		color = colors.white,
-		padding_right = 0,
+		padding_left = 0,
+		padding_right = 8,
 	},
-	updates = true,
+	background = { color = colors.bg1 },
 })
 
-local function pick_icon(volume_pct)
-	if volume_pct > 60 then
-		return icons.volume._100
-	elseif volume_pct > 30 then
-		return icons.volume._66
-	elseif volume_pct > 10 then
-		return icons.volume._33
-	elseif volume_pct > 0 then
-		return icons.volume._10
-	end
-	return icons.volume._0
+local show_volume_percent = false
+
+volume_widget:subscribe("volume_change", function(env)
+	local volume = tonumber(env.INFO)
+	local icon = icons.volume._0
+	local icon_width = 35
+
+	sbar.exec("SwitchAudioSource -t output -c", function(result)
+		local Current_output_device = result:sub(1, -2)
+
+		if Current_output_device == "AirPods Max " then
+			icon = "􀺹"
+		elseif Current_output_device == "AirPods2" or Current_output_device == "AirPods von Anna" then
+			icon = "􀟥"
+		elseif Current_output_device == "Arctis Nova Pro Wireless" then
+			icon = "􀑈"
+		elseif Current_output_device == "AirPods4" then
+			icon = "􁄡"
+		elseif Current_output_device == "Ear (2)" then
+			icon = "􀪷"
+		elseif Current_output_device == "iD4" then
+			icon = "􀝎"
+		else
+			if volume > 70 then
+				icon = icons.volume._100
+				icon_width = 35
+			elseif volume > 40 then
+				icon = icons.volume._66
+				icon_width = 33
+			elseif volume > 20 then
+				icon = icons.volume._33
+				icon_width = 31
+			elseif volume > 0 then
+				icon = icons.volume._10
+				icon_width = 30
+			else
+				icon = icons.volume._0
+				icon_width = 30
+			end
+		end
+
+		local lead = (volume < 10) and "0" or ""
+
+		volume_widget:set({
+			icon = {
+				string = icon,
+				width = icon_width,
+			},
+			label = {
+				string = lead .. volume .. "%",
+			},
+		})
+	end)
+end)
+
+local function toggle_volume_display()
+	show_volume_percent = not show_volume_percent
+	local width = show_volume_percent and "dynamic" or 0
+	sbar.animate("elastic", 10, function()
+		volume_widget:set({
+			label = { width = width },
+		})
+	end)
 end
 
-local function apply(volume_pct)
-	local lead = volume_pct < 10 and "0" or ""
-	volume:set({
-		icon = { string = pick_icon(volume_pct) },
-		label = { string = lead .. volume_pct .. "%" },
-	})
+local function show_volume_percent_if_not_permanent()
+	if not show_volume_percent then
+		sbar.animate("elastic", 10, function()
+			volume_widget:set({
+				label = { width = "dynamic" },
+			})
+		end)
+	end
 end
 
-volume:subscribe("volume_change", function(env)
-	apply(tonumber(env.INFO))
-end)
-
--- Pull the initial value on load (volume_change only fires on change).
-sbar.exec("osascript -e 'output volume of (get volume settings)'", function(out)
-	local v = tonumber(out)
-	if v then
-		apply(v)
+local function hide_volume_percent_if_not_permanent()
+	if not show_volume_percent then
+		sbar.animate("elastic", 10, function()
+			volume_widget:set({
+				label = { width = 0 },
+			})
+		end)
 	end
-end)
+end
 
-volume:subscribe("mouse.scrolled", function(env)
-	local delta = env.SCROLL_DELTA
-	sbar.exec('osascript -e "set volume output volume (output volume of (get volume settings) + ' .. delta .. ')"')
-end)
+volume_widget:subscribe("mouse.clicked", toggle_volume_display)
+volume_widget:subscribe("mouse.entered", show_volume_percent_if_not_permanent)
+volume_widget:subscribe("mouse.exited", hide_volume_percent_if_not_permanent)

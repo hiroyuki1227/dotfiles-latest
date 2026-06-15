@@ -247,7 +247,7 @@ local function fetch_outdated(force)
 			log:close()
 		end
 
-		-- state.checking = false
+		state.checking = false
 
 		if is_error then
 			brew:set({
