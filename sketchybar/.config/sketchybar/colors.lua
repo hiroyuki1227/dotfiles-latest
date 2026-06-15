@@ -203,16 +203,53 @@ local themes = {
 		transparent = 0x00000000,
 		accent = 0xffe63946,
 
-		bar = { bg = 0x00000000, border = 0x00000000 },
-		popup = { bg = 0xff0a0606, border = 0xffe63946 },
-		bg1 = 0xff000000,
+		bar = { bg = 0xa024273a, border = 0x00000000 },
+		popup = { bg = 0xff24273a, border = 0xffe63946 },
+		bg0 = 0xff000000,
 		bg2 = 0xff200a0a,
 		bg3 = 0xff2a0a0a,
+	},
+
+	original = {
+		base = 0xff1e1e2e,
+		surface = 0xff313244,
+		overlay = 0xff45475a,
+		muted = 0xff6c7086,
+		subtle = 0xff9399b2,
+		text = 0xffffffff,
+		love = 0xfff38ba8,
+		gold = 0xfff9e2af,
+		rose = 0xfff5e0dc,
+		pine = 0xff94e2d5,
+		foam = 0xff89dceb,
+		iris = 0xffcba6f7,
+		highlight_low = 0xff181825,
+		highlight_med = 0xff11111b,
+		highlight_high = 0xff313244,
+
+		black = 0xff11111b,
+		white = 0xffffffff,
+		red = 0xfff38ba8,
+		green = 0xffa6e3a1,
+		blue = 0xff89b4fa,
+		yellow = 0xfff9e2af,
+		orange = 0xfffab387,
+		magenta = 0xffcba6f7,
+		grey = 0xff939ab7, -- FelixKratz
+		transparent = 0x00000000,
+		accent = 0xffcba6f7,
+
+		bar = { bg = 0xa024273a, border = 0x00000000 },
+		popup = { bg = 0xff24273a, border = 0xffe63946 },
+		bg0 = 0x983c3e4f,
+		bg1 = 0x90494d64,
+		bg3 = 0xa024273a, -- FelixKratz bar colors
+		bg2 = 0x55ffffff,
 	},
 }
 
 -- Select the active theme here
-local active_theme = "rose_pine_moon" -- options: "catppuccin", "rose_pine", "rose_pine_moon", "neon", "aurora", "gojo"
+local active_theme = "original" -- options: "catppuccin", "rose_pine", "rose_pine_moon", "neon", "aurora", "gojo"
 
 local theme = themes[active_theme]
 

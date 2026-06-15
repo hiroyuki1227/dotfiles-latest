@@ -38,7 +38,7 @@ CORNER_RADIUS = 16
 -- Left pill: Apple logo + Aerospace workspaces
 sbar.add("bracket", "bracket.left", { "apple.logo", "/space\\..*/", "spaces.right_pad" }, {
 	background = {
-		color = colors.bg1,
+		color = colors.bg0,
 		corner_radius = CORNER_RADIUS,
 		height = 28,
 		border_width = 0,
