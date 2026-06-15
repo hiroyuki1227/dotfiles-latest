@@ -34,7 +34,68 @@ require("items.front_apps")
 require("items.media")
 
 -- ──────────────── CENTER — LEFT of notch ──────────────────────
+-- ══════════════════════════════════════════════════════════════
+-- 【動的取得】モデル × 論理解像度でノッチ幅を自動算出
+-- ══════════════════════════════════════════════════════════════
 
+-- モデル識別子を取得（例: "MacBookPro21,3"）
+local model_handle = io.popen("sysctl -n hw.model 2>/dev/null")
+local model_id = model_handle and model_handle:read("*a"):gsub("%s+", "") or ""
+if model_handle then
+	model_handle:close()
+end
+
+-- 内蔵ディスプレイの論理解像度幅を取得
+-- system_profiler は "XXXX x YYYY" 形式で返す
+local res_handle = io.popen(
+	"system_profiler SPDisplaysDataType" .. " | awk '/Built-In/ {found=1} found && /Resolution/ {print $2; exit}'"
+)
+local res_raw = res_handle and res_handle:read("*a") or ""
+if res_handle then
+	res_handle:close()
+end
+local logical_width = tonumber(res_raw:match("(%d+)")) or 0
+
+-- ──────────────────────────────────────────────
+-- ノッチの物理ピクセル幅（機種固定値）
+-- ノッチ幅(論理) = 物理幅 ÷ スケールファクタ
+--   スケールファクタ = 物理解像度幅 ÷ 論理解像度幅
+--
+-- 例) MBP 14" (物理3024px, 論理1512px) → スケール2.0
+--     ノッチ物理幅 ≒ 420px → 論理 420 ÷ 2.0 = 210pt
+-- ──────────────────────────────────────────────
+local MODELS = {
+	-- 14インチ MBP: 物理 3024 × 1964、ノッチ物理幅 ≒ 420px
+	["MacBookPro18,3"] = { phys_w = 3024, notch_phys = 420 },
+	["MacBookPro18,4"] = { phys_w = 3024, notch_phys = 420 },
+	["MacBookPro19,2"] = { phys_w = 3024, notch_phys = 420 },
+	["MacBookPro19,3"] = { phys_w = 3024, notch_phys = 420 },
+	["MacBookPro21,3"] = { phys_w = 3024, notch_phys = 420 },
+	["MacBookPro21,4"] = { phys_w = 3024, notch_phys = 420 },
+	-- 16インチ MBP: 物理 3456 × 2234、ノッチ物理幅 ≒ 460px
+	["MacBookPro18,1"] = { phys_w = 3456, notch_phys = 460 },
+	["MacBookPro18,2"] = { phys_w = 3456, notch_phys = 460 },
+	["MacBookPro19,0"] = { phys_w = 3456, notch_phys = 460 },
+	["MacBookPro19,1"] = { phys_w = 3456, notch_phys = 460 },
+	["MacBookPro21,1"] = { phys_w = 3456, notch_phys = 460 },
+	["MacBookPro21,2"] = { phys_w = 3456, notch_phys = 460 },
+	-- MacBook Air 13" M2/M3: 物理 2560 × 1664、ノッチ物理幅 ≒ 320px
+	["MacBookAir14,2"] = { phys_w = 2560, notch_phys = 320 },
+	["MacBookAir15,3"] = { phys_w = 2560, notch_phys = 320 },
+	-- MacBook Air 15" M2/M3: 物理 2880 × 1864、ノッチ物理幅 ≒ 360px
+	["MacBookAir15,4"] = { phys_w = 2880, notch_phys = 360 },
+	["MacBookAir16,1"] = { phys_w = 2880, notch_phys = 360 },
+}
+
+local notch_width = 220 -- フォールバック
+
+local spec = MODELS[model_id]
+if spec and logical_width > 0 then
+	-- スケールファクタ = 物理幅 ÷ 論理幅
+	local scale = spec.phys_w / logical_width
+	-- SketchyBarの論理pt = 物理ノッチ幅 ÷ スケールファクタ（小数点切り捨て）
+	notch_width = math.floor(spec.notch_phys / scale)
+end
 -- Invisible spacer that covers the MacBook Pro notch.
 -- Adjust 'width' if items bleed under the notch:
 --   14" MBP default res  → try 200–220
@@ -55,7 +116,7 @@ require("items.media")
 sbar.add("item", "center.notch", {
 	position = "center",
 	display = builtin_display, -- 【動的】特定された内蔵画面番号
-	width = 220,
+	width = notch_width,
 	icon = { drawing = false },
 	label = { drawing = false },
 	background = { color = colors.transparent },
