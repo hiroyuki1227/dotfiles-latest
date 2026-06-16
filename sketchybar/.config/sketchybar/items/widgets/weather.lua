@@ -1,4 +1,5 @@
---only for DWD (Deutscher Wetterdienst)
+-- 神奈川県座間市・横浜市向け天気ウィジェット
+-- データソース: Open-Meteo API (jp_weather.sh)
 
 local colors = require("colors")
 local settings = require("settings")
@@ -18,7 +19,7 @@ local weather_icon = sbar.add("item", "widgets.weather.icon", {
 		font = {
 			family = settings.font.numbers,
 			style = settings.font.style_map["Bold"],
-			size = 14.0,
+			size = 15.0,
 		},
 		string = "...°",
 	},
@@ -49,26 +50,38 @@ local function get_icon(icon)
 		["snow"] = "", -- Snow
 		["hail"] = "", -- Hail
 		["thunderstorm"] = "", -- Thunderstorm
+		-- ["clear-day"] = "", -- 晴れ
+		-- ["clear-night"] = "", -- 快晴（夜）
+		-- ["partly-cloudy-day"] = "", -- 晴れ時々曇り
+		-- ["partly-cloudy-night"] = "", -- 晴れ時々曇り（夜）
+		-- ["cloudy"] = "", -- 曇り
+		-- ["fog"] = "", -- 霧
+		-- ["wind"] = "", -- 強風
+		-- ["rain"] = "", -- 雨
+		-- ["sleet"] = "", -- みぞれ
+		-- ["snow"] = "", -- 雪
+		-- ["hail"] = "", -- 雹（ひょう）
+		-- ["thunderstorm"] = "", -- 雷雨
 	}
 
 	local mapped_icon = icons_map[icon]
-	return mapped_icon or ""
+	return mapped_icon or ""
 end
 
 local conditions_translation = {
-	["clear-day"] = "Klarer Tag",
-	["clear-night"] = "Klarer Nacht",
-	["partly-cloudy-day"] = "Teilweise bewölkt",
-	["partly-cloudy-night"] = "Teilweise bewölkt",
-	["cloudy"] = "Stark Bewölkt",
-	["dry"] = "Trocken",
-	["fog"] = "Neblig",
-	["wind"] = "Stürmisch",
-	["rain"] = "Regnerisch",
-	["sleet"] = "Schneeregen",
-	["snow"] = "Schnee",
-	["hail"] = "Hagel",
-	["thunderstorm"] = "Gewitter",
+	["clear-day"] = "晴れ",
+	["clear-night"] = "快晴（夜）",
+	["partly-cloudy-day"] = "晴れ時々曇り",
+	["partly-cloudy-night"] = "曇り時々晴れ（夜）",
+	["cloudy"] = "曇り",
+	["dry"] = "乾燥",
+	["fog"] = "霧",
+	["wind"] = "強風",
+	["rain"] = "雨",
+	["sleet"] = "みぞれ",
+	["snow"] = "雪",
+	["hail"] = "雹（ひょう）",
+	["thunderstorm"] = "雷雨",
 }
 
 local function translate_condition(condition)
@@ -76,15 +89,16 @@ local function translate_condition(condition)
 end
 
 local function fetch_weather_data(callback)
-	local command = "~/.scripts/akt_weather.sh"
+	local command = "~/.scripts/jp_weather.sh"
 	sbar.exec(command, function(output)
-		local temperature = string.match(output, "Temperature:%s*(%d+%.?%d*)°C")
+		-- %-? でマイナス気温（例: -3.5°C）に対応
+		local temperature = string.match(output, "Temperature:%s*(%-?%d+%.?%d*)°C")
 		local icon = string.match(output, "Icon:%s*([%w%-]+)")
 
 		if temperature and icon then
 			callback(temperature, icon)
 		else
-			print("Weather data extraction failed")
+			print("天気データの取得に失敗しました")
 		end
 	end)
 end
@@ -92,7 +106,7 @@ end
 weather_icon:subscribe({ "routine", "forced", "system_woke" }, function(env)
 	fetch_weather_data(function(temperature, icon)
 		if temperature and icon then
-			local rounded_temperature = math.floor(temperature + 0.5)
+			local rounded_temperature = math.floor(tonumber(temperature) + 0.5)
 
 			weather_icon:set({
 				label = {
@@ -112,6 +126,7 @@ local station_name = sbar.add("item", {
 	position = "popup." .. weather_info.name,
 	icon = {
 		font = {
+			size = 20,
 			style = settings.font.style_map["Bold"],
 		},
 		string = "􀌏",
@@ -124,7 +139,7 @@ local station_name = sbar.add("item", {
 			style = settings.font.style_map["Bold"],
 		},
 		max_chars = 30,
-		string = "????????????",
+		string = "読み込み中...",
 	},
 	background = {
 		height = 2,
@@ -137,11 +152,11 @@ local temperature = sbar.add("item", {
 	position = "popup." .. weather_info.name,
 	icon = {
 		align = "left",
-		string = "Temperatur:",
+		string = "気温：",
 		width = popup_width / 2,
 	},
 	label = {
-		string = "???",
+		string = "---",
 		width = popup_width / 2,
 		align = "right",
 	},
@@ -151,11 +166,11 @@ local condition = sbar.add("item", {
 	position = "popup." .. weather_info.name,
 	icon = {
 		align = "left",
-		string = "Wetterlage:",
+		string = "天気：",
 		width = popup_width / 2,
 	},
 	label = {
-		string = "???",
+		string = "---",
 		width = popup_width / 2,
 		align = "right",
 	},
@@ -165,11 +180,11 @@ local windspeed = sbar.add("item", {
 	position = "popup." .. weather_info.name,
 	icon = {
 		align = "left",
-		string = "Windgeschwindigkeit:",
+		string = "風速：",
 		width = popup_width / 2,
 	},
 	label = {
-		string = "???",
+		string = "---",
 		width = popup_width / 2,
 		align = "right",
 	},
@@ -179,11 +194,11 @@ local cloudcover = sbar.add("item", {
 	position = "popup." .. weather_info.name,
 	icon = {
 		align = "left",
-		string = "Bewölkung:",
+		string = "雲量：",
 		width = popup_width / 2,
 	},
 	label = {
-		string = "???",
+		string = "---",
 		width = popup_width / 2,
 		align = "right",
 	},
@@ -193,11 +208,11 @@ local visibility = sbar.add("item", {
 	position = "popup." .. weather_info.name,
 	icon = {
 		align = "left",
-		string = "Sichtweite:",
+		string = "視程：",
 		width = popup_width / 2,
 	},
 	label = {
-		string = "???",
+		string = "---",
 		width = popup_width / 2,
 		align = "right",
 	},
@@ -211,14 +226,16 @@ local function toggle_details()
 	local should_draw = weather_info:query().popup.drawing == "off"
 	if should_draw then
 		weather_info:set({ popup = { drawing = true } })
-		sbar.exec("~/.scripts/akt_weather.sh", function(result)
-			local popup_temperature = string.match(result, "Temperature:%s*(%d+%.?%d*)°C")
+		sbar.exec("~/.scripts/jp_weather.sh", function(result)
+			-- %-? でマイナス気温（例: -3.5°C）に対応
+			local popup_temperature = string.match(result, "Temperature:%s*(%-?%d+%.?%d*)°C")
 			local popup_station_name = string.match(result, "Station Name:%s*(.-)\n")
 			local popup_condition = string.match(result, "Condition:%s*(.-)\n")
 			local popup_icon = string.match(result, "Icon:%s*(.-)\n")
 			local popup_wind_speed = string.match(result, "Wind Speed:%s*(.-)\n")
 			local popup_cloud_cover = string.match(result, "Cloud Cover:%s*(.-)\n")
 			local popup_visibility = string.match(result, "Visibility:%s*(.-)\n")
+			-- local popup_visibility = string.match(result, "Visibility:%s*([^\n]+)")
 
 			popup_condition = translate_condition(popup_condition)
 
@@ -230,7 +247,7 @@ local function toggle_details()
 					string = get_icon(popup_icon),
 					font = {
 						family = settings.font.weather,
-						size = 16.0,
+						size = 20.0,
 					},
 				},
 			})
@@ -247,4 +264,251 @@ local function toggle_details()
 end
 
 weather_icon:subscribe("mouse.clicked", toggle_details)
-weather_info:subscribe("mouse.clicked", toggle_details)
+weather_info:subscribe("mouse.clicked", toggle_details) --local colors = require("colors")
+--local settings = require("settings")
+--
+--local popup_width = 300
+--
+--local weather_icon = sbar.add("item", "widgets.weather.icon", {
+--	position = "center",
+--	icon = {
+--		font = {
+--			family = settings.font.weather,
+--			size = 20.0,
+--		},
+--		string = "􀌏",
+--	},
+--	label = {
+--		font = {
+--			family = settings.font.numbers,
+--			style = settings.font.style_map["Bold"],
+--			size = 14.0,
+--		},
+--		string = "...°",
+--	},
+--	update_freq = 180,
+--})
+--
+--local weather_info = sbar.add("bracket", "widgets.weather.info", {
+--	weather_icon.name,
+--}, {
+--	background = {
+--		color = colors.transparent,
+--		border_width = 0,
+--	},
+--	popup = { align = "center", height = 30 },
+--})
+--
+--local function get_icon(icon)
+--	local icons_map = {
+--		["clear-day"] = "", -- Sunny, Clear
+--		["clear-night"] = "", -- Clear night
+--		["partly-cloudy-day"] = "", -- Partly cloudy
+--		["partly-cloudy-night"] = "", -- Partly cloudy night
+--		["cloudy"] = "", -- Cloudy
+--		["fog"] = "", -- Fog
+--		["wind"] = "", -- Wind
+--		["rain"] = "", -- Rains
+--		["sleet"] = "", -- Sleet
+--		["snow"] = "", -- Snow
+--		["hail"] = "", -- Hail
+--		["thunderstorm"] = "", -- Thunderstorm
+--	}
+--
+--	local mapped_icon = icons_map[icon]
+--	return mapped_icon or ""
+--end
+--
+--local conditions_translation = {
+--	["clear-day"] = "Klarer Tag",
+--	["clear-night"] = "Klarer Nacht",
+--	["partly-cloudy-day"] = "Teilweise bewölkt",
+--	["partly-cloudy-night"] = "Teilweise bewölkt",
+--	["cloudy"] = "Stark Bewölkt",
+--	["dry"] = "Trocken",
+--	["fog"] = "Neblig",
+--	["wind"] = "Stürmisch",
+--	["rain"] = "Regnerisch",
+--	["sleet"] = "Schneeregen",
+--	["snow"] = "Schnee",
+--	["hail"] = "Hagel",
+--	["thunderstorm"] = "Gewitter",
+--}
+--
+--local function translate_condition(condition)
+--	return conditions_translation[condition] or condition
+--end
+--
+--local function fetch_weather_data(callback)
+--	local command = "~/.scripts/akt_weather.sh"
+--	sbar.exec(command, function(output)
+--		local temperature = string.match(output, "Temperature:%s*(%d+%.?%d*)°C")
+--		local icon = string.match(output, "Icon:%s*([%w%-]+)")
+--
+--		if temperature and icon then
+--			callback(temperature, icon)
+--		else
+--			print("Weather data extraction failed")
+--		end
+--	end)
+--end
+--
+--weather_icon:subscribe({ "routine", "forced", "system_woke" }, function(env)
+--	fetch_weather_data(function(temperature, icon)
+--		if temperature and icon then
+--			local rounded_temperature = math.floor(temperature + 0.5)
+--
+--			weather_icon:set({
+--				label = {
+--					string = rounded_temperature .. "°",
+--					color = colors.dirty_white,
+--				},
+--				icon = {
+--					string = get_icon(icon),
+--					color = colors.dirty_white,
+--				},
+--			})
+--		end
+--	end)
+--end)
+--
+--local station_name = sbar.add("item", {
+--	position = "popup." .. weather_info.name,
+--	icon = {
+--		font = {
+--			style = settings.font.style_map["Bold"],
+--		},
+--		string = "􀌏",
+--	},
+--	width = popup_width,
+--	align = "center",
+--	label = {
+--		font = {
+--			size = 15,
+--			style = settings.font.style_map["Bold"],
+--		},
+--		max_chars = 30,
+--		string = "????????????",
+--	},
+--	background = {
+--		height = 2,
+--		color = colors.grey,
+--		y_offset = -15,
+--	},
+--})
+--
+--local temperature = sbar.add("item", {
+--	position = "popup." .. weather_info.name,
+--	icon = {
+--		align = "left",
+--		string = "Temperatur:",
+--		width = popup_width / 2,
+--	},
+--	label = {
+--		string = "???",
+--		width = popup_width / 2,
+--		align = "right",
+--	},
+--})
+--
+--local condition = sbar.add("item", {
+--	position = "popup." .. weather_info.name,
+--	icon = {
+--		align = "left",
+--		string = "Wetterlage:",
+--		width = popup_width / 2,
+--	},
+--	label = {
+--		string = "???",
+--		width = popup_width / 2,
+--		align = "right",
+--	},
+--})
+--
+--local windspeed = sbar.add("item", {
+--	position = "popup." .. weather_info.name,
+--	icon = {
+--		align = "left",
+--		string = "Windgeschwindigkeit:",
+--		width = popup_width / 2,
+--	},
+--	label = {
+--		string = "???",
+--		width = popup_width / 2,
+--		align = "right",
+--	},
+--})
+--
+--local cloudcover = sbar.add("item", {
+--	position = "popup." .. weather_info.name,
+--	icon = {
+--		align = "left",
+--		string = "Bewölkung:",
+--		width = popup_width / 2,
+--	},
+--	label = {
+--		string = "???",
+--		width = popup_width / 2,
+--		align = "right",
+--	},
+--})
+--
+--local visibility = sbar.add("item", {
+--	position = "popup." .. weather_info.name,
+--	icon = {
+--		align = "left",
+--		string = "Sichtweite:",
+--		width = popup_width / 2,
+--	},
+--	label = {
+--		string = "???",
+--		width = popup_width / 2,
+--		align = "right",
+--	},
+--})
+--
+--local function hide_details()
+--	weather_info:set({ popup = { drawing = false } })
+--end
+--
+--local function toggle_details()
+--	local should_draw = weather_info:query().popup.drawing == "off"
+--	if should_draw then
+--		weather_info:set({ popup = { drawing = true } })
+--		sbar.exec("~/.scripts/akt_weather.sh", function(result)
+--			local popup_temperature = string.match(result, "Temperature:%s*(%d+%.?%d*)°C")
+--			local popup_station_name = string.match(result, "Station Name:%s*(.-)\n")
+--			local popup_condition = string.match(result, "Condition:%s*(.-)\n")
+--			local popup_icon = string.match(result, "Icon:%s*(.-)\n")
+--			local popup_wind_speed = string.match(result, "Wind Speed:%s*(.-)\n")
+--			local popup_cloud_cover = string.match(result, "Cloud Cover:%s*(.-)\n")
+--			local popup_visibility = string.match(result, "Visibility:%s*(.-)\n")
+--
+--			popup_condition = translate_condition(popup_condition)
+--
+--			local visibility_km = tonumber(popup_visibility) / 1000
+--
+--			station_name:set({
+--				label = popup_station_name,
+--				icon = {
+--					string = get_icon(popup_icon),
+--					font = {
+--						family = settings.font.weather,
+--						size = 16.0,
+--					},
+--				},
+--			})
+--
+--			temperature:set({ label = popup_temperature .. " °C" })
+--			condition:set({ label = popup_condition })
+--			windspeed:set({ label = popup_wind_speed .. " km/h" })
+--			cloudcover:set({ label = popup_cloud_cover .. " %" })
+--			visibility:set({ label = string.format("%.1f km", visibility_km) })
+--		end)
+--	else
+--		hide_details()
+--	end
+--end
+--
+--weather_icon:subscribe("mouse.clicked", toggle_details)
+--weather_info:subscribe("mouse.clicked", toggle_details)

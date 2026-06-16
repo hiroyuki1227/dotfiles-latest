@@ -1,51 +1,61 @@
-#!/bin/bash
-# 現在の日時を取得（東京時間）
+##!/bin/bash
+# 神奈川県座間市向け天気スクリプト
+# データソース: Open-Meteo API (BrightSky と同等の無料・登録不要)
+
+# --- 座間市の座標 ---
+LATITUDE=35.4833
+LONGITUDE=139.4000
+
+# --- 現在日時を取得（JSTで今日の日付）---
 current_date=$(date +"%Y-%m-%d")
 
-# Open-Meteo API から東京の天気データを取得
-# - latitude/longitude: 東京
-# - current: 現在の気象データ
-# - wind_speed_10m_unit: km/h (元スクリプトに合わせる)
-# - timezone: Asia/Tokyo (時刻をJSTで返す)
+# --- 現在の分を取得して「直近の正時」を決定（元スクリプトと同ロジック）---
+current_minute=$(date +"%M")
+if [ "$current_minute" -le 30 ]; then
+  correct_hour=$(date +"%Y-%m-%dT%H:00")
+else
+  correct_hour=$(date -r $(($(date +%s) + 3600)) +"%Y-%m-%dT%H:00")
+fi
+
+# --- Open-Meteo API から1時間ごとのデータを取得 ---
 weather_data=$(curl -s \
   "https://api.open-meteo.com/v1/forecast\
-?latitude=35.6895\
-&longitude=139.6917\
-&current=temperature_2m,weather_code,wind_speed_10m,cloud_cover,visibility\
+?latitude=${LATITUDE}\
+&longitude=${LONGITUDE}\
+&hourly=temperature_2m,weather_code,wind_speed_10m,cloud_cover,visibility\
 &wind_speed_unit=kmh\
-&timezone=Asia%2FTokyo")
+&timezone=Asia%2FTokyo\
+&start_date=${current_date}\
+&end_date=${current_date}")
 
-# 各フィールドを抽出
-temperature=$(echo "$weather_data" | jq -r '.current.temperature_2m')
-weather_code=$(echo "$weather_data" | jq -r '.current.weather_code')
-wind_speed=$(echo "$weather_data" | jq -r '.current.wind_speed_10m')
-cloud_cover=$(echo "$weather_data" | jq -r '.current.cloud_cover')
-visibility=$(echo "$weather_data" | jq -r '.current.visibility')
-current_time=$(echo "$weather_data" | jq -r '.current.time')
+# --- correct_hour に一致するインデックスを特定して各値を抽出 ---
+idx=$(echo "$weather_data" | jq -r --arg t "$correct_hour" \
+  '.hourly.time | to_entries[] | select(.value == $t) | .key')
 
-# ---------------------------------------------------------------------------
-# WMO Weather Code → condition / icon に変換
-# (BrightSky の condition/icon に相当するマッピング)
-# https://open-meteo.com/en/docs#weathervariables
-# ---------------------------------------------------------------------------
+temperature=$(echo "$weather_data" | jq -r --argjson i "$idx" '.hourly.temperature_2m[$i]')
+weather_code=$(echo "$weather_data" | jq -r --argjson i "$idx" '.hourly.weather_code[$i]')
+wind_speed=$(echo "$weather_data" | jq -r --argjson i "$idx" '.hourly.wind_speed_10m[$i]')
+cloud_cover=$(echo "$weather_data" | jq -r --argjson i "$idx" '.hourly.cloud_cover[$i]')
+visibility=$(echo "$weather_data" | jq -r --argjson i "$idx" '.hourly.visibility[$i]')
+
+# --- WMO Weather Code → condition / icon 変換（Lua weather.lua のキーに準拠）---
 get_condition_and_icon() {
   local code=$1
   case $code in
   0) echo "clear-day|clear-day" ;;
-  1) echo "mostly-clear|partly-cloudy-day" ;;
-  2) echo "partly-cloudy|partly-cloudy-day" ;;
-  3) echo "overcast|cloudy" ;;
+  1 | 2) echo "partly-cloudy-day|partly-cloudy-day" ;;
+  3) echo "cloudy|cloudy" ;;
   45 | 48) echo "fog|fog" ;;
-  51 | 53 | 55) echo "drizzle|rain" ;;
-  56 | 57) echo "freezing-drizzle|sleet" ;;
+  51 | 53 | 55) echo "rain|rain" ;;
+  56 | 57) echo "sleet|sleet" ;;
   61 | 63 | 65) echo "rain|rain" ;;
-  66 | 67) echo "freezing-rain|sleet" ;;
+  66 | 67) echo "sleet|sleet" ;;
   71 | 73 | 75 | 77) echo "snow|snow" ;;
-  80 | 81 | 82) echo "rain-showers|rain" ;;
-  85 | 86) echo "snow-showers|snow" ;;
+  80 | 81 | 82) echo "rain|rain" ;;
+  85 | 86) echo "snow|snow" ;;
   95) echo "thunderstorm|thunderstorm" ;;
-  96 | 99) echo "thunderstorm-hail|thunderstorm" ;;
-  *) echo "unknown|unknown" ;;
+  96 | 99) echo "thunderstorm|thunderstorm" ;;
+  *) echo "cloudy|cloudy" ;;
   esac
 }
 
@@ -53,17 +63,62 @@ mapping=$(get_condition_and_icon "$weather_code")
 condition="${mapping%%|*}"
 icon="${mapping##*|}"
 
-# 視程をメートル→キロメートルに変換して表示
-visibility_km=$(echo "$visibility" | awk '{printf "%.1f km", $1 / 1000}')
+# --- 夜間判定（19時〜6時）---
+current_hour=$(date +"%H")
+if [ "$current_hour" -ge 19 ] || [ "$current_hour" -lt 6 ]; then
+  [ "$icon" = "clear-day" ] && icon="clear-night" && condition="clear-night"
+  [ "$icon" = "partly-cloudy-day" ] && icon="partly-cloudy-night" && condition="partly-cloudy-night"
+fi
 
-# ---------------------------------------------------------------------------
-# 結果を出力（元スクリプトのフォーマットに合わせる）
-# ---------------------------------------------------------------------------
-echo "Station Name: Tokyo, Japan"
+# --- 結果出力（Lua weather.lua が期待するフォーマット）---
+# visibility はメートル数値のみ（km換算はLua側）
+# wind_speed / cloud_cover も数値のみ（単位はLua側）
+echo "Station Name: 座間市, 神奈川"
 echo "Condition: ${condition}"
 echo "Icon: ${icon}"
 echo "Temperature: ${temperature}°C"
-echo "Wind Speed: ${wind_speed} km/h"
-echo "Cloud Cover: ${cloud_cover}%"
-echo "Visibility: ${visibility_km}"
-echo "Time: ${current_time} JST"
+echo "Wind Speed: ${wind_speed}"
+echo "Cloud Cover: ${cloud_cover}"
+echo "Visibility: ${visibility}"
+
+##!/bin/bash
+#
+## Aktuelles Datum bestimmen
+#current_date=$(date -u +"%Y-%m-%d")
+#
+## Wetterdaten von der API abrufen
+#weather_data=$(curl -s "https://api.brightsky.dev/weather?lat=50.801&lon=12.7133&date=${current_date}")
+#
+## Aktuelle Zeit in UTC bestimmen
+#current_time=$(date -u +"%Y-%m-%dT%H:%M:%S%z")
+#current_minute=$(date -u +"%M")
+#
+## Berechne die richtige volle Stunde basierend auf der aktuellen Minute
+#if [ "$current_minute" -le 30 ]; then
+#  correct_hour=$(date -u +"%Y-%m-%dT%H:00:00+00:00")
+#else
+#  correct_hour=$(date -u -r $(($(date -u +%s) + 3600)) +"%Y-%m-%dT%H:00:00+00:00")
+#fi
+#
+## Daten extrahieren
+#temperature=$(echo "$weather_data" | jq -r --arg correct_hour "$correct_hour" '
+#    .weather[] | select(.timestamp == $correct_hour) | .temperature')
+#icon=$(echo "$weather_data" | jq -r --arg correct_hour "$correct_hour" '
+#    .weather[] | select(.timestamp == $correct_hour) | .icon')
+#condition=$(echo "$weather_data" | jq -r --arg correct_hour "$correct_hour" '
+#    .weather[] | select(.timestamp == $correct_hour) | .condition')
+#wind_speed=$(echo "$weather_data" | jq -r --arg correct_hour "$correct_hour" '
+#    .weather[] | select(.timestamp == $correct_hour) | .wind_speed')
+#cloud_cover=$(echo "$weather_data" | jq -r --arg correct_hour "$correct_hour" '
+#    .weather[] | select(.timestamp == $correct_hour) | .cloud_cover')
+#visibility=$(echo "$weather_data" | jq -r --arg correct_hour "$correct_hour" '
+#    .weather[] | select(.timestamp == $correct_hour) | .visibility')
+#
+## Ergebnisse auf separaten Zeilen ausgeben
+#echo "Station Name: St. Egdidien/Kuhschnappel"
+#echo "Condition: ${condition}"
+#echo "Icon: ${icon}"
+#echo "Temperature: ${temperature}°C"
+#echo "Wind Speed: ${wind_speed}"
+#echo "Cloud Cover: ${cloud_cover}"
+#echo "Visibility: ${visibility}"

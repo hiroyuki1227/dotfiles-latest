@@ -1,8 +1,8 @@
 # config-file = ghostty-theme
-# config-file = solarized_osaka_dark
+config-file = solarized_osaka_dark
 # theme = "Solarized Dark - Patched"
 
-theme = "tokyonight"
+# theme = "tokyonight"
 # theme = "catppuccin-mocha"
 
 # Some shaders can be found in this repo, they're usually uploaded to discord
@@ -14,7 +14,7 @@ theme = "tokyonight"
 # custom-shader = shaders/bloom075.glsl
 # custom-shader = shaders/bloom060.glsl
 # custom-shader = shaders/bloom050.glsl
-custom-shader = shaders/bloom025.glsl
+# custom-shader = shaders/bloom025.glsl
 # custom-shader = shaders/bloom050.glsl
 # custom-shader = shaders/bloom060.glsl
 # custom-shader = shaders/bloom075.glsl
@@ -68,8 +68,8 @@ font-size = 14
 font-feature = -calt
 font-feature = -dlig
 font-feature = -liga
-font-thicken = true
-font-thicken-strength = 1 
+# font-thicken = true
+# font-thicken-strength = 1
 
 adjust-cell-width = -1
 adjust-cell-height = 2
@@ -84,7 +84,7 @@ adjust-cell-height = 2
 alpha-blending = linear
 #
 # native tansparent tabs hidden
-macos-titlebar-style = hidden 
+macos-titlebar-style = hidden
 macos-window-shadow = true
 
 macos-option-as-alt = left
@@ -100,7 +100,11 @@ quick-terminal-animation-duration = 0.1
 quick-terminal-autohide = false
 
 background-opacity = 0.8
-background-blur-radius = 20
+background-blur = macos-glass-clear
+
+# macos-glass-clear = true
+# macos-glass-regular = true
+
 window-height = 54
 window-width = 164 
 window-colorspace = display-p3
@@ -114,7 +118,7 @@ mouse-hide-while-typing = true
 mouse-scroll-multiplier = 2
 
 mouse-hide-while-typing = true
-resize-overlay = never 
+resize-overlay = never
 
 unfocused-split-opacity = 0.55
 unfocused-split-fill = #ee7800
@@ -129,6 +133,12 @@ wait-after-command = false
 #
 # keybind = 
 # global:cmd+s=toggle_quick_terminal
+# ## Modiflers
+# Valid modiflers are:
+# - shift (alias: shift)
+# - ctrl(alias: control)
+# - alt (alias: opt, option)
+# - super (alias: cmd, command)
 keybind = cmd+s=toggle_quick_terminal
 keybind = super+i=inspector:toggle
 keybind = super+r=reload_config 

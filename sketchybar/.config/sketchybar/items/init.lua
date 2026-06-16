@@ -118,7 +118,7 @@ local MODELS = {
 	["Mac16,13"] = { phys_w = 2880, notch_phys = 360 },
 }
 
-local notch_width = 220 -- フォールバック
+local notch_width = 250 -- フォールバック
 
 local spec = MODELS[model_id]
 if spec and logical_width > 0 then
@@ -165,9 +165,9 @@ sbar.add("item", "center.external_gap", {
 
 -- ──────────────── CENTER — RIGHT of notch ─────────────────────
 require("items.widgets.weather")
+require("items.calendar")
 
 -- ─────────────────────────── RIGHT ────────────────────────────
-require("items.calendar")
 require("items.widgets.input")
 require("items.brew")
 require("items.widgets.battery")
@@ -199,8 +199,8 @@ sbar.add("bracket", "bracket.media", {
 	"center.notch",
 	"/^center\\.media.*/",
 	"/^widgets\\.weather.*/",
-	-- "center.time",
-	-- "center.date",
+	"center.time",
+	"center.date",
 }, {
 	background = {
 		color = colors.bg0,
@@ -218,10 +218,6 @@ sbar.add("bracket", "bracket.right", {
 	"widgets.bluetooth",
 	"widgets.volume",
 	"widgets.battery",
-	-- "/'brew\\.*/",
-	-- "center.weather",
-	-- "center.time",
-	-- "center.date",
 }, {
 	background = {
 		color = colors.bg1,
