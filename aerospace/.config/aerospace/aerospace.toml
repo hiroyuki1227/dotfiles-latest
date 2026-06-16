@@ -58,7 +58,7 @@ exec-on-workspace-change = [
 # even when they are invisible.
 # Thjs config version is only available since 'config-version = 2'
 # Fallback value (if you omit the key): persistent-workspaces = []
-persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "M", "T"]
+persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
                          # "C", "D", "E", "F", "G", "I", "M", "N", "O", "P", "Q",
                          # "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 
@@ -88,15 +88,15 @@ on-mode-changed = []
     5 = ['secondary']         # Secondary Monitor [system settings -> Displays -> Use as]
     6 = ['secondary']         # Secondary Monitor [system settings -> Displays -> Use as]
     7 = ['secondary']         # Secondary Monitor [system settings -> Displays -> Use as]
-    M = ['secondary']         # Secondary Monitor [system settings -> Displays -> Use as]
-    T = ['secondary']         # Secondary Monitor [system settings -> Displays -> Use as]
+    8 = ['secondary']         # Secondary Monitor [system settings -> Displays -> Use as]
+    9 = ['secondary']         # Secondary Monitor [system settings -> Displays -> Use as]
 
 [gaps]
     inner.horizontal = 30
     inner.vertical =   30
     outer.left =       30
-    outer.bottom =     [{monitor.'^Built-in.Display$' = 5}, {monitor.'^built-in retina display$' = 5}, 30]
-    outer.top =        [{monitor.'^Built-in.Display$' = 5}, {monitor.'^build-in retina display$' = 5}, 50]
+    outer.bottom =     [{monitor.'^Built-in.Display$' = 5}, {monitor.'^built-in retina display$' = 5}, 20]
+    outer.top =        [{monitor.'^Built-in.Display$' = 10}, {monitor.'^build-in retina display$' = 10}, 60]
     outer.right =      30
 
 
@@ -168,8 +168,8 @@ PATH = '/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
     alt-5 = 'workspace 5'
     alt-6 = 'workspace 6'
     alt-7 = 'workspace 7'
-    # alt-8 = 'workspace 8'
-    # alt-9 = 'workspace 9'
+    alt-8 = 'workspace 8'
+    alt-9 = 'workspace 9'
     # alt-a = 'workspace A' # In your config, you can drop workspace bindings that you don't need
     # alt-b = 'workspace B'
     # alt-c = 'workspace C'
@@ -178,14 +178,14 @@ PATH = '/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
     # alt-f = 'workspace F'
     # alt-g = 'workspace G'
     # alt-i = 'workspace I'
-    alt-m = 'workspace M'
+    # alt-m = 'workspace M'
     # alt-n = 'workspace N'
     # alt-o = 'workspace O'
     # alt-p = 'workspace P'
     # alt-q = 'workspace Q'
     # alt-r = 'workspace R'
     # alt-s = 'workspace S'
-    alt-t = 'workspace T'
+    # alt-t = 'workspace T'
     # alt-u = 'workspace U'
     # alt-v = 'workspace V'
     # alt-w = 'workspace W'
@@ -201,8 +201,8 @@ PATH = '/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
     alt-shift-5 = 'move-node-to-workspace 5'
     alt-shift-6 = 'move-node-to-workspace 6'
     alt-shift-7 = 'move-node-to-workspace 7'
-    # alt-shift-8 = 'move-node-to-workspace 8'
-    # alt-shift-9 = 'move-node-to-workspace 9'
+    alt-shift-8 = 'move-node-to-workspace 8'
+    alt-shift-9 = 'move-node-to-workspace 9'
     # alt-shift-a = 'move-node-to-workspace A'
     # alt-shift-b = 'move-node-to-workspace B'
     # alt-shift-c = 'move-node-to-workspace C'
@@ -211,14 +211,14 @@ PATH = '/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
     # alt-shift-f = 'move-node-to-workspace F'
     # alt-shift-g = 'move-node-to-workspace G'
     # alt-shift-i = 'move-node-to-workspace I'
-    alt-shift-m = 'move-node-to-workspace M'
+    # alt-shift-m = 'move-node-to-workspace M'
     # alt-shift-n = 'move-node-to-workspace N'
     # alt-shift-o = 'move-node-to-workspace O'
     # alt-shift-p = 'move-node-to-workspace P'
     # alt-shift-q = 'move-node-to-workspace Q'
     # alt-shift-r = 'move-node-to-workspace R'
     # alt-shift-s = 'move-node-to-workspace S'
-    alt-shift-t = 'move-node-to-workspace T'
+    # alt-shift-t = 'move-node-to-workspace T'
     # alt-shift-u = 'move-node-to-workspace U'
     # alt-shift-v = 'move-node-to-workspace V'
     # alt-shift-w = 'move-node-to-workspace W'
@@ -270,7 +270,7 @@ run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.apple.AppStore'
-run = ['layout floating', 'move-node-to-workspace 9']
+run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.raycast.macos'       # Message
@@ -290,31 +290,31 @@ run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.apple.MobileSMS'       # Message
-run = ['layout floating', 'move-node-to-workspace 9']
+run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.apple.ActivityMonitor'       # Active Monitr
-run = ['layout floating', 'move-node-to-workspace 9']
+run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.apple.iCal'       # Active Monitr
-run = ['layout floating', 'move-node-to-workspace 9']
+run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.github.wez.wezterm'
-run = ['move-node-to-workspace T']
+run = ['move-node-to-workspace 2']
 
 [[on-window-detected]]
 if.app-id = 'net.kovidgoyal.kitty'
-run = ['move-node-to-workspace T']
+run = ['move-node-to-workspace 2']
 
 [[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'
-run = ['move-node-to-workspace T']
+run = ['move-node-to-workspace 2']
 
 [[on-window-detected]]
 if.app-id = 'jp.co.fsi.morenote.client'   # moreNOTE6 (fsi)
-run = ['move-node-to-workspace T']
+run = ['move-node-to-workspace 9']
 
 [[on-window-detected]]
 if.app-id = 'md.obsidian'
@@ -334,11 +334,11 @@ run = ['move-node-to-workspace 1']
 
 [[on-window-detected]]
 if.app-id = 'com.apple.Music'
-run = ['layout floating', 'move-node-to-workspace M']
+run = ['layout floating', 'move-node-to-workspace 9']
 
 [[on-window-detected]]
 if.app-id = 'com.spotify.client'
-run = ['layout floating', 'move-node-to-workspace M']
+run = ['layout floating', 'move-node-to-workspace 9']
 
 [[on-window-detected]]
 if.app-id = 'com.microsoft.wdav.mainux'   # Microsoft Defender
@@ -350,11 +350,11 @@ run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.microsoft.Outlook'
-run = ['move-node-to-workspace 2']
+run = ['move-node-to-workspace 3']
 
 [[on-window-detected]]
 if.app-id = 'com.microsoft.teams2'
-run = ['move-node-to-workspace 2']
+run = ['move-node-to-workspace 3']
 
 [[on-window-detected]]
 if.app-id = 'com.microsoft.Excel'

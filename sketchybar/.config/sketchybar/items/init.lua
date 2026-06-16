@@ -30,7 +30,7 @@ end
 -- ──────────────────────────── LEFT ────────────────────────────
 require("items.apple")
 require("items.spaces")
-require("items.front_apps")
+-- require("items.front_apps")
 require("items.media")
 
 -- ──────────────── CENTER — LEFT of notch ──────────────────────
@@ -164,18 +164,17 @@ sbar.add("item", "center.external_gap", {
 })
 
 -- ──────────────── CENTER — RIGHT of notch ─────────────────────
-require("items.widgets.weather")
-require("items.calendar")
 
 -- ─────────────────────────── RIGHT ────────────────────────────
-require("items.widgets.input")
-require("items.brew")
-require("items.widgets.battery")
-require("items.widgets.volume")
+require("items.calendar")
 require("items.widgets.wifi")
+require("items.widgets.input")
+require("items.widgets.battery")
 require("items.widgets.bluetooth")
--- require("items.widgets.ram")
 require("items.widgets.cpu")
+require("items.widgets.volume")
+require("items.widgets.weather")
+require("items.brew")
 
 -- ══════════════════════════════════════════════════════════════
 -- BRACKETS — drawn after all items are created
@@ -186,10 +185,11 @@ CORNER_RADIUS = 16
 -- Left pill: Apple logo + Aerospace workspaces
 sbar.add("bracket", "bracket.left", { "apple.logo", "/space\\..*/", "spaces.right_pad", "front_apps" }, {
 	background = {
-		color = colors.bg0,
+		color = colors.bg5,
+		border_color = colors.bg1,
 		corner_radius = CORNER_RADIUS,
-		height = 28,
-		border_width = 0,
+		-- height = 28,
+		border_width = 1,
 	},
 })
 
@@ -197,16 +197,14 @@ sbar.add("bracket", "bracket.left", { "apple.logo", "/space\\..*/", "spaces.righ
 -- The pill background spans both halves; the notch hardware creates the visual gap.
 sbar.add("bracket", "bracket.media", {
 	"center.notch",
-	"/^center\\.media.*/",
-	"/^widgets\\.weather.*/",
-	"center.time",
-	"center.date",
+	-- "/^center\\.media.*/",
 }, {
 	background = {
-		color = colors.bg0,
-		corner_radius = 16,
-		height = 24,
-		border_width = 0,
+		color = colors.bg5,
+		border_color = colors.bg1,
+		corner_radius = 4,
+		-- height = 24,
+		border_width = 1,
 	},
 })
 
@@ -218,11 +216,16 @@ sbar.add("bracket", "bracket.right", {
 	"widgets.bluetooth",
 	"widgets.volume",
 	"widgets.battery",
+	"widgets.input",
+	"items.brew",
+	"/^widgets\\.weather.*/",
+	"center.date",
+	"center.time",
 }, {
 	background = {
-		color = colors.bg0,
-		corner_radius = CORNER_RADIUS,
-		height = 28,
-		border_width = 0,
+		color = colors.bg5,
+		-- corner_radius = CORNER_RADIUS,
+		-- height = 28,
+		border_width = 1,
 	},
 })

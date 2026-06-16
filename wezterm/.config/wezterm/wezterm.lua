@@ -32,7 +32,7 @@ config.font = wezterm.font_with_fallback({
 
 config.use_ime = true -- IME有効化
 
-config.window_background_opacity = 0.8
+config.window_background_opacity = 0.7
 config.macos_window_background_blur = 20
 -- config.window_background_opacity = 0.8 -- 非フォーカス時のデフォルト（blur見える）
 -- config.macos_window_background_blur = 20 -- opacityで視覚的に制御

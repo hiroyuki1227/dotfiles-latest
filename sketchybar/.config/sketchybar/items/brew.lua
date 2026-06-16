@@ -61,12 +61,12 @@ local function update_display()
 	if count == 0 then
 		brew:set({
 			icon = { string = icons.package, color = color },
-			label = { string = "✓ Latest", color = color },
+			label = { string = "✓ ", color = color },
 		})
 	else
 		brew:set({
 			icon = { string = icons.update, color = color },
-			label = { string = count .. " updates", color = color },
+			label = { string = count .. "  ", color = color },
 		})
 	end
 end
@@ -150,7 +150,7 @@ sbar.add("item", "brew.widget.header", {
 	background = {
 		color = colors.bg2,
 		border_color = colors.transparent,
-		height = 28,
+		-- height = 28,
 	},
 	padding_left = 0,
 	padding_right = 0,
@@ -160,7 +160,11 @@ sbar.add("item", "brew.widget.header", {
 sbar.add("item", "brew.widget.sep", {
 	position = "popup.brew",
 	width = 280,
-	background = { color = colors.transparent, height = 1, border_color = colors.transparent },
+	background = {
+		color = colors.transparent,
+		-- height = 1,
+		border_color = colors.transparent,
+	},
 	icon = { drawing = false },
 	label = { drawing = false },
 })

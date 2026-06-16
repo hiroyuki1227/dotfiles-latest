@@ -7,7 +7,7 @@ local settings = require("settings")
 local popup_width = 300
 
 local weather_icon = sbar.add("item", "widgets.weather.icon", {
-	position = "center",
+	position = "right",
 	icon = {
 		font = {
 			family = settings.font.weather,

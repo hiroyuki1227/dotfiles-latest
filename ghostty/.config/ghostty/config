@@ -64,12 +64,12 @@ font-family = "UDEV Gothic NF"
 # font-family = "SpaceMono Nerd Font Mono"
 
 # font-family = "UDEV Gothic NF"
-font-size = 14
+font-size = 15
 font-feature = -calt
 font-feature = -dlig
 font-feature = -liga
-# font-thicken = true
-# font-thicken-strength = 1
+font-thicken = true
+font-thicken-strength = 1
 
 adjust-cell-width = -1
 adjust-cell-height = 2
@@ -99,11 +99,13 @@ quick-terminal-screen = mouse
 quick-terminal-animation-duration = 0.1
 quick-terminal-autohide = false
 
-background-opacity = 0.8
+background-opacity = 0.7
+# macos-glass-clear
+# macos-glass-regular
+# background-blur = macos-glass-regular
 background-blur = macos-glass-clear
+# background-blur = 13
 
-# macos-glass-clear = true
-# macos-glass-regular = true
 
 window-height = 54
 window-width = 164 
@@ -120,9 +122,9 @@ mouse-scroll-multiplier = 2
 mouse-hide-while-typing = true
 resize-overlay = never
 
-unfocused-split-opacity = 0.55
-unfocused-split-fill = #ee7800
-split-divider-color = #ffa500
+unfocused-split-opacity = 0.6
+# unfocused-split-fill = #ee7800
+# split-divider-color = #ffa500
 
 confirm-close-surface = false
 # wait-after-command = false

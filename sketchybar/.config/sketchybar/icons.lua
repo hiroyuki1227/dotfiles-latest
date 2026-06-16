@@ -11,6 +11,10 @@ local icons = {
 		disk = "􀤂",
 		clipboard = "􀉄",
 
+		calendar = "􀉊",
+		clock = "󰥔",
+		control_center = "􀜊",
+
 		switch = {
 			on = "􁏮",
 			off = "􁏯",
@@ -60,6 +64,10 @@ local icons = {
 		memory = "",
 		disk = "󰋊",
 		clipboard = "Missing Icon",
+
+		calendar = "􀉊",
+		clock = "󰥔",
+		control_center = "􀜊",
 
 		switch = {
 			on = "󱨥",

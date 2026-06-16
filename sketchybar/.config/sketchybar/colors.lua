@@ -227,24 +227,39 @@ local themes = {
 		highlight_med = 0xff11111b,
 		highlight_high = 0xff313244,
 
-		black = 0xff11111b,
-		white = 0xffffffff,
-		red = 0xfff38ba8,
-		green = 0xffa6e3a1,
-		blue = 0xff89b4fa,
-		yellow = 0xfff9e2af,
-		orange = 0xfffab387,
-		magenta = 0xffcba6f7,
-		grey = 0xff939ab7, -- FelixKratz
+		black = 0xff1c1c1c,
+		white = 0xfff7f1ff,
+		red = 0xfffc618d,
+		green = 0xff7bd88f,
+		blue = 0xff5ad4e6,
+		yellow = 0xfffce566,
+		orange = 0xfffd9353,
+		magenta = 0xff948ae3,
+		grey = 0xff8b888f,
 		transparent = 0x00000000,
 		accent = 0xffcba6f7,
 
-		bar = { bg = 0xa024273a, border = 0x00000000 },
-		popup = { bg = 0xff24273a, border = 0xffe63946 },
-		bg0 = 0x983c3e4f,
-		bg1 = 0x90494d64,
+		bar = {
+			bg = 0x4a181a22, -- dark glass, cool tint, translucent
+			border = 0x2ab0b8cc, -- visible glass edge highlight
+			-- bg = 0xa024273a,
+			-- border = 0x00000000,
+		},
+		popup = {
+			bg = 0xd01c1e24,
+			border = 0x50b0b8cc,
+			-- bg = 0xff24273a,
+			-- border = 0xffe63946,
+		},
+		bg_solid = 0xff363537,
+		bg0 = 0xaa363537,
+		bg1 = 0x1a363537, -- glass pill fill
+		bg2 = 0x0abcc2d0, -- glass pill border
 		bg3 = 0xa024273a, -- FelixKratz bar colors
-		bg2 = 0x55ffffff,
+		bg5 = 0x5a363537,
+		-- bg0 = 0x983c3e4f,
+		-- bg1 = 0x90494d64,
+		-- bg2 = 0x55ffffff,
 	},
 }
 

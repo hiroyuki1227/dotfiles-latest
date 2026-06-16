@@ -1,7 +1,7 @@
 local colors = require("colors")
 local icons = require("icons")
 local settings = require("settings")
-local spaces = require("items.spaces")
+local spaces = require("sketchybar.config.sketchybar.items.spaces-org")
 
 -- Events that get pushed by yabai
 sbar.add("event", "window_focus")

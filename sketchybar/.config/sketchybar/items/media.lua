@@ -9,11 +9,6 @@ local playpause = sbar.add("item", "center.media.playpause", {
 	position = "center",
 	icon = {
 		string = icons.media.play,
-		font = {
-			family = settings.font.text,
-			style = settings.font.style_map["Bold"],
-			size = 14,
-		},
 		color = colors.with_alpha(colors.accent, 0.45),
 		padding_left = 4,
 		padding_right = 4,
@@ -24,22 +19,20 @@ local playpause = sbar.add("item", "center.media.playpause", {
 
 local artwork = sbar.add("item", "center.media.artwork", {
 	position = "center",
+	drawing = false,
+	icon = { drawing = false },
+	label = { drawing = false },
 	background = {
 		image = {
 			string = "",
-			scale = 0.23,
+			scale = 0.30,
+			border_width = 1,
+			border_color = colors.bg1,
 			corner_radius = 4,
 		},
+		x_offset = 1,
 		color = colors.transparent,
-		border_width = 0,
-		height = 22,
-		corner_radius = 4,
 	},
-	icon = { drawing = false },
-	label = { drawing = false },
-	drawing = false,
-	padding_left = 4,
-	padding_right = 2,
 })
 
 local media = sbar.add("item", "center.media", {
@@ -48,13 +41,15 @@ local media = sbar.add("item", "center.media", {
 	scroll_texts = false,
 	label = {
 		string = "It's pretty silent",
+		width = "dynamic",
 		font = {
 			family = settings.font.text,
-			style = settings.font.style_map["Bold"],
+			style = settings.font.style_map["Medium"],
 			size = 14,
+			max_chars = 24,
+			y_offset = -5,
 		},
-		-- color = colors.with_alpha(colors.white, 0.30),
-		color = colors.white,
+		color = colors.with_alpha(colors.white, 0.30),
 		padding_left = 4,
 		padding_right = 4,
 	},
@@ -76,17 +71,14 @@ local media = sbar.add("item", "center.media", {
 local popup_artwork = sbar.add("item", "popup.center.media.art", {
 	position = "popup.center.media",
 	background = {
-		image = { string = "", scale = 0.5, corner_radius = 6 },
+		image = {
+			string = "",
+			scale = 0.8,
+			corner_radius = 12,
+		},
 		color = colors.transparent,
-		border_width = 0,
-		height = 48,
-		corner_radius = 6,
 	},
-	icon = { drawing = false },
 	label = { drawing = false },
-	drawing = false,
-	padding_left = 10,
-	padding_right = 6,
 })
 
 local popup_title = sbar.add("item", "popup.center.media.title", {
@@ -94,12 +86,15 @@ local popup_title = sbar.add("item", "popup.center.media.title", {
 	icon = { drawing = false },
 	label = {
 		string = "",
+		width = "dynamic",
 		font = {
 			family = settings.font.text,
-			style = settings.font.style_map["Bold"],
+			style = settings.font.style_map["Medium"],
+			max_chars = 24,
+			y_offset = -5,
 			size = 14,
 		},
-		color = 0xffffffff,
+		color = colors.with_alpha(colors.white, 0.55),
 		padding_left = 4,
 		padding_right = 4,
 	},
@@ -110,12 +105,15 @@ local popup_artist = sbar.add("item", "popup.center.media.artist", {
 	icon = { drawing = false },
 	label = {
 		string = "",
+		width = "dynamic",
 		font = {
 			family = settings.font.text,
-			style = settings.font.style_map["Bold"],
+			style = settings.font.style_map["Medium"],
+			max_chars = 24,
+			y_offset = -5,
 			size = 14,
 		},
-		color = colors.with_alpha(colors.white, 0.55),
+		color = colors.with_alpha(colors.magenta, 0.55),
 		padding_left = 2,
 		padding_right = 10,
 	},

@@ -43,10 +43,10 @@ keymap("n", "<C-w><up>", "<C-w>+")
 keymap("n", "<C-w><down>", "<C-w>-")
 
 -- Diagnostics
-keymap("n", "<C-j>", function()
-  vim.diagnostic.goto_next()
-end, opts)
-
+-- keymap("n", "<C-j>", function()
+--   vim.diagnostic.goto_next()
+-- end, opts)
+--
 -- lazydocker
 if vim.fn.executable("lazydocker") == 1 then
   vim.keymap.set("n", "<leader>d", function()
@@ -76,10 +76,9 @@ end, { desc = "Notification History" })
 local function get_git_root()
   local buf_dir = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":h")
   -- vim.fn.systemlist の代わりに vim.system + タイムアウトでハング防止
-  local result = vim.system(
-    { "git", "-C", buf_dir, "rev-parse", "--show-toplevel" },
-    { text = true, timeout = 3000 }
-  ):wait()
+  local result = vim
+    .system({ "git", "-C", buf_dir, "rev-parse", "--show-toplevel" }, { text = true, timeout = 3000 })
+    :wait()
   return (result.code == 0 and vim.trim(result.stdout)) or LazyVim.root.get({ buf = 0 })
 end
 
