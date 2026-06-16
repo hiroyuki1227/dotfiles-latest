@@ -220,7 +220,7 @@ sbar.add("bracket", "bracket.right", {
 	"widgets.battery",
 }, {
 	background = {
-		color = colors.bg1,
+		color = colors.bg0,
 		corner_radius = CORNER_RADIUS,
 		height = 28,
 		border_width = 0,

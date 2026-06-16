@@ -10,8 +10,8 @@ local date = sbar.add("item", "center.date", {
 		padding_left = 5,
 		padding_right = 5,
 		font = {
-			family = settings.font.numbers,
-			style = settings.font.style_map["Bold"],
+			family = settings.font.text,
+			style = settings.font.style_map["Heavy"],
 			size = 14.0,
 		},
 	},
@@ -28,8 +28,8 @@ local time = sbar.add("item", "center.time", {
 		padding_left = 5,
 		padding_right = 5,
 		font = {
-			family = settings.font.numbers,
-			style = settings.font.style_map["Bold"],
+			family = settings.font.text,
+			style = settings.font.style_map["Heavy"],
 			size = 14.0,
 		},
 	},

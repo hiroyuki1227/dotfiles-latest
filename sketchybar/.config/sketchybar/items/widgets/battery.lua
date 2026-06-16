@@ -17,11 +17,7 @@ local battery = sbar.add("item", "widgets.battery", {
 		padding_right = 5,
 	},
 	label = {
-		font = {
-			family = settings.font.numbers,
-			style = settings.font.style_map["Bold"],
-			size = 14.0,
-		},
+		font = { family = settings.font.numbers },
 		width = 0,
 		padding_left = 2,
 		padding_right = 4,
@@ -30,8 +26,11 @@ local battery = sbar.add("item", "widgets.battery", {
 	popup = {
 		align = "center",
 		background = {
-			color = { alpha = 0.0 },
-			border_color = { alpha = 0.0 },
+			--
+			color = colors.transparent,
+			border_color = colors.transparent,
+			-- color = { alpha = 0.0 },
+			-- border_color = { alpha = 0.0 },
 		},
 	},
 })
@@ -162,8 +161,10 @@ local function toggle_battery_popup()
 				drawing = true,
 				blur_radius = 20,
 				background = {
-					color = { alpha = 0.01 },
-					border_color = { alpha = 0.01 },
+					color = colors.transparent,
+					border_color = colors.transparent,
+					-- color = { alpha = 0.01 },
+					-- border_color = { alpha = 0.01 },
 				},
 			},
 		})
@@ -171,8 +172,10 @@ local function toggle_battery_popup()
 			battery:set({
 				popup = {
 					background = {
-						color = { alpha = 1.0 },
-						border_color = { alpha = 1.0 },
+						color = colors.transparent,
+						border_color = colors.transparent,
+						-- color = { alpha = 1.0 },
+						-- border_color = { alpha = 1.0 },
 					},
 				},
 			})
@@ -232,5 +235,5 @@ end)
 battery:subscribe("mouse.exited.global", hide_battery_popup)
 
 sbar.add("bracket", "widgets.battery.bracket", { battery.name }, {
-	background = { color = colors.bg1 },
+	background = { color = colors.transparent },
 })

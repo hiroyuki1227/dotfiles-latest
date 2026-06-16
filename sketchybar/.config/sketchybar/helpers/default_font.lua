@@ -1,5 +1,5 @@
 return {
-	text = "SF Pro", -- Used for text
+	text = "SF Pro Rounded", -- Used for text
 	numbers = "SF Mono", -- Used for numbers
 	weather = "Hack Nerd Font",
 
@@ -8,7 +8,7 @@ return {
 		["Regular"] = "Regular",
 		["Semibold"] = "Medium",
 		["Bold"] = "Bold",
-		["Heavy"] = "Bold",
+		["Heavy"] = "Heavy",
 		["Black"] = "Black",
 	},
 }

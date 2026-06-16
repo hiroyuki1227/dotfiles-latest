@@ -19,7 +19,7 @@ local weather_icon = sbar.add("item", "widgets.weather.icon", {
 		font = {
 			family = settings.font.numbers,
 			style = settings.font.style_map["Bold"],
-			size = 15.0,
+			size = 14.0,
 		},
 		string = "...°",
 	},
@@ -135,7 +135,7 @@ local station_name = sbar.add("item", {
 	align = "center",
 	label = {
 		font = {
-			size = 15,
+			size = 14,
 			style = settings.font.style_map["Bold"],
 		},
 		max_chars = 30,
@@ -143,7 +143,7 @@ local station_name = sbar.add("item", {
 	},
 	background = {
 		height = 2,
-		color = colors.grey,
+		color = colors.transparent,
 		y_offset = -15,
 	},
 })

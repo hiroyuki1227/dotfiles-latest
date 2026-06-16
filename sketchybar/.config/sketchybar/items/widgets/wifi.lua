@@ -73,13 +73,15 @@ local wifi_bracket = sbar.add("bracket", "widgets.wifi.bracket", {
 	wifi_up.name,
 	wifi_down.name,
 }, {
-	background = { color = colors.bg1 },
+	background = { color = colors.transparent },
 	popup = {
 		align = "center",
 		height = 30,
 		background = {
-			color = { alpha = 0.0 },
-			border_color = { alpha = 0.0 },
+			color = colors.transparent,
+			border_color = colors.transparent,
+			-- color = { alpha = 0.0 },
+			-- border_color = { alpha = 0.0 },
 		},
 	},
 })
@@ -350,14 +352,17 @@ local function hide_details()
 	sbar.animate("tanh", 15, function()
 		ssid:set({
 			background = {
-				color = { alpha = 0.0 },
+				color = colors.transparent,
+				-- color = { alpha = 0.0 },
 			},
 		})
 		wifi_bracket:set({
 			popup = {
 				background = {
-					color = colors.with_alpha(colors.bar.bg, 0.0),
-					border_color = colors.with_alpha(colors.popup.border, 0.0),
+					color = colors.transparent,
+					border_color = colors.transparent,
+					-- color = colors.with_alpha(colors.bar.bg, 0.0),
+					-- border_color = colors.with_alpha(colors.popup.border, 0.0),
 				},
 			},
 		})
@@ -375,8 +380,10 @@ local function show_popup_animation()
 		wifi_bracket:set({
 			popup = {
 				background = {
-					color = { alpha = 1.0 },
-					border_color = { alpha = 1.0 },
+					color = colors.transparent,
+					border_color = colors.transparent,
+					-- color = { alpha = 1.0 },
+					-- border_color = { alpha = 1.0 },
 				},
 			},
 		})
@@ -396,8 +403,10 @@ local function toggle_details()
 				drawing = true,
 				blur_radius = 20,
 				background = {
-					color = { alpha = 0.01 },
-					border_color = { alpha = 0.01 },
+					color = colors.transparent,
+					border_color = colors.transparent,
+					-- color = { alpha = 0.01 },
+					-- border_color = { alpha = 0.01 },
 				},
 			},
 		})

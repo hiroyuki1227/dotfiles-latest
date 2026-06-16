@@ -18,15 +18,18 @@ local volume_widget = sbar.add("item", "widgets.volume", {
 	label = {
 		string = "",
 		width = 0,
-		font = {
-			family = settings.font.numbers,
-			style = settings.font.style_map["Bold"],
-			size = 14.0,
-		},
+		font = { family = settings.font.numbers },
 		padding_left = 0,
 		padding_right = 8,
 	},
-	background = { color = colors.bg1 },
+	background = { color = colors.transparent },
+	popup = {
+		height = 30,
+		background = {
+			color = colors.transparent,
+			border_color = colors.transparent,
+		},
+	},
 })
 
 local show_volume_percent = false
