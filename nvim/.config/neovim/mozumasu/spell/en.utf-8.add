@@ -1059,3 +1059,6 @@ CCM
 Cost
 AwsCostToSlack
 UsageType
+PrincipalIsAWSService
+SecureTransport
+Orchestrato

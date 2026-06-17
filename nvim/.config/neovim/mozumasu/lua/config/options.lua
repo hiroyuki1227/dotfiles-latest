@@ -27,7 +27,6 @@ vim.g.lazyvim_prettier_needs_config = true
 vim.opt.splitright = true
 -- open window at bottom side when horizontal split
 vim.opt.splitbelow = true
-vim.opt.splitkeep = "cursor"
 
 --
 -- Help
@@ -80,27 +79,42 @@ vim.api.nvim_create_autocmd("WinLeave", {
   end,
 })
 -- vim.opt.whichwrap = "b,s,h,l,<,>,[,],~"
+-- Defaults
+vim.opt.smarttab = true
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.expandtab = true
+
+vim.opt.wrap = true
+vim.opt.linebreak = true
+
+vim.opt.cursorline = true
+vim.opt.termguicolors = true
+vim.opt.background = "dark"
+vim.opt.signcolumn = "yes"
+
+vim.opt.mouse = "a"
 
 -- Terminal colors (WezTerm "Solarized Dark Higher Contrast" scheme)
 -- WezTerm の :terminal でカラーパレットを一致させる
 -- ANSI colors (0-7)
--- vim.g.terminal_color_0 = "#002831" -- black
--- vim.g.terminal_color_1 = "#d11c24" -- red
--- vim.g.terminal_color_2 = "#6cbe6c" -- green
--- vim.g.terminal_color_3 = "#a57706" -- yellow
--- vim.g.terminal_color_4 = "#2176c7" -- blue
--- vim.g.terminal_color_5 = "#c61c6f" -- magenta
--- vim.g.terminal_color_6 = "#259286" -- cyan
--- vim.g.terminal_color_7 = "#eae3cb" -- white
+vim.g.terminal_color_0 = "#002831" -- black
+vim.g.terminal_color_1 = "#d11c24" -- red
+vim.g.terminal_color_2 = "#6cbe6c" -- green
+vim.g.terminal_color_3 = "#a57706" -- yellow
+vim.g.terminal_color_4 = "#2176c7" -- blue
+vim.g.terminal_color_5 = "#c61c6f" -- magenta
+vim.g.terminal_color_6 = "#259286" -- cyan
+vim.g.terminal_color_7 = "#eae3cb" -- white
 -- Bright colors (8-15)
--- vim.g.terminal_color_8 = "#006488" -- bright black
--- vim.g.terminal_color_9 = "#f5163b" -- bright red
--- vim.g.terminal_color_10 = "#51ef84" -- bright green
--- vim.g.terminal_color_11 = "#b27e28" -- bright yellow
--- vim.g.terminal_color_12 = "#178ec8" -- bright blue
--- vim.g.terminal_color_13 = "#e24d8e" -- bright magenta
--- vim.g.terminal_color_14 = "#00b39e" -- bright cyan
--- vim.g.terminal_color_15 = "#fcf4dc" -- bright white
+vim.g.terminal_color_8 = "#006488" -- bright black
+vim.g.terminal_color_9 = "#f5163b" -- bright red
+vim.g.terminal_color_10 = "#51ef84" -- bright green
+vim.g.terminal_color_11 = "#b27e28" -- bright yellow
+vim.g.terminal_color_12 = "#178ec8" -- bright blue
+vim.g.terminal_color_13 = "#e24d8e" -- bright magenta
+vim.g.terminal_color_14 = "#00b39e" -- bright cyan
+vim.g.terminal_color_15 = "#fcf4dc" -- bright white
 
 -- LSP hover/signature help のボーダー設定
 vim.diagnostic.config({ float = { border = "rounded" } })
@@ -116,19 +130,3 @@ vim.lsp.buf.signature_help = (function(original)
     return original(opts)
   end
 end)(vim.lsp.buf.signature_help)
-
--- Defaults
-vim.opt.smarttab = true
-vim.opt.tabstop = 2
-vim.opt.shiftwidth = 2
-vim.opt.expandtab = true
-
-vim.opt.wrap = true
-vim.opt.linebreak = true
-
-vim.opt.cursorline = true
-vim.opt.termguicolors = true
-vim.opt.background = "dark"
-vim.opt.signcolumn = "yes"
-
-vim.opt.mouse = ""

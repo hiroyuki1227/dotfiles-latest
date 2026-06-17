@@ -236,6 +236,7 @@ return {
           { section = "startup" },
         },
       },
+      --
       -- dashboard = {
       --   preset = {
       --     keys = {
@@ -321,6 +322,10 @@ return {
           },
         },
         sources = {
+          files = {
+            hidden = true,
+            ignored = false,
+          },
           git_log_file = {
             focus = "list", -- Default focus to the list
             win = {

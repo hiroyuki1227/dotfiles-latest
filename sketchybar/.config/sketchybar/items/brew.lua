@@ -271,7 +271,6 @@ end
 -- ------------------------------------------------------------------ --
 brew = sbar.add("item", "brew", {
 	position = "right",
-
 	icon = {
 		string = icons.brew,
 		font = { family = settings.font.icons, size = 16 },

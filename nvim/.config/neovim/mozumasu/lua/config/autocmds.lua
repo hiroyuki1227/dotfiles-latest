@@ -37,7 +37,9 @@ local function apply_transparent_bg()
     highlight SnacksNormalNC guibg=NONE ctermbg=NONE
   ]])
   for _, win in ipairs(vim.api.nvim_list_wins()) do
-    pcall(vim.api.nvim_win_set_option, win, "winblend", 0)
+    pcall(function()
+      vim.wo[win].winblend = 0
+    end)
   end
 end
 
@@ -127,7 +129,7 @@ vim.api.nvim_create_autocmd("FileType", {
         title = "Markdown Outline",
         items = items,
         format = "text",
-        sort = false,
+        sort = { fields = { "idx" } },
       })
     end, {
       desc = "Markdown outline (treesitter)",
@@ -216,7 +218,8 @@ vim.api.nvim_create_autocmd("FocusGained", {
   group = vim.api.nvim_create_augroup("clipboard_to_unnamed", { clear = true }),
   callback = function()
     local clip = vim.fn.getreg("+")
-    if clip ~= "" and clip ~= _last_vim_yank then
+    local unnamed = vim.fn.getreg('"')
+    if clip ~= "" and clip ~= _last_vim_yank and unnamed == _last_vim_yank then
       vim.fn.setreg('"', clip)
     end
   end,
