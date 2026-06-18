@@ -3,7 +3,7 @@ local colors = require("colors")
 
 -- Time sits just right of the notch spacer.
 local time = sbar.add("item", "center.time", {
-	position = "right",
+	position = "center",
 	icon = {
 		string = os.date("%H:%M"),
 		color = colors.accent,
@@ -21,7 +21,7 @@ local time = sbar.add("item", "center.time", {
 
 -- Date right beside the time.
 local date = sbar.add("item", "center.date", {
-	position = "right",
+	position = "center",
 	icon = {
 		string = os.date("%b %d %a"),
 		color = colors.white,

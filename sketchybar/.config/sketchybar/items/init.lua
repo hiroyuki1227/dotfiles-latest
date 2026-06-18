@@ -170,22 +170,23 @@ local MODELS = {
 --   16" MBP default res  → try 220–250
 sbar.add("item", "center.notch", {
 	position = "center",
-	width = 450,
+	width = 200,
 	icon = { drawing = false },
 	label = { drawing = false },
 	background = { color = colors.transparent },
 })
 
--- ─────────────────────────── RIGHT ────────────────────────────
+-- ─────────────────────────── CENTER - RIGHT of notch ────────────────────────────
+require("items.widgets.weather")
 require("items.calendar")
-require("items.widgets.wifi")
+-- ─────────────────────────── RIGHT ────────────────────────────
+require("items.brew")
 require("items.widgets.input")
 require("items.widgets.battery")
 require("items.widgets.bluetooth")
 require("items.widgets.cpu")
+require("items.widgets.wifi")
 require("items.widgets.volume")
-require("items.widgets.weather")
-require("items.brew")
 -- ══════════════════════════════════════════════════════════════
 -- BRACKETS — drawn after all items are created
 -- ══════════════════════════════════════════════════════════════
@@ -198,7 +199,7 @@ sbar.add("bracket", "bracket.left", { "apple.logo", "/space\\..*/", "spaces.righ
 		color = colors.bg5,
 		border_color = colors.bg1,
 		corner_radius = CORNER_RADIUS,
-		-- height = 28,
+		height = 28,
 		border_width = 1,
 	},
 })
@@ -210,11 +211,14 @@ sbar.add("bracket", "bracket.left", { "apple.logo", "/space\\..*/", "spaces.righ
 sbar.add("bracket", "bracket.media", {
 	"/^center\\.media.*/",
 	"center.notch",
+	"/^widgets\\.weather.*/",
+	"center.time",
+	"center.date",
 }, {
 	background = {
 		color = colors.bg5,
 		corner_radius = CORNER_RADIUS,
-		height = 24,
+		height = 28,
 		border_width = 1,
 	},
 })
@@ -228,16 +232,13 @@ sbar.add("bracket", "bracket.right", {
 	"widgets.volume",
 	"widgets.battery",
 	"widgets.input",
-	"/^widgets\\.weather.*/",
 	"brew",
-	"center.date",
-	"center.time",
 }, {
 	background = {
 		color = colors.bg5,
 		border_color = colors.bg1,
 		corner_radius = CORNER_RADIUS,
-		-- height = 28,
+		height = 28,
 		border_width = 1,
 	},
 })
