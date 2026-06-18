@@ -43,13 +43,13 @@ local media = sbar.add("item", "center.media", {
 		string = "It's pretty silent",
 		width = "dynamic",
 		font = {
-			family = settings.font.text,
+			family = settings.font.text_round,
 			style = settings.font.style_map["Medium"],
 			size = 14,
-			max_chars = 24,
+			-- max_chars = 24,
 			y_offset = -5,
 		},
-		color = colors.with_alpha(colors.white, 0.30),
+		color = colors.with_alpha(colors.green, 0.5),
 		padding_left = 4,
 		padding_right = 4,
 	},
@@ -59,8 +59,8 @@ local media = sbar.add("item", "center.media", {
 		background = {
 			color = colors.popup.bg,
 			corner_radius = 9,
-			border_width = 1,
-			border_color = colors.popup.border,
+			border_width = 5,
+			border_color = colors.with_alpha(colors.blue, 0.50),
 			height = 56,
 		},
 	},
@@ -88,13 +88,13 @@ local popup_title = sbar.add("item", "popup.center.media.title", {
 		string = "",
 		width = "dynamic",
 		font = {
-			family = settings.font.text,
+			family = settings.font.text_round,
 			style = settings.font.style_map["Medium"],
-			max_chars = 24,
+			-- max_chars = 50,
 			y_offset = -5,
 			size = 14,
 		},
-		color = colors.with_alpha(colors.white, 0.55),
+		color = colors.with_alpha(colors.green, 0.7),
 		padding_left = 4,
 		padding_right = 4,
 	},
@@ -107,9 +107,9 @@ local popup_artist = sbar.add("item", "popup.center.media.artist", {
 		string = "",
 		width = "dynamic",
 		font = {
-			family = settings.font.text,
+			family = settings.font.text_round,
 			style = settings.font.style_map["Medium"],
-			max_chars = 24,
+			-- max_chars = 20,
 			y_offset = -5,
 			size = 14,
 		},
@@ -124,7 +124,7 @@ local popup_prev = sbar.add("item", "popup.center.media.prev", {
 	icon = {
 		string = icons.media.back,
 		font = {
-			family = settings.font.text,
+			family = settings.font.text_round,
 			style = settings.font.style_map["Bold"],
 			size = 14,
 		},
@@ -141,7 +141,7 @@ local popup_playpause = sbar.add("item", "popup.center.media.playpause", {
 	icon = {
 		string = icons.media.play,
 		font = {
-			family = settings.font.text,
+			family = settings.font.text_round,
 			style = settings.font.style_map["Bold"],
 			size = 14,
 		},
@@ -158,7 +158,7 @@ local popup_next = sbar.add("item", "popup.center.media.next", {
 	icon = {
 		string = icons.media.forward,
 		font = {
-			family = settings.font.text,
+			family = settings.font.text_round,
 			style = settings.font.style_map["Bold"],
 			size = 14,
 		},
@@ -291,7 +291,7 @@ local function set_label(text, faded, animate)
 		return
 	end
 	last_label_state = key
-	local color = faded and colors.with_alpha(colors.white, faded) or 0xffffffff
+	local color = faded and colors.with_alpha(colors.green, faded) or 0xffffffff
 	if animate then
 		sbar.animate("tanh", 10, function()
 			media:set({ label = { string = text, color = color } })

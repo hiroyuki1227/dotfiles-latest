@@ -1,0 +1,16 @@
+local icon = require("icons")
+local colors = require("colors")
+local sbar = require("sketchybar")
+
+sbar.add("item", "control_center", {
+	position = "right",
+	icon = {
+		string = icon.control_center or "🎛️", -- アイコン設定
+		color = colors.white,
+		font = { size = 16 },
+	},
+	label = { drawing = false },
+	padding_right = 10,
+	-- クリック時に、macOSのコントロールセンターを直接呼び出すシステムコマンドを実行
+	click_script = "open -g 'mms://go?action=ControlCenter'",
+})
