@@ -37,6 +37,24 @@ local time = sbar.add("item", "center.time", {
 	update_freq = 30,
 })
 
+local date = sbar.add("item", "center.date", {
+	position = "center",
+	icon = {
+		string = os.date("%b %d %a"),
+		color = colors.white,
+		padding_left = 5,
+		padding_right = 5,
+		font = {
+			family = settings.font.numbers,
+			style = settings.font.style_map["Heavy"],
+			size = 14.0,
+		},
+	},
+	label = { drawing = false },
+	update_freq = 3600,
+})
+--
+
 date:subscribe({ "forced", "routine", "system_woke" }, function(env)
 	date:set({ icon = { string = os.date("%a %b %d %Y ") } })
 end)
