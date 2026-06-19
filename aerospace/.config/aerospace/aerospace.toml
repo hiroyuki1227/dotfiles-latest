@@ -85,19 +85,19 @@ on-mode-changed = []
     2 = 'main'                        # Main Monitor [system settings -> Displays -> Use as]
     3 = ['built-in','^built-in retina display$']  # Case insesitive regex substring
     4 = ['built-in','^built-in retina display$']  # Case insesitive regex substring
-    5 = ['secondary']         # Secondary Monitor [system settings -> Displays -> Use as]
+    5 = ['built-in','^built-in retina display$']  # Case insesitive regex substring
     6 = ['secondary']         # Secondary Monitor [system settings -> Displays -> Use as]
     7 = ['secondary']         # Secondary Monitor [system settings -> Displays -> Use as]
     8 = ['secondary']         # Secondary Monitor [system settings -> Displays -> Use as]
     9 = ['secondary']         # Secondary Monitor [system settings -> Displays -> Use as]
 
 [gaps]
-    inner.horizontal = 10
-    inner.vertical =   10
-    outer.left =       10
-    outer.bottom =     [{monitor.'^Built-in.Display$' = 5}, {monitor.'^built-in retina display$' = 5}, 20]
-    outer.top =        [{monitor.'^Built-in.Display$' = 10}, {monitor.'^build-in retina display$' = 10}, 60]
-    outer.right =      10
+    inner.horizontal = 20
+    inner.vertical =   20
+    outer.left =       20
+    outer.bottom =     [{monitor.'^Built-in.Display$' = 10}, {monitor.'^built-in retina display$' = 10}, 20]
+    outer.top =        [{monitor.'^Built-in.Display$' = 10}, {monitor.'^build-in retina display$' = 10}, 65]
+    outer.right =      20
 
 
 [exec]                    # Agein, you don't need to copy all config sections to your config.

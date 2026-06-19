@@ -1,20 +1,39 @@
-#!/usr/bin/env bash
-
-# Colors taken from tokyonight theme
-red="0xfffc5d7c"
-blue="0xff2b82c9"
-orange="0xffd9774f"
-green="0xff9ccfd8"
-yellow="0xffe7c664"
-transparent="0x00000000"
+##!/usr/bin/env bash
+#
+## Colors taken from tokyonight theme
+#red="0xfffc5d7c"
+#blue="0xff2b82c9"
+#orange="0xffd9774f"
+#green="0xff9ccfd8"
+#yellow="0xffe7c664"
+#transparent="0x00000000"
+#
+#options=(
+#  # active_color="$orange"
+#  active_color="$green"
+#  inactive_color="$blue"
+#  # inactive_color="$transparent"
+#  hidpi=on
+#  order=above
+#  style=round
+#  width=8.0
+#)
+#
+#!/bin/bash
 
 options=(
-  active_color="$orange"
-  inactive_color="$transparent"
+  style=round
   hidpi=on
   order=above
-  style=round
-  width=8.0
+  width=10.0
+  # # Glow(光)
+  # active_color="glow(0xffffc640)"
+  #
+  # active_color=0xffffc640
+  inactive_color="$transparent"
+  active_color="gradient(top_left=0xffffc640,bottom_right=0xffba3aa5)"
+  # inactive_color="gradient(top_left=0xff2b82c9,bottom_right=0x0xffe7c664)"
+  # inactive_color="gradient(top_left=0xaa45c4c0,bottom_right=0xaaba3aa5)"
 )
 
-borders "${options[@]}"
+borders "${options[@]}"orders "${options[@]}"
