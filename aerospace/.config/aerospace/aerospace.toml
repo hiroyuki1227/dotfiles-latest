@@ -81,7 +81,7 @@ on-mode-changed = []
 #                 See:
 #                 https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
 [workspace-to-monitor-force-assignment]
-    1 = 1
+    1 = 'main'
     2 = 'main'                        # Main Monitor [system settings -> Displays -> Use as]
     3 = ['built-in','^built-in retina display$']  # Case insesitive regex substring
     4 = ['built-in','^built-in retina display$']  # Case insesitive regex substring
@@ -92,12 +92,12 @@ on-mode-changed = []
     9 = ['secondary']         # Secondary Monitor [system settings -> Displays -> Use as]
 
 [gaps]
-    inner.horizontal = 30
-    inner.vertical =   30
-    outer.left =       30
+    inner.horizontal = 10
+    inner.vertical =   10
+    outer.left =       10
     outer.bottom =     [{monitor.'^Built-in.Display$' = 5}, {monitor.'^built-in retina display$' = 5}, 20]
     outer.top =        [{monitor.'^Built-in.Display$' = 10}, {monitor.'^build-in retina display$' = 10}, 60]
-    outer.right =      30
+    outer.right =      10
 
 
 [exec]                    # Agein, you don't need to copy all config sections to your config.
