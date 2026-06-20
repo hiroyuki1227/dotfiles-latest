@@ -5,20 +5,41 @@ local icons = require("icons")
 -- For position="center", earlier-added items render to the LEFT.
 -- Bar layout: playpause → artwork → title
 
-local playpause = sbar.add("item", "center.media.playpause", {
-	position = "center",
-	icon = {
-		string = icons.media.play,
-		color = colors.with_alpha(colors.accent, 0.45),
+local media = sbar.add("item", "center.media", {
+	position = "right",
+	icon = { drawing = false },
+	scroll_texts = false,
+	label = {
+		string = "It's pretty silent",
+		width = "dynamic",
+		font = {
+			family = settings.font.text_round,
+			style = settings.font.style_map["Medium"],
+			size = 14,
+			-- max_chars = 24,
+			y_offset = -5,
+		},
+		color = colors.with_alpha(colors.white, 0.50),
 		padding_left = 4,
 		padding_right = 4,
 	},
-	label = { drawing = false },
-	click_script = "nowplaying-cli togglePlayPause",
+	popup = {
+		align = "center",
+		horizontal = true,
+		background = {
+			color = colors.popup.bg,
+			corner_radius = 9,
+			border_width = 5,
+			border_color = colors.with_alpha(colors.white, 0.80),
+			height = 56,
+		},
+	},
+	update_freq = 1,
+	updates = true,
 })
 
 local artwork = sbar.add("item", "center.media.artwork", {
-	position = "center",
+	position = "right",
 	drawing = false,
 	icon = { drawing = false },
 	label = { drawing = false },
@@ -35,37 +56,16 @@ local artwork = sbar.add("item", "center.media.artwork", {
 	},
 })
 
-local media = sbar.add("item", "center.media", {
-	position = "center",
-	icon = { drawing = false },
-	scroll_texts = false,
-	label = {
-		string = "It's pretty silent",
-		width = "dynamic",
-		font = {
-			family = settings.font.text_round,
-			style = settings.font.style_map["Medium"],
-			size = 14,
-			-- max_chars = 24,
-			y_offset = -5,
-		},
-		color = colors.with_alpha(colors.green, 0.5),
+local playpause = sbar.add("item", "center.media.playpause", {
+	position = "right",
+	icon = {
+		string = icons.media.play,
+		color = colors.with_alpha(colors.accent, 0.45),
 		padding_left = 4,
 		padding_right = 4,
 	},
-	popup = {
-		align = "center",
-		horizontal = true,
-		background = {
-			color = colors.popup.bg,
-			corner_radius = 9,
-			border_width = 5,
-			border_color = colors.with_alpha(colors.blue, 0.50),
-			height = 56,
-		},
-	},
-	update_freq = 1,
-	updates = true,
+	label = { drawing = false },
+	click_script = "nowplaying-cli togglePlayPause",
 })
 
 local popup_artwork = sbar.add("item", "popup.center.media.art", {
@@ -94,7 +94,7 @@ local popup_title = sbar.add("item", "popup.center.media.title", {
 			y_offset = -5,
 			size = 14,
 		},
-		color = colors.with_alpha(colors.green, 0.7),
+		color = colors.with_alpha(colors.white, 0.7),
 		padding_left = 4,
 		padding_right = 4,
 	},
@@ -113,7 +113,7 @@ local popup_artist = sbar.add("item", "popup.center.media.artist", {
 			y_offset = -5,
 			size = 14,
 		},
-		color = colors.with_alpha(colors.magenta, 0.55),
+		color = colors.with_alpha(colors.white, 0.6),
 		padding_left = 2,
 		padding_right = 10,
 	},

@@ -29,11 +29,11 @@ end
 
 -- ──────────────────────────── LEFT ────────────────────────────
 require("items.apple")
+-- require("items.menu")
 require("items.spaces")
 -- require("items.front_apps")
 
 -- ──────────────── CENTER — LEFT of notch ──────────────────────
-require("items.media")
 --
 -- ══════════════════════════════════════════════════════════════
 -- 【動的取得】モデル × 論理解像度でノッチ幅を自動算出
@@ -177,16 +177,17 @@ sbar.add("item", "center.external_gap", {
 -- })
 
 -- ─────────────────────────── CENTER - RIGHT of notch ────────────────────────────
-require("items.widgets.weather")
 require("items.calendar")
+require("items.widgets.weather")
 -- ─────────────────────────── RIGHT ────────────────────────────
-require("items.brew")
 require("items.widgets.input")
 require("items.widgets.battery")
 require("items.widgets.bluetooth")
 require("items.widgets.cpu")
 require("items.widgets.wifi")
 require("items.widgets.volume")
+require("items.brew")
+require("items.media")
 -- ══════════════════════════════════════════════════════════════
 -- BRACKETS — drawn after all items are created
 -- ══════════════════════════════════════════════════════════════
@@ -208,24 +209,28 @@ sbar.add("bracket", "bracket.left", { "apple.logo", "/space\\..*/", "spaces.righ
 -- The pill background spans both halves; the notch hardware creates the visual gap.
 -- Center notch pill: media — [notch] — time + date
 -- The pill background spans both halves; the notch hardware creates the visual gap.
-sbar.add("bracket", "bracket.media", {
-	"/^center\\.media.*/",
-	"center.notch",
-	"/^widgets\\.weather.*/",
-	"center.time",
-	"center.date",
-}, {
-	background = {
-		color = colors.bg5,
-		corner_radius = CORNER_RADIUS,
-		height = 28,
-		border_width = 1,
-	},
-})
+-- sbar.add("bracket", "bracket.media", {
+-- 	-- "/^center\\.media.*/",
+-- 	"center.notch",
+-- 	-- "/^widgets\\.weather.*/",
+-- 	-- "center.time",
+-- 	-- "center.date",
+-- }, {
+-- 	background = {
+-- 		color = colors.bg5,
+-- 		corner_radius = CORNER_RADIUS,
+-- 		height = 28,
+-- 		border_width = 1,
+-- 	},
+-- })
 
 -- Right pill: WiFi + Bluetooth + Volume + Battery
 sbar.add("bracket", "bracket.right", {
 	-- "input_source",
+	"/^center\\.media.*/",
+	"/^widgets\\.weather.*/",
+	"center.time",
+	"center.date",
 	"widgets.cpu",
 	"widgets.wifi",
 	"widgets.bluetooth",
