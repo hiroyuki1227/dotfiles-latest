@@ -70,7 +70,7 @@ options=(
   # active_color="gradient(top_left=0xff00bcd4,bottom_right=0x80006064)"
   # active_color="gradient(top_left=0xff00bcd4,bottom_right=0x80006064)"
   # orange
-  active_color="gradient(top_left=0xffff9800,bottom_right=0x0xff00bcd4)"
+  active_color="gradient(top_left=0xffff9800,bottom_right=0x0x8000bcd4)"
   # active_color="gradient(top_left=0xffff9800,bottom_right=0x0xffffe0b2)"
   # inactive_color="gradient(top_left=0xaa45c4c0,bottom_right=0xaaba3aa5)"
 )

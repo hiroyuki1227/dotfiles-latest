@@ -11,13 +11,64 @@
 -- resolve it
 -- https://github.com/folke/snacks.nvim/issues/812
 
+local function normalize_path(path)
+  if type(path) ~= "string" or path == "" then
+    return nil
+  end
+  local expanded = vim.fn.expand(path)
+  local resolved = vim.uv.fs_realpath(expanded)
+  return resolved or vim.fs.normalize(expanded)
+end
+
+local function get_work_main_dir()
+  local work_env_file = vim.fn.expand("~/github/dotfiles-private/work/work-env.sh")
+  if vim.fn.filereadable(work_env_file) == 0 then
+    return nil
+  end
+  local lines = vim.fn.readfile(work_env_file)
+  for _, line in ipairs(lines) do
+    local value = line:match("^%s*export%s+WORK_MAIN_DIR=(.+)%s*$")
+    if value then
+      value = value:gsub('^"(.*)"$', "%1")
+      value = value:gsub("^'(.*)'$", "%1")
+      value = value:gsub("%$HOME", vim.env.HOME or "")
+      return normalize_path(value)
+    end
+  end
+end
+
+local function is_work_tree(path)
+  local cwd = normalize_path(path)
+  local work_main_dir = get_work_main_dir()
+  if not cwd or not work_main_dir then
+    return false
+  end
+  return cwd == work_main_dir or vim.startswith(cwd, work_main_dir .. "/")
+end
+
+local default_sort_fields = { "score:desc", "mtime:desc", "#text", "idx" }
+local work_sort_fields = { "#text", "mtime:desc", "score:desc", "idx" }
+local modified_sort_fields = { "mtime:desc" }
+
+local function add_mtime(item)
+  local file = item.file
+  if type(file) ~= "string" then
+    return item
+  end
+  local uv = vim.uv or vim.loop
+  local path = (type(item.cwd) == "string" and (item.cwd .. "/" .. file)) or file
+  local stat = uv.fs_stat(path)
+  item.mtime = (stat and stat.mtime and stat.mtime.sec) or 0
+  return item
+end
+
 return {
   {
     "folke/snacks.nvim",
     keys = {
       -- I use this keymap with mini.files, but snacks explorer was taking over
       -- https://github.com/folke/snacks.nvim/discussions/949
-      { "<leader>e", false },
+      -- { "<leader>e", false },
       {
         "<leader>sg",
         function()
@@ -46,7 +97,6 @@ return {
       -- -- Iterate through incomplete tasks in Snacks_picker
       {
         -- -- You can confirm in your teminal lamw26wmal with:
-        -- -- rg "^\s*-\s\[ \]" test-markdown.md
         "<leader>tt",
         function()
           Snacks.picker.grep({
@@ -59,17 +109,51 @@ return {
             live = false,
             -- restrict search to the current working directory
             dirs = { vim.fn.getcwd() },
+            -- I want to filter this to only show markdown files
+            glob = "*.md",
             -- include files ignored by .gitignore
             args = { "--no-ignore" },
-            -- Start in normal mode
-            on_show = function()
-              vim.cmd.stopinsert()
-            end,
+            -- -- Start in normal mode
+            -- on_show = function()
+            --   vim.cmd.stopinsert()
+            -- end,
             finder = "grep",
             format = "file",
             show_empty = true,
             supports_live = false,
-            layout = "ivy",
+            layout = "ivy_split",
+            actions = {
+              task_done = function(picker, item)
+                picker:norm(function()
+                  item = item or picker:current()
+                  local path = item and Snacks.picker.util.path(item)
+                  local line = item and item.pos and item.pos[1]
+                  if not path or not line then
+                    vim.notify("No task selected", vim.log.levels.WARN)
+                    return
+                  end
+                  local changed = require("config.modules.markdown_tasks").toggle_done({
+                    file = path,
+                    line = line,
+                  })
+                  if changed then
+                    picker:refresh()
+                  end
+                end)
+              end,
+            },
+            win = {
+              input = {
+                keys = {
+                  ["<M-x>"] = { "task_done", mode = { "n", "i" } },
+                },
+              },
+              list = {
+                keys = {
+                  ["<M-x>"] = "task_done",
+                },
+              },
+            },
           })
         end,
         desc = "[P]Search for incomplete tasks",
@@ -81,7 +165,8 @@ return {
           Snacks.picker.grep({
             prompt = " ",
             -- pass your desired search as a static pattern
-            search = "^\\s*- \\[x\\] `done:",
+            -- search = "^\\s*- \\[x\\] `done:",
+            search = "^\\s*- \\[[xX]\\](?: `done:)?",
             -- we enable regex so the pattern is interpreted as a regex
             regex = true,
             -- no “live grep” needed here since we have a fixed pattern
@@ -96,6 +181,13 @@ return {
             end,
             finder = "grep",
             format = "file",
+            transform = add_mtime,
+            matcher = {
+              sort_empty = true,
+            },
+            sort = {
+              fields = modified_sort_fields,
+            },
             show_empty = true,
             supports_live = false,
             layout = "ivy",
@@ -153,20 +245,53 @@ return {
         end,
         desc = "Keymaps",
       },
-      -- File picker
+      -- -- File picker
+      -- {
+      --   "<leader><space>",
+      --   function()
+      --     local cwd = vim.fn.getcwd()
+      --     local sort_fields = default_sort_fields
+      --     if is_work_tree(cwd) then
+      --       sort_fields = work_sort_fields
+      --     end
+      --     Snacks.picker.files({
+      --       -- Test sorting by most recently modified file first.
+      --       -- `mtime` is computed per item in `transform`, then used by `sort.fields`.
+      --       transform = function(item)
+      --         local file = item.file
+      --         if type(file) ~= "string" then
+      --           return item
+      --         end
+      --         local uv = vim.uv or vim.loop
+      --         local item_cwd = item.cwd
+      --         ---@type string
+      --         local path = (type(item_cwd) == "string" and (item_cwd .. "/" .. file)) or file
+      --         local stat = uv.fs_stat(path)
+      --         item.mtime = (stat and stat.mtime and stat.mtime.sec) or 0
+      --         return item
+      --       end,
+      --       sort = {
+      --         fields = sort_fields,
+      --       },
+      --       finder = "files",
+      --       format = "file",
+      --       show_empty = true,
+      --       supports_live = true,
+      --       exclude = { "*.xlsx", "*.txt" },
+      --       -- In case you want to override the layout for this keymap
+      --       -- layout = "vscode",
+      --     })
+      --   end,
+      --   desc = "Find Files",
+      -- },
+      -- -- I'm duplicating this keymap as I want to keep my origginal code in case
+      -- -- I decidee to come back to snacks
+      -- { "<leader><space>", false },
       {
         "<leader><space>",
         function()
-          Snacks.picker.files({
-            finder = "files",
-            format = "file",
-            show_empty = true,
-            supports_live = true,
-            -- In case you want to override the layout for this keymap
-            -- layout = "vscode",
-          })
+          Snacks.picker.smart({})
         end,
-        desc = "Find Files",
       },
       -- Navigate my buffers
       {
@@ -252,7 +377,7 @@ return {
               backdrop = false,
               row = -1,
               width = 0,
-              height = 0.5,
+              height = 0.7,
               border = "top",
               title = " {title} {live} {flags}",
               title_pos = "left",
@@ -264,8 +389,27 @@ return {
               },
             },
           },
+          -- I wanted to modify the layout height, I wanted it bigger (that's
+          -- what she said)
+          ivy_split = {
+            layout = {
+              box = "vertical",
+              backdrop = false,
+              width = 0,
+              height = 0.6,
+              position = "bottom",
+              border = "top",
+              title = " {title} {live} {flags}",
+              title_pos = "left",
+              { win = "input", height = 1, border = "bottom" },
+              {
+                box = "horizontal",
+                { win = "list", border = "none" },
+                { win = "preview", title = "{preview}", width = 0.6, border = "left" },
+              },
+            },
+          },
           -- I wanted to modify the layout width
-          --
           vertical = {
             layout = {
               backdrop = false,
@@ -374,15 +518,167 @@ return {
           -- Go 1 dir above and check `sudo du -sh ./* | sort -hr | head -n 5`
         },
       },
-
       dashboard = {
         enabled = true,
-        lazy = false,
+        width = 60,
+        row = nil,
+        col = nil,
+        pane_gap = 10, -- SPACE BETWEEN LEFT AND RIGHT COLUMNS
+        preset = {
+          -- Use fzf-lua as the picker
+          pick = function(cmd, opts)
+            local fzf = require("fzf-lua")
+            opts = opts or {}
+            if cmd == "files" then
+              fzf.files(opts)
+            elseif cmd == "live_grep" then
+              fzf.live_grep(opts)
+            elseif cmd == "oldfiles" then
+              fzf.oldfiles(opts)
+            end
+          end,
+          -- Custom keymaps with proper icons
+          keys = {
+            { icon = "󰝒 ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
+            { icon = "󰝒", key = "n", desc = " New File", action = ": ene | startinsert" },
+            {
+              icon = " ",
+              key = "g",
+              desc = "Find Text",
+              action = ":lua Snacks.dashboard.pick('live_grep')",
+            },
+            {
+              icon = " ",
+              key = "r",
+              desc = "Recent Files",
+              action = ": lua Snacks.dashboard.pick('oldfiles')",
+            },
+            {
+              icon = " ",
+              key = "c",
+              desc = "Config",
+              action = ": lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
+            },
+            { icon = " ", key = "s", desc = "Restore Session", section = "session" },
+            {
+              icon = "󰒲 ",
+              key = "l",
+              desc = "Lazy",
+              action = ": Lazy",
+              enabled = package.loaded.lazy ~= nil,
+            },
+            { icon = " ", key = "q", desc = "Quit", action = ": qa" },
+          },
+
+          -- NEOVIM header
+          header = [[
+███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
+████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
+██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
+██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
+██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
+╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
+        },
+
+        -- ============================================================
+        -- FORMATS SECTION - CONTROLS HOW ITEMS ARE DISPLAYED
+        -- This removes the space between icon and text
+        -- ============================================================
+        formats = {
+          key = function(item)
+            return { { "[", hl = "special" }, { item.key, hl = "key" }, { "]", hl = "special" } }
+          end,
+          icon = function(item)
+            if item.file and (item.icon == "file" or item.icon == "directory") then
+              -- Get the actual icon from nvim-web-devicons instead of using item.icon
+              local icon, hl = require("nvim-web-devicons").get_icon(item.file, nil, { default = true })
+              return { { icon or " ", hl = hl or "icon" } } -- Return as table of tables, no width property
+            end
+            return { { item.icon, hl = "icon" } } -- Return as table of tables
+          end,
+        },
+        -- Two-pane layout
         sections = {
+          { pane = 2, text = " ", padding = -10 }, -- Negative padding pulls it UP
+          -- ============================================================
+          -- LEFT COLUMN: NEOVIM ASCII HEADER AT TOP
+          -- ============================================================
           { section = "header" },
-          { icon = " ", title = "Keymaps", section = "keys", indent = 4, padding = 1 },
-          { icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
-          { icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
+
+          -- ============================================================
+          -- RIGHT COLUMN: COLORFUL BLOCKS AT TOP
+          -- Using colorscript for beautiful colored squares
+          -- padding = space above/below this section
+          -- INCREASE padding TO PUSH RIGHT SIDE DOWN
+          -- ============================================================
+          {
+            pane = 2, -- pane = 2 means RIGHT column
+            section = "terminal",
+            cmd = "colorscript -e square", -- Colorful square pattern
+            height = 5,
+            padding = 1, -- CHANGE THIS TO PUSH RIGHT SIDE DOWN (try 8)
+          },
+
+          -- ============================================================
+          -- LEFT COLUMN: MENU BUTTONS (Find File, New File, etc.)
+          -- gap = space BETWEEN each menu item
+          -- padding = space ABOVE and BELOW all menu items
+          -- ============================================================
+          {
+            section = "keys",
+            gap = 1, -- SPACE BETWEEN "Find File", "New File", etc.
+            padding = 1, -- SPACE ABOVE/BELOW ENTIRE MENU
+          },
+
+          -- ============================================================
+          -- RIGHT COLUMN: RECENT FILES SECTION
+          -- indent = left spacing for file list
+          -- padding = space ABOVE this section
+          -- ============================================================
+          {
+            pane = 2, -- RIGHT column
+            icon = "",
+            title = "Recent Files",
+            section = "recent_files",
+            indent = 2, -- LEFT INDENT FOR FILE ITEMS
+            padding = { 1, 1 }, -- SPACE ABOVE "Recent Files" title
+            limit = 5,
+          },
+
+          -- ============================================================
+          -- RIGHT COLUMN: PROJECTS SECTION
+          -- ============================================================
+          {
+            pane = 2, -- RIGHT column
+            icon = "󰉓",
+            title = "Projects",
+            section = "projects",
+            indent = 2, -- LEFT INDENT FOR PROJECT ITEMS
+            padding = { 1, 1 }, -- SPACE ABOVE "Projects" title
+            limit = 4,
+          },
+
+          -- ============================================================
+          -- RIGHT COLUMN: GIT STATUS SECTION
+          -- ============================================================
+          {
+            pane = 2, -- RIGHT column
+            icon = "",
+            title = "Git Status",
+            section = "terminal",
+            enabled = function()
+              return Snacks.git.get_root() ~= nil
+            end,
+            cmd = "echo '' && git status --short --branch --renames",
+            height = 6,
+            padding = { 1, 1 }, -- SPACE ABOVE "Git Status" title
+            ttl = 5 * 60,
+            indent = 3, -- LEFT INDENT FOR GIT STATUS ITEMS
+          },
+
+          -- ============================================================
+          -- FOOTER: "Neovim loaded X plugins" AT BOTTOM
+          -- ============================================================
           { section = "startup" },
         },
       },

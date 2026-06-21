@@ -3,10 +3,39 @@ local settings = require("settings")
 local icons = require("icons")
 
 -- For position="center", earlier-added items render to the LEFT.
+local playpause = sbar.add("item", "center.media.playpause", {
+	position = "center",
+	icon = {
+		string = icons.media.play,
+		color = colors.with_alpha(colors.accent, 0.45),
+		padding_left = 4,
+		padding_right = 4,
+	},
+	label = { drawing = false },
+	click_script = "nowplaying-cli togglePlayPause",
+})
+
 -- Bar layout: playpause → artwork → title
+local artwork = sbar.add("item", "center.media.artwork", {
+	position = "center",
+	drawing = false,
+	icon = { drawing = false },
+	label = { drawing = false },
+	background = {
+		image = {
+			string = "",
+			scale = 0.30,
+			border_width = 1,
+			border_color = colors.bg1,
+			corner_radius = 4,
+		},
+		x_offset = 1,
+		color = colors.transparent,
+	},
+})
 
 local media = sbar.add("item", "center.media", {
-	position = "right",
+	position = "center",
 	icon = { drawing = false },
 	scroll_texts = false,
 	label = {
@@ -36,36 +65,6 @@ local media = sbar.add("item", "center.media", {
 	},
 	update_freq = 1,
 	updates = true,
-})
-
-local artwork = sbar.add("item", "center.media.artwork", {
-	position = "right",
-	drawing = false,
-	icon = { drawing = false },
-	label = { drawing = false },
-	background = {
-		image = {
-			string = "",
-			scale = 0.30,
-			border_width = 1,
-			border_color = colors.bg1,
-			corner_radius = 4,
-		},
-		x_offset = 1,
-		color = colors.transparent,
-	},
-})
-
-local playpause = sbar.add("item", "center.media.playpause", {
-	position = "right",
-	icon = {
-		string = icons.media.play,
-		color = colors.with_alpha(colors.accent, 0.45),
-		padding_left = 4,
-		padding_right = 4,
-	},
-	label = { drawing = false },
-	click_script = "nowplaying-cli togglePlayPause",
 })
 
 local popup_artwork = sbar.add("item", "popup.center.media.art", {

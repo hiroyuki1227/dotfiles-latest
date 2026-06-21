@@ -1,324 +1,284 @@
--- Filename: ~/github/dotfiles-latest/neovim/neobean/lua/config/autocmds.lua
-
 -- Autocmds are automatically loaded on the VeryLazy event
 -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
+--
 -- Add any additional autocmds here
+-- with `vim.api.nvim_create_autocmd`
+--
+-- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
+-- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 
--- config/autocmds.lua
+-- octo.nvim: octo://バッファでスワップファイルを無効化（E325: ATTENTION対策）
+-- BufNew: バッファ名が設定された直後（nvim_buf_set_nameのタイミング）に発火
+vim.api.nvim_create_autocmd({ "BufNew", "BufAdd", "BufWinEnter" }, {
+  pattern = "octo://*",
+  callback = function()
+    vim.opt_local.swapfile = false
+  end,
+})
 
--- Require the colors.lua module and access the colors directly without
--- additional file reads
--- local colors = require("config.colors")
+-- SpellCap（青い波線）を無効化
+vim.api.nvim_create_autocmd("ColorScheme", {
+  callback = function()
+    vim.api.nvim_set_hl(0, "SpellCap", {})
+  end,
+})
+vim.api.nvim_set_hl(0, "SpellCap", {})
 
-local function augroup(name)
-  return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true })
+-- 背景透過を維持（Zenモードで:w後も透明を保つ）
+local function apply_transparent_bg()
+  vim.cmd([[
+    highlight Normal guibg=NONE ctermbg=NONE
+    highlight NormalNC guibg=NONE ctermbg=NONE
+    highlight NormalFloat guibg=NONE ctermbg=NONE
+    highlight FloatBorder guibg=NONE ctermbg=NONE
+    highlight VertSplit guibg=NONE ctermbg=NONE
+    highlight SnacksBackdrop guibg=NONE ctermbg=NONE
+    highlight SnacksNormal guibg=NONE ctermbg=NONE
+    highlight SnacksNormalNC guibg=NONE ctermbg=NONE
+  ]])
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    pcall(function()
+      vim.wo[win].winblend = 0
+    end)
+  end
 end
 
--- -- This is for dadbod-ui auto completion
--- -- https://github.com/kristijanhusak/vim-dadbod-completion/issues/53#issuecomment-1705335855
--- local cmp = require("cmp")
--- local autocomplete_group = vim.api.nvim_create_augroup("vimrc_autocompletion", { clear = true })
--- vim.api.nvim_create_autocmd("FileType", {
---   pattern = { "sql", "mysql", "plsql" },
---   callback = function()
---     cmp.setup.buffer({
---       sources = {
---         { name = "vim-dadbod-completion" },
---         { name = "buffer" },
---         { name = "luasnip" },
---       },
---     })
---   end,
---   group = autocomplete_group,
--- })
+vim.api.nvim_create_autocmd({ "BufWritePost", "ColorScheme" }, {
+  pattern = "*",
+  callback = function()
+    vim.schedule(apply_transparent_bg)
+  end,
+})
 
--- close some filetypes with <esc>
+vim.api.nvim_create_user_command("CountCleanTextLength", function()
+  local bufnr = 0
+  local mode = vim.fn.mode()
+  local lines = {}
+  local context = ""
+
+  if mode == "v" or mode == "V" or mode == "\22" then
+    -- 選択範囲取得
+    local start_pos = vim.fn.getpos("'<")
+    local end_pos = vim.fn.getpos("'>")
+
+    local start_row = start_pos[2] - 1
+    local start_col = start_pos[3] - 1
+    local end_row = end_pos[2] - 1
+    local end_col = end_pos[3]
+
+    lines = vim.api.nvim_buf_get_text(bufnr, start_row, start_col, end_row, end_col, {})
+    context = "選択範囲"
+  else
+    lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+    context = "ファイル全体"
+  end
+
+  local text = table.concat(lines, "\n")
+
+  -- Markdownの記法など除去
+  text = text:gsub("```.-```", "")
+  text = text:gsub("`.-`", "")
+  text = text:gsub("%[%^%d+%]", "")
+  text = text:gsub("\n%[%^%d+%]:[^\n]*", "")
+  text = text:gsub("<https?://[^>]+>", "")
+  text = text:gsub("%[([^%]]-)%]%([^%)]+%)", "%1")
+  text = text:gsub("#+", ""):gsub("%*%*", ""):gsub("%*", ""):gsub("_", ""):gsub("[%[%]%(%)]", ""):gsub("-", "")
+
+  local clean = text:gsub("%s+", "")
+  print(context .. "の文字数（記法除去後）: " .. #clean)
+end, {})
+
 vim.api.nvim_create_autocmd("FileType", {
-  group = augroup("close_with_q"),
-  pattern = {
-    "PlenaryTestPopup",
-    "grug-far",
-    "help",
-    "lspinfo",
-    "notify",
-    "qf",
-    "spectre_panel",
-    "startuptime",
-    "tsplayground",
-    "neotest-output",
-    "checkhealth",
-    "neotest-summary",
-    "neotest-output-panel",
-    "dbout",
-    "gitsigns-blame",
-    "Lazy",
-  },
-  callback = function(event)
-    vim.bo[event.buf].buflisted = false
+  pattern = "markdown",
+  callback = function()
+    -- コードブロック (```) 入力時に誤補完されないよう backtick の autopair を無効化
     vim.schedule(function()
-      vim.keymap.set("n", "<esc>", function()
-        vim.cmd("close")
-        pcall(vim.api.nvim_buf_delete, event.buf, { force = true })
-      end, {
-        buffer = event.buf,
-        silent = true,
-        desc = "Quit buffer",
+      vim.keymap.set("i", "`", "`", { buffer = true, noremap = true })
+    end)
+    vim.keymap.set({ "n", "v" }, "<leader>mc", "<cmd>CountCleanTextLength<CR>", {
+      desc = "🧮 Markdown文字数カウント",
+      buffer = true,
+    })
+    vim.keymap.set("n", "<leader>mo", function()
+      local buf = vim.api.nvim_get_current_buf()
+      local ok, parser = pcall(vim.treesitter.get_parser, buf, "markdown")
+      if not ok or not parser then
+        vim.notify("treesitter markdown parser が利用できません", vim.log.levels.WARN)
+        return
+      end
+      parser:parse(true)
+
+      local query = vim.treesitter.query.parse("markdown", "(atx_heading) @heading")
+      local items = {}
+      for _, tree in ipairs(parser:trees()) do
+        for _, node in query:iter_captures(tree:root(), buf) do
+          local row = node:start()
+          local line = vim.api.nvim_buf_get_lines(buf, row, row + 1, false)[1] or ""
+          local level, text = line:match("^(#+)%s+(.+)$")
+          if level and text then
+            items[#items + 1] = {
+              text = string.rep("  ", #level - 1) .. text,
+              pos = { row + 1, 0 },
+              buf = buf,
+            }
+          end
+        end
+      end
+
+      Snacks.picker.pick({
+        title = "Markdown Outline",
+        items = items,
+        format = "text",
+        sort = { fields = { "idx" } },
       })
-    end)
+    end, {
+      desc = "Markdown outline (treesitter)",
+      buffer = true,
+    })
+    vim.keymap.set("n", "so", "<cmd>Arto<CR>", {
+      desc = "Open file in Arto",
+      buffer = true,
+    })
   end,
 })
 
--- -- This is used to switch between light and dark background colors when the
--- -- focus is lost or gained, for example when I switch from neovim to a tmux
--- -- pane on the right, or between 2 neovim splits
--- vim.api.nvim_create_autocmd({ "FocusGained", "FocusLost", "WinEnter", "WinLeave" }, {
---   callback = function(ev)
---     local active_bg = colors.linkarzu_color10 -- darker background
---     local inactive_bg = colors.linkarzu_color07 -- brighter background
---     if ev.event == "FocusGained" or ev.event == "WinEnter" then
---       -- Active window - darker background
---       vim.cmd("hi Normal guibg=" .. active_bg)
---       vim.cmd("hi NormalFloat guibg=" .. active_bg)
---       -- vim.cmd("hi NormalNC guibg=" .. active_bg)
---       -- vim.cmd("hi NormalFloatNC guibg=" .. active_bg)
---       vim.cmd("hi TreesitterContext guibg=" .. active_bg)
---       vim.cmd("hi TreesitterContextLineNumber guibg=" .. active_bg)
---     else
---       -- Inactive window - brighter background
---       vim.cmd("hi Normal guibg=" .. inactive_bg)
---       vim.cmd("hi NormalNC guibg=" .. inactive_bg)
---       vim.cmd("hi NormalFloat guibg=" .. inactive_bg)
---       vim.cmd("hi NormalFloatNC guibg=" .. inactive_bg)
---       vim.cmd("hi TreesitterContext guibg=" .. inactive_bg)
---       vim.cmd("hi TreesitterContextLineNumber guibg=" .. inactive_bg)
---     end
---   end,
--- })
-
--- -- -- This debounce prevents to see the color switch when switching betweeen 2
--- -- -- buffers. Remember that you'll see the color switch when switching between
--- -- -- tmux sessions, I haven't figured out how to add a delay there
--- local function update_background(event_type)
---   local active_bg = colors.linkarzu_color10 -- darker background
---   local inactive_bg = colors.linkarzu_color07 -- brighter background
---   if event_type == "FocusGained" or event_type == "WinEnter" then
---     -- Active window - darker background
---     vim.cmd("hi Normal guibg=" .. active_bg)
---     -- Commented so that when focus another pane inactive background changes
---     -- vim.cmd("hi NormalNC guibg=" .. active_bg)
---     vim.cmd("hi NormalFloat guibg=" .. active_bg)
---     vim.cmd("hi NormalFloatNC guibg=" .. active_bg)
---     vim.cmd("hi TreesitterContext guibg=" .. active_bg)
---     vim.cmd("hi TreesitterContextLineNumber guibg=" .. active_bg)
---     -- vim.cmd("hi MiniFilesTitleFocused guibg=" .. active_bg)
---     vim.cmd("hi MiniDiffSignChange guibg=" .. active_bg)
---     vim.cmd("hi MiniDiffSignAdd guibg=" .. active_bg)
---     vim.cmd("hi MiniDiffSignDelete guibg=" .. active_bg)
---     vim.cmd("hi NonText guibg=" .. active_bg)
---     vim.cmd("hi WinBar guibg=" .. active_bg)
---     -- These 2 statusline colors replace the lualine color when lualine is not
---     -- enabled
---     vim.cmd("hi StatusLine guibg=" .. active_bg)
---     vim.cmd("hi StatusLineNC guibg=" .. active_bg)
---     vim.cmd("hi CursorLine guibg=" .. colors.linkarzu_color13)
---     -- This is the background of the folded lines
---     vim.cmd("hi Folded guibg=" .. active_bg)
---   else
---     -- Inactive window - brighter background
---     vim.cmd("hi Normal guibg=" .. inactive_bg)
---     vim.cmd("hi NormalNC guibg=" .. inactive_bg)
---     vim.cmd("hi NormalFloat guibg=" .. inactive_bg)
---     vim.cmd("hi NormalFloatNC guibg=" .. inactive_bg)
---     vim.cmd("hi TreesitterContext guibg=" .. inactive_bg)
---     vim.cmd("hi TreesitterContextLineNumber guibg=" .. inactive_bg)
---     -- vim.cmd("hi MiniFilesTitle guibg=" .. inactive_bg)
---     vim.cmd("hi MiniDiffSignChange guibg=" .. inactive_bg)
---     vim.cmd("hi MiniDiffSignAdd guibg=" .. inactive_bg)
---     vim.cmd("hi MiniDiffSignDelete guibg=" .. inactive_bg)
---     vim.cmd("hi NonText guibg=" .. inactive_bg)
---     vim.cmd("hi WinBar guibg=" .. inactive_bg)
---     -- These 2 statusline colors replace the lualine color when lualine is not
---     -- enabled
---     vim.cmd("hi StatusLine guibg=" .. inactive_bg)
---     vim.cmd("hi StatusLineNC guibg=" .. inactive_bg)
---     -- I don't want to see the cursorline when window is unfocused
---     vim.cmd("hi CursorLine guibg=" .. inactive_bg)
---     -- This is the background of the folded lines
---     vim.cmd("hi Folded guibg=" .. inactive_bg)
---   end
--- end
--- -- Debounce function for Focus events
--- local debounce_timer = nil
--- local function debounced_update_background(ev)
---   local event_type = ev.event -- Capture the event type
---   -- Cancel any existing timer
---   if debounce_timer then
---     vim.fn.timer_stop(debounce_timer)
---     debounce_timer = nil
---   end
---   -- Start a new timer
---   debounce_timer = vim.fn.timer_start(50, function()
---     vim.schedule(function()
---       update_background(event_type)
---       debounce_timer = nil
---     end)
---   end)
--- end
--- -- Immediate function for Win events
--- local function immediate_update_background(ev)
---   update_background(ev.event)
--- end
--- -- Create autocmd for WinEnter and WinLeave with immediate update
--- vim.api.nvim_create_autocmd({ "WinEnter", "WinLeave" }, {
---   callback = immediate_update_background,
--- })
--- -- Create autocmd for FocusGained and FocusLost with debounce
--- vim.api.nvim_create_autocmd({ "FocusGained", "FocusLost" }, {
---   callback = debounced_update_background,
--- })
-
--- wrap and check for spell in text filetypes
-vim.api.nvim_create_autocmd("FileType", {
-  group = augroup("wrap_spell"),
-  pattern = { "text", "plaintex", "typst", "gitcommit", "markdown" },
-  callback = function()
-    -- -- By default wrap is set to true regardless of what I chose in my options.lua file,
-    -- -- This sets wrapping for my skitty-notes and I don't want to have
-    -- -- wrapping there, I wanto to decide this in the options.lua file
-    -- vim.opt_local.wrap = false
-    vim.opt_local.spell = true
-  end,
-})
-
--- -- Show LSP diagnostics (inlay hints) in a hover window / popup lamw26wmal
--- -- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#show-line-diagnostics-automatically-in-hover-window
--- -- https://www.reddit.com/r/neovim/comments/1168p97/how_can_i_make_lspconfig_wrap_around_these_hints/
--- -- If you want to increase the hover time, modify vim.o.updatetime = 200 in your
--- -- options.lua file
--- --
--- -- -- In case you want to use custom borders
--- -- local border = {
--- --   { "🭽", "FloatBorder" },
--- --   { "▔", "FloatBorder" },
--- --   { "🭾", "FloatBorder" },
--- --   { "▕", "FloatBorder" },
--- --   { "🭿", "FloatBorder" },
--- --   { "▁", "FloatBorder" },
--- --   { "🭼", "FloatBorder" },
--- --   { "▏", "FloatBorder" },
--- -- }
--- vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
---   group = vim.api.nvim_create_augroup("float_diagnostic", { clear = true }),
---   callback = function()
---     vim.diagnostic.open_float(nil, {
---       focus = false,
---       border = "rounded",
---     })
---   end,
--- })
-
--- When I open markdown files I want to fold the markdown headings
--- Originally I thought about using it only for skitty-notes, but I think I want
--- it in all markdown files
---
--- if vim.g.neovim_mode == "skitty" then
-vim.api.nvim_create_autocmd("BufRead", {
+-- [[notebook:name]] 形式のリンクにジャンプ（LspAttach後に設定してLazyVimのgdを上書き）
+vim.api.nvim_create_autocmd("LspAttach", {
   pattern = "*.md",
+  callback = function(args)
+    vim.keymap.set("n", "gd", function()
+      local line = vim.api.nvim_get_current_line()
+      local col = vim.api.nvim_win_get_cursor(0)[2] + 1
+
+      -- [[notebook:name]] 形式のリンクを検出（コロンを含むもののみ）
+      local search_start = 1
+      while true do
+        local start_pos, end_pos, link = line:find("%[%[([^%]]+:[^%]]+)%]%]", search_start)
+        if not start_pos then
+          break
+        end
+        if col >= start_pos and col <= end_pos then
+          local path = require("config.nb").get_note_path(link)
+          if path and path ~= "" then
+            vim.cmd.edit(path)
+            return
+          end
+        end
+        search_start = end_pos + 1
+      end
+
+      vim.lsp.buf.definition()
+    end, { buffer = args.buf, desc = "Go to nb link or definition" })
+  end,
+})
+
+-- nb形式のリンク（notebook:note）のMarksman警告を無視
+local original_diagnostics_handler = vim.lsp.handlers["textDocument/publishDiagnostics"]
+vim.lsp.handlers["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
+  if result and result.diagnostics then
+    result.diagnostics = vim.tbl_filter(function(diagnostic)
+      -- Marksmanのnbリンクエラーを除外（例: "Link to non-existent document 'home:note'"）
+      if diagnostic.source == "Marksman" then
+        local msg = diagnostic.message or ""
+        if msg:match("Link to non%-existent document '[%w_%-]+:") then
+          return false
+        end
+      end
+      return true
+    end, result.diagnostics)
+  end
+  return original_diagnostics_handler(err, result, ctx, config)
+end
+
+vim.api.nvim_create_user_command("InsertDatetime", function()
+  -- io.popen('date ...') の代わりに vim.fn.strftime を使用（外部プロセス不要）
+  local result = vim.fn.strftime("%Y-%m-%d %H:%M:%S")
+  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  row = row - 1 -- Lua は 0-indexed
+  vim.api.nvim_buf_set_text(0, row, col, row, col, { result })
+end, {})
+
+-- ヤンク時のみクリップボード連携（削除などは除外）
+-- _last_vim_yank: vim内でyankした最後の内容を記録（外部コピーとの区別用）
+local _last_vim_yank = ""
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = vim.api.nvim_create_augroup("yank_to_clipboard", { clear = true }),
   callback = function()
-    -- Get the full path of the current file
-    local file_path = vim.fn.expand("%:p")
-    -- Ignore files in my daily note directory
-    if file_path:match(os.getenv("HOME") .. "/github/obsidian_main/250%-daily/") then
-      return
-    end -- Avoid running zk multiple times for the same buffer
-    if vim.b.zk_executed then
-      return
+    if vim.v.event.operator == "y" then
+      local text = vim.fn.getreg('"')
+      vim.fn.setreg("+", text)
+      _last_vim_yank = text
     end
-    vim.b.zk_executed = true -- Mark as executed
-    -- Use `vim.defer_fn` to add a slight delay before executing `zk`
-    vim.defer_fn(function()
-      vim.cmd("normal zk")
-      -- This write was disabling my inlay hints
-      -- vim.cmd("silent write")
-      vim.notify("Folded keymaps", vim.log.levels.INFO)
-    end, 100) -- Delay in milliseconds (100ms should be enough)
   end,
 })
 
--- Clear jumps when I open Neovim, otherwise there'a lot of crap that links to
--- different files, trying this and will see if it works out or not
-vim.api.nvim_create_autocmd("BufWinEnter", {
-  once = true,
+-- 外部アプリでコピーした内容をpで貼り付けられるようにする
+-- クリップボードがvim内のyankと異なる場合（＝外部でコピーされた場合）のみ無名レジスタに同期
+vim.api.nvim_create_autocmd("FocusGained", {
+  group = vim.api.nvim_create_augroup("clipboard_to_unnamed", { clear = true }),
   callback = function()
-    vim.schedule(function()
-      vim.cmd("clearjumps")
-    end)
+    local clip = vim.fn.getreg("+")
+    local unnamed = vim.fn.getreg('"')
+    if clip ~= "" and clip ~= _last_vim_yank and unnamed == _last_vim_yank then
+      vim.fn.setreg('"', clip)
+    end
   end,
 })
 
--- Disable harper_ls when a markdown file inside ~/github/obsidian_main/075-umg is opened
-local umg_root = vim.fn.expand("~/github/obsidian_main/075-umg")
--- Only register the autocmd if the target directory exists
-if vim.fn.isdirectory(umg_root) == 1 then
-  vim.api.nvim_create_autocmd("BufRead", {
-    group = augroup("umg_markdown_disable_ls"),
-    pattern = "*.md",
-    callback = function()
-      local file_path = vim.fn.expand("%:p")
-      -- Check that the file resides inside umg_root
-      if vim.startswith(file_path, umg_root .. "/") then
-        -- Prevent running twice for the same buffer
-        if vim.b.harper_ls_disabled then
+-- :quit時に特殊ウィンドウ(quickfix, help等)のみが残っている場合は自動で閉じる
+-- ref: https://zenn.dev/vim_jp/articles/ff6cd224fab0c7
+vim.api.nvim_create_autocmd("QuitPre", {
+  callback = function()
+    local current_win = vim.api.nvim_get_current_win()
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+      if win ~= current_win then
+        local buf = vim.api.nvim_win_get_buf(win)
+        if vim.bo[buf].buftype == "" then
           return
         end
-        vim.b.harper_ls_disabled = true
-        vim.schedule(function()
-          pcall(vim.api.nvim_command, "LspStop harper_ls")
-        end)
-        vim.notify("UMG markdown opened: harper_ls disabled", vim.log.levels.INFO)
       end
-    end,
-  })
-end
-
-local group = vim.api.nvim_create_augroup("MyQMK", {})
-
-vim.api.nvim_create_autocmd("BufEnter", {
-  desc = "Format glove80",
-  group = group,
-  pattern = "*/linkarzu-glove80/config/glove80.keymap", -- this is a pattern to match the filepath of whatever board you wish to target
-  callback = function()
-    require("qmk").setup({
-      name = "LAYOUT_glove80",
-      variant = "zmk",
-      auto_format_pattern = "*/linkarzu-glove80/config/glove80.keymap",
-      layout = {
-        "x x x x x _ _ _ _ _ _ _ _ _ x x x x x",
-        "x x x x x x _ _ _ _ _ _ _ x x x x x x",
-        "x x x x x x _ _ _ _ _ _ _ x x x x x x",
-        "x x x x x x _ _ _ _ _ _ _ x x x x x x",
-        "x x x x x x x x x _ x x x x x x x x x",
-        "x x x x x _ x x x _ x x x _ x x x x x",
-      },
-    })
+    end
+    vim.cmd.only({ bang = true })
   end,
 })
 
-vim.api.nvim_create_autocmd("BufEnter", {
-  desc = "Format toucan",
-  group = group,
-  pattern = "*/zmk-keyboard-toucan/config/toucan.keymap", -- this is a pattern to match the filepath of whatever board you wish to target
-  callback = function()
-    require("qmk").setup({
-      name = "LAYOUT_toucan",
-      variant = "zmk",
-      auto_format_pattern = "*/zmk-keyboard-toucan/config/toucan.keymap",
-      layout = {
-        "x x x x x x _ _ _ x x x x x x",
-        "x x x x x x _ _ _ x x x x x x",
-        "x x x x x x _ _ _ x x x x x x",
-        "_ _ _ _ x x x _ x x x _ _ _ _",
-      },
-    })
-  end,
+-- Generate Co-Authored-By trailer and insert at cursor position
+-- Usage: :CoAuthoredBy <github-username>
+vim.api.nvim_create_user_command("CoAuthoredBy", function(opts)
+  local username = opts.args
+  if username == "" then
+    vim.notify("Usage: :CoAuthoredBy <github-username>", vim.log.levels.ERROR)
+    return
+  end
+
+  local cmd = string.format(
+    [[gh api /users/%s -q '"Co-Authored-By: \(.name) <\(.id)+\(.login)@users.noreply.github.com>"']],
+    username
+  )
+  -- 非同期実行（GitHub API呼び出しのフリーズ防止、タイムアウト10秒）
+  vim.notify("Fetching user info for " .. username .. "...", vim.log.levels.INFO)
+  vim.system({ "sh", "-c", cmd }, { text = true, timeout = 10000 }, function(result)
+    vim.schedule(function()
+      if result.code ~= 0 then
+        vim.notify("Failed to get user info: " .. (result.stderr or ""), vim.log.levels.ERROR)
+        return
+      end
+      local text = result.stdout:gsub("\n$", "")
+      vim.api.nvim_put({ text }, "l", true, true)
+      vim.notify("Inserted: " .. text, vim.log.levels.INFO)
+    end)
+  end)
+end, {
+  nargs = 1,
+  desc = "Generate Co-Authored-By trailer from GitHub username",
+})
+
+-- Open file in Arto (markdown editor)
+vim.api.nvim_create_user_command("Arto", function(opts)
+  local path = opts.args ~= "" and vim.fn.fnamemodify(opts.args, ":p") or vim.fn.expand("%:p")
+  vim.system({ "open", "-a", "Arto", path })
+end, {
+  nargs = "?",
+  complete = "file",
+  desc = "Open file in Arto",
 })
