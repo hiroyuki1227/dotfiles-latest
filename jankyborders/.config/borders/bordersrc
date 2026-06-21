@@ -19,8 +19,43 @@
 #  width=8.0
 #)
 #
-#!/bin/bash
+# 透過率
 
+#### 8桁のカラーコード一覧
+
+# #それでは、本題の8桁カラーコードの説明です。
+#
+# 8桁のカラーコードの場合、 **下2桁は透過率を表します。**
+#
+# 下2桁が表す透過率は、以下になります。
+#
+# | 透過率 | 下2桁 |
+# | --- | --- |
+# | 0%（透過しない） | FF |
+# | 5% | F2 |
+# | 10% | E6 |
+# | 15% | D9 |
+# | 20% | CC |
+# | 25% | BF |
+# | 30% | B3 |
+# | 35% | A6 |
+# | 40% | 99 |
+# | 45% | 8C |
+# | 50% | 80 |
+# | 55% | 73 |
+# | 60% | 66 |
+# | 65% | 59 |
+# | 70% | 4D |
+# | 75% | 40 |
+# | 80% | 33 |
+# | 85% | 26 |
+# | 90% | 1A |
+# | 95% | 0D |
+# | 100%（見えない） | 00 |
+#
+
+# !/bin/bash
+#
 options=(
   style=round
   hidpi=on
@@ -31,8 +66,12 @@ options=(
   #
   # active_color=0xffffc640
   inactive_color="$transparent"
-  active_color="gradient(top_left=0xffffc640,bottom_right=0xffba3aa5)"
-  # inactive_color="gradient(top_left=0xff2b82c9,bottom_right=0x0xffe7c664)"
+# Cyan 
+  # active_color="gradient(top_left=0xff00bcd4,bottom_right=0x80006064)"
+  # active_color="gradient(top_left=0xff00bcd4,bottom_right=0x80006064)"
+  # orange
+  active_color="gradient(top_left=0xffff9800,bottom_right=0x0xff00bcd4)"
+  # active_color="gradient(top_left=0xffff9800,bottom_right=0x0xffffe0b2)"
   # inactive_color="gradient(top_left=0xaa45c4c0,bottom_right=0xaaba3aa5)"
 )
 

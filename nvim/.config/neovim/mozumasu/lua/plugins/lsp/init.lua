@@ -93,41 +93,16 @@ return {
         -- completion = {
         --   ghost_text = { enable = true },
         --   menu = { autoshow = true },
-        },
       },
-
-      -- (Default) list of enabled providers defined so that you can extend it
-      -- elsewhere in your config, without redefining it, due to `opts_extend`
-      sources = { default = { "lsp", "path", "snippets", "buffer" } },
-
-      -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
-      -- You may use a lua implementation instead by using `implementation = "lua"`
-      -- See the fuzzy documentation for more information
-      fuzzy = { implementation = "rust" },
     },
+
+    -- (Default) list of enabled providers defined so that you can extend it
+    -- elsewhere in your config, without redefining it, due to `opts_extend`
+    sources = { default = { "lsp", "path", "snippets", "buffer" } },
+
+    -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
+    -- You may use a lua implementation instead by using `implementation = "lua"`
+    -- See the fuzzy documentation for more information
+    fuzzy = { implementation = "rust" },
   },
-  -- {
-  --   "saghen/blink.cmp",
-  --   opts = {
-  --     completion = {
-  --       menu = {
-  --         border = "rounded",
-  --       },
-  --       documentation = {
-  --         window = {
-  --           border = "rounded",
-  --         },
-  --       },
-  --     },
-  --     keymap = {
-  --       -- preset = "none",
-  --       ["<CR>"] = {}, -- Do not use enter to confirm completion
-  --     },
-  --     sources = {
-  --       default = {
-  --         cmdline = {}, -- Disable cmdline completions (conflicts with Snacks picker)
-  --       },
-  --     },
-  --   },
-  -- },
 }

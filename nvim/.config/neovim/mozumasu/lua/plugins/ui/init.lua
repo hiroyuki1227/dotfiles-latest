@@ -19,7 +19,6 @@ return {
   --     lualine_bold = false,
   --   },
   -- },
-  -- filename
   {
     "folke/tokyonight.nvim",
     priority = 1000,
