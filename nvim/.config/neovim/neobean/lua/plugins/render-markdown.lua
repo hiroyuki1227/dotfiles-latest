@@ -56,7 +56,7 @@ return {
     },
     -- Add custom icons lamw26wmal
     link = {
-      image = vim.g.neovim_mode == "skitty" and "" or "󰥶 ",
+      -- image = vim.g.neovim_mode == "skitty" and "" or "󰥶 ",
       custom = {
         youtu = { pattern = "youtu%.be", icon = "󰗃 " },
       },

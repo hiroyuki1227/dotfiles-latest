@@ -7,11 +7,16 @@ local config = wezterm.config_builder()
 -- 設定ファイルの変更を自動で読み込む
 config.automatically_reload_config = true
 
+-- config.term = "xterm-kitty"
+
+-- config.enable_kitty_graphics = true
+config.max_fps = 120
 -- macSKK向け: Control-jで改行されないようにする設定
 -- https://github.com/mtgto/macSKK?tab=readme-ov-file#q-wezterm-%E3%81%A7-c-j-%E3%82%92%E6%8A%BC%E3%81%99%E3%81%A8%E6%94%B9%E8%A1%8C%E3%81%95%E3%82%8C%E3%81%A6%E3%81%97%E3%81%BE%E3%81%84%E3%81%BE%E3%81%99
 ---@diagnostic disable-next-line: assign-type-mismatch
 config.macos_forward_to_ime_modifier_mask = "SHIFT|CTRL"
 
+--
 -- font
 config.font_size = 15.0
 -- config.font = wezterm.font("HackGen Console NF")
@@ -31,7 +36,13 @@ config.font = wezterm.font_with_fallback({
 --
 
 config.use_ime = true -- IME有効化
-
+config.window_padding = {
+	left = 2,
+	right = 2,
+	top = 15,
+	bottom = 0,
+}
+-- 背景透過
 -- config.window_background_opacity = 0.5
 -- config.macos_window_background_blur = 20
 -- config.window_background_opacity = 0.8 -- 非フォーカス時のデフォルト（blur見える）
@@ -75,8 +86,8 @@ require("statusbar").apply_to_config(config)
 -- オプショナルモジュール（keymapsの後に読み込む）
 require("modules.opacity").apply_to_config(config)
 -- require("modules.aws_profile").apply_to_config(config)
--- require("modules.karabiner_profile").apply_to_config(config)
--- require("modules.claude_session").apply_to_config(config)
+require("modules.karabiner_profile").apply_to_config(config)
+require("modules.claude_session").apply_to_config(config)
 require("modules.translate").apply_to_config(config)
 
 return config

@@ -138,7 +138,7 @@ local keys = {
 	{ key = "w", mods = "SUPER", action = act.CloseCurrentTab({ confirm = true }) },
 	-- Pane操作
 	-- <C-h> has been remapped to Backspace, so Backspace must be specified here
-	{ key = "Backspace", mods = "SHIFT", action = act.ActivatePaneDirection("Left") },
+	{ key = "h", mods = "SHIFT|CTRL", action = act.ActivatePaneDirection("Left") },
 	{ key = "l", mods = "SHIFT|CTRL", action = act.ActivatePaneDirection("Right") },
 	{ key = "k", mods = "SHIFT|CTRL", action = act.ActivatePaneDirection("Up") },
 	{ key = "j", mods = "SHIFT|CTRL", action = act.ActivatePaneDirection("Down") },

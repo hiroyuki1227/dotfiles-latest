@@ -17,7 +17,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   spec = {
     -- add LazyVim and import its plugins
-    { "LazyVim/LazyVim", import = "lazyvim.plugins", opts = { colorscheme = "solarized-osaka" } },
+    -- { "LazyVim/LazyVim", import = "lazyvim.plugins", opts = { colorscheme = "solarized-osaka" } },
     -- { "LazyVim/LazyVim", import = "lazyvim.plugins", opts = { colorscheme = "zenbones" } },
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     -- LazyExtra
@@ -46,12 +46,14 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.lang.tailwind" },
 
     -- import/override with your plugins
+    { import = "plugins.ui.colorschemes" },
     { import = "plugins.ui" },
     { import = "plugins.base" },
     { import = "plugins.lsp" },
     { import = "plugins.editor" },
     { import = "plugins.disable" },
     { import = "plugins.plamo-translate" },
+    -- { import = "plugins.ui.colorscheme" },
   },
   defaults = {
     -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
@@ -62,7 +64,7 @@ require("lazy").setup({
     version = false, -- always use the latest git commit
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
-  install = { colorscheme = { "zenbones", "tokyonight", "habamax" } },
+  -- install = { colorscheme = { "zenbones", "tokyonight", "habamax" } },
   checker = {
     enabled = true, -- check for plugin updates periodically
     notify = false, -- notify on update
