@@ -6,16 +6,16 @@
 -- Here we capture the environment variable to make it accessible to neovim
 --
 -- NOTE: To see all the files modified for skitty-notes just search for "neovim_mode"
-vim.g.neovim_mode = vim.env.NEOVIM_MODE or "default"
-vim.g.scrollback_mode = vim.env.SCROLLBACK_MODE or "default"
-vim.g.simpler_scrollback = vim.env.SIMPLER_SCROLLBACK or "default"
+-- vim.g.neovim_mode = vim.env.NEOVIM_MODE or "default"
+-- vim.g.scrollback_mode = vim.env.SCROLLBACK_MODE or "default"
+-- vim.g.simpler_scrollback = vim.env.SIMPLER_SCROLLBACK or "default"
 -- vim.g.bullets_enable_in_empty_buffers = 0
 
 -- -- I have 2 style options "solid" and "transparent"
 -- -- This style is defined in my zshrc file
 -- -- :lua print(vim.env.MD_HEADING_BG)
-vim.g.md_heading_bg = vim.env.MD_HEADING_BG
-
+-- vim.g.md_heading_bg = vim.env.MD_HEADING_BG
+--
 -- bootstrap lazy.nvim, LazyVim and your plugins
 require("config.lazy")
 
@@ -29,8 +29,8 @@ require("config.highlights")
 -- Delay for `skitty` configuration
 -- If I don't add this delay, I get the message
 -- "Press ENTER or type command to continue"
-if vim.g.neovim_mode == "skitty" then
-  vim.wait(500, function()
-    return false
-  end) -- Wait for X miliseconds without doing anything
-end
+-- if vim.g.neovim_mode == "skitty" then
+--   vim.wait(500, function()
+--     return false
+--   end) -- Wait for X miliseconds without doing anything
+-- end

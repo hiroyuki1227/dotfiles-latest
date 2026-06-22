@@ -37,6 +37,8 @@ local module = {}
 -- end
 
 local appearance = {
+	color_scheme = "Eldritch",
+	-- color_scheme = "tokyonight_day",
 	-- color_scheme_dirs = get_color_sceheme_dir(),
 	-- color_scheme = color_scheme_for_appearance(get_appearance()),
 	-- color_scheme = "Solarized Dark Higher Contrast",

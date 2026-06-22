@@ -73,8 +73,22 @@ config.quick_select_patterns = {
 	"\\b[a-zA-Z][a-zA-Z0-9]*(?:[_-][a-zA-Z0-9]+){1,}\\b",
 	-- メールアドレス
 	"\\b[\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,}\\b",
+	-- Nushell error paths (like ╭─[/path/to/file.nu:1946:63])
+	"─\\[(.*\\:\\d+\\:\\d+)\\]",
+
+	-- Table patterns
+	-- $env.config.table.mode = "default"
+	-- $env.config.table.header_on_separator = true
+	-- $env.config.footer_mode = "always"
+	"(?<=─|╭|┬)([a-zA-Z0-9 _%.-]+?)(?=─|╮|┬)", -- Headers
+	"(?<=│ )([a-zA-Z0-9 _.-]+?)(?= │)", -- Column values
+
+	-- File paths (stops at ~, allows dots in path but stops before dot+space)
+	"/[^/\\s│~]+(?:/[^/\\s│~]+)*(?:\\.(?!\\s)[a-zA-Z0-9]+)?",
 }
--- Disable audible bell
+
+-- config.quick_select_patterns = quick_select_patterns
+-- -- Disable audible bell
 config.audible_bell = "Disabled"
 
 require("keymaps").apply_to_config(config)

@@ -82,9 +82,12 @@ return {
       },
     },
     code = {
-      -- if I'm not using yabai, I cannot make the color of the codeblocks
-      -- transparent, so just disabling all rendering 😢
-      style = "none",
+      -- Determines how code blocks & inline code are rendered.
+      -- | none     | { enabled = false }                           |
+      -- | normal   | { language = false }                          |
+      -- | language | { disable_background = true, inline = false } |
+      -- | full     | uses all default values                       |
+      style = "full",
     },
   },
 }

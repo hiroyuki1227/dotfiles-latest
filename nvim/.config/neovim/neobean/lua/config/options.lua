@@ -1,3 +1,4 @@
+require("config.options_lz")
 -- Options are automatically loaded before lazy.nvim startup
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
@@ -53,7 +54,7 @@ vim.api.nvim_create_autocmd("CmdlineLeave", {
 })
 
 -- 補完メニューの背景透過（低めに設定して視認性を確保）
-vim.opt.pumblend = 10
+vim.opt.pumblend = 20
 
 -- アクティブウィンドウの枠線の色を設定
 vim.cmd([[
@@ -98,23 +99,23 @@ vim.opt.mouse = "a"
 -- Terminal colors (WezTerm "Solarized Dark Higher Contrast" scheme)
 -- WezTerm の :terminal でカラーパレットを一致させる
 -- ANSI colors (0-7)
-vim.g.terminal_color_0 = "#002831" -- black
-vim.g.terminal_color_1 = "#d11c24" -- red
-vim.g.terminal_color_2 = "#6cbe6c" -- green
-vim.g.terminal_color_3 = "#a57706" -- yellow
-vim.g.terminal_color_4 = "#2176c7" -- blue
-vim.g.terminal_color_5 = "#c61c6f" -- magenta
-vim.g.terminal_color_6 = "#259286" -- cyan
-vim.g.terminal_color_7 = "#eae3cb" -- white
--- Bright colors (8-15)
-vim.g.terminal_color_8 = "#006488" -- bright black
-vim.g.terminal_color_9 = "#f5163b" -- bright red
-vim.g.terminal_color_10 = "#51ef84" -- bright green
-vim.g.terminal_color_11 = "#b27e28" -- bright yellow
-vim.g.terminal_color_12 = "#178ec8" -- bright blue
-vim.g.terminal_color_13 = "#e24d8e" -- bright magenta
-vim.g.terminal_color_14 = "#00b39e" -- bright cyan
-vim.g.terminal_color_15 = "#fcf4dc" -- bright white
+-- vim.g.terminal_color_0 = "#002831" -- black
+-- vim.g.terminal_color_1 = "#d11c24" -- red
+-- vim.g.terminal_color_2 = "#6cbe6c" -- green
+-- vim.g.terminal_color_3 = "#a57706" -- yellow
+-- vim.g.terminal_color_4 = "#2176c7" -- blue
+-- vim.g.terminal_color_5 = "#c61c6f" -- magenta
+-- vim.g.terminal_color_6 = "#259286" -- cyan
+-- vim.g.terminal_color_7 = "#eae3cb" -- white
+-- -- Bright colors (8-15)
+-- vim.g.terminal_color_8 = "#006488" -- bright black
+-- vim.g.terminal_color_9 = "#f5163b" -- bright red
+-- vim.g.terminal_color_10 = "#51ef84" -- bright green
+-- vim.g.terminal_color_11 = "#b27e28" -- bright yellow
+-- vim.g.terminal_color_12 = "#178ec8" -- bright blue
+-- vim.g.terminal_color_13 = "#e24d8e" -- bright magenta
+-- vim.g.terminal_color_14 = "#00b39e" -- bright cyan
+-- vim.g.terminal_color_15 = "#fcf4dc" -- bright white
 
 -- LSP hover/signature help のボーダー設定
 vim.diagnostic.config({ float = { border = "rounded" } })

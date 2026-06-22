@@ -68,7 +68,7 @@ return {
     keys = {
       -- I use this keymap with mini.files, but snacks explorer was taking over
       -- https://github.com/folke/snacks.nvim/discussions/949
-      -- { "<leader>e", false },
+      { "<leader>e", false },
       {
         "<leader>sg",
         function()
@@ -495,7 +495,7 @@ return {
           -- render the image inline in the buffer
           -- if your env doesn't support unicode placeholders, this will be disabled
           -- takes precedence over `opts.float` on supported terminals
-          inline = vim.g.neovim_mode == "skitty" and true or false,
+          inline = false,
           -- only_render_image_at_cursor = vim.g.neovim_mode == "skitty" and false or true,
           -- render the image in a floating window
           -- only used if `opts.inline` is disabled
@@ -504,8 +504,8 @@ return {
           -- max_width = 60,
           -- max_width = vim.g.neovim_mode == "skitty" and 20 or 60,
           -- max_height = vim.g.neovim_mode == "skitty" and 10 or 30,
-          max_width = vim.g.neovim_mode == "skitty" and 5 or 60,
-          max_height = vim.g.neovim_mode == "skitty" and 2.5 or 30,
+          max_width = 60,
+          max_height = 30,
           -- max_height = 30,
           -- Apparently, all the images that you preview in neovim are converted
           -- to .png and they're cached, original image remains the same, but
