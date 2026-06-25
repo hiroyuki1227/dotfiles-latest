@@ -81,7 +81,7 @@ local function add_package_item(name, current_ver, new_ver, index)
 		align = "left",
 		label = {
 			string = name .. "  " .. current_ver .. " → " .. new_ver,
-			font = { family = settings.font.text_round, size = 14 },
+			font = { family = settings.font.text, size = 14 },
 			color = colors.white,
 			padding_right = 12,
 		},
@@ -113,7 +113,7 @@ local function render_packages(packages)
 			label = {
 				string = "All up to date ✓",
 				color = colors.green,
-				font = { size = 14 },
+				font = { size = 15 },
 			},
 			icon = { drawing = false },
 			background = {
@@ -140,7 +140,7 @@ sbar.add("item", "brew.widget.header", {
 	label = {
 		string = "Brew Updates",
 		font = {
-			family = settings.font.text_round,
+			family = settings.font.text,
 			style = settings.font.style_map["Semibold"],
 			size = 14,
 		},
@@ -177,7 +177,7 @@ sbar.add("item", "brew.widget.update_all", {
 	label = {
 		string = "  Update All",
 		font = {
-			family = settings.font.text_round,
+			family = settings.font.text,
 			style = settings.font.style_map["Semibold"],
 			size = 14,
 		},
@@ -281,7 +281,7 @@ brew = sbar.add("item", "brew", {
 
 	label = {
 		string = "…",
-		font = { family = settings.font.text_round, size = 15 },
+		font = { family = settings.font.text, size = 15 },
 		color = colors.green,
 		padding_right = 8,
 	},
@@ -296,7 +296,7 @@ brew = sbar.add("item", "brew", {
 
 	popup = {
 		align = "right",
-		font = { family = settings.font.text_round, size = 15 },
+		font = { family = settings.font.text, size = 15 },
 		background = {
 			color = colors.popup.bg,
 			border_color = colors.popup.border,
