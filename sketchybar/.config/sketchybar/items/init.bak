@@ -1,0 +1,94 @@
+local colors = require("colors")
+
+-- ──────────────────────────── LEFT ────────────────────────────
+require("items.apple")
+require("items.spaces")
+
+-- ──────────────── CENTER — ノッチの左側（位置: q） ──────────────────────
+require("items.media")
+-- ──────────────── CENTER — ノッチの右側（位置: e） ──────────────────────
+require("items.calendar")
+require("items.widgets.weather")
+
+-- 各アイテムの表示位置を、ノッチの左(q)と右(e)に強制的にマッピングします。
+-- (各ファイルの内部が position = "center" になっていても、ここで安全に上書きされます)
+-- sbar.set("media.alias", { position = "q" }) -- ※実際のアイテム名に合わせて調整してください
+-- ノッチの左側="q" 、ノッチの右側="e"
+-- sbar.set("items.widgets.weather", { position = "e" }) -- ※実際のアイテム名に合わせて調整してください
+-- sbar.set("items.calendar", { position = "e" })
+sbar.set("items.media", { position = "e" })
+
+-- ─────────────────────────── RIGHT ────────────────────────────
+require("items.widgets.input")
+require("items.widgets.battery")
+require("items.widgets.bluetooth")
+require("items.widgets.cpu")
+require("items.widgets.wifi")
+require("items.widgets.volume")
+require("items.brew")
+-- ══════════════════════════════════════════════════════════════
+-- BRACKETS (背景のカプセル枠)
+-- ══════════════════════════════════════════════════════════════
+CORNER_RADIUS = 16
+
+-- 1. 左側グループ
+sbar.add("bracket", "bracket.left", { "apple.logo", "/space\\..*/", "spaces.right_pad", "front_apps" }, {
+	background = {
+		color = colors.bg5,
+		border_color = colors.bg1,
+		corner_radius = CORNER_RADIUS,
+		height = 28,
+		border_width = 1,
+	},
+})
+
+-- 2. ノッチの左側グループ (メディア)
+-- ※正規表現を廃止し、実際のアイテム名(例: "media.alias")を直接指定してください。
+-- sbar.add("bracket", "bracket.media_left", {
+-- 	"media.alias",
+-- }, {
+-- 	background = {
+-- 		color = colors.bg5,
+-- 		border_color = colors.bg1,
+-- 		corner_radius = CORNER_RADIUS,
+-- 		height = 28,
+-- 		border_width = 1,
+-- 	},
+-- })
+
+-- 3. ノッチの右側グループ (天気・時間・日付)
+-- ※実際のアイテム名（calendar.time, calendar.date等）を正しく記述します。
+-- sbar.add("bracket", "bracket.media", {
+-- 	-- "center.notch",
+-- 	"/^center\\.media.*/",
+-- }, {
+-- 	background = {
+-- 		color = colors.bg5,
+-- 		border_color = colors.bg1,
+-- 		corner_radius = CORNER_RADIUS,
+-- 		height = 28,
+-- 		border_width = 1,
+-- 	},
+-- })
+
+-- 4. 右側グループ (システムアイコン群)
+sbar.add("bracket", "bracket.right", {
+	"/^widtgets\\.weather.*/",
+	"center.time",
+	"center.date",
+	"widgets.cpu",
+	"widgets.wifi",
+	"widgets.bluetooth",
+	"widgets.volume",
+	"widgets.battery",
+	"widgets.input",
+	"brew",
+}, {
+	background = {
+		color = colors.bg5,
+		border_color = colors.bg1,
+		corner_radius = CORNER_RADIUS,
+		height = 28,
+		border_width = 1,
+	},
+})

@@ -31,6 +31,7 @@ end
 require("items.apple")
 -- require("items.menu")
 require("items.spaces")
+-- require("items.workspaces")
 -- require("items.front_apps")
 
 -- ──────────────── CENTER — LEFT of notch ──────────────────────
@@ -119,7 +120,7 @@ local MODELS = {
 	["Mac16,13"] = { phys_w = 2880, notch_phys = 360 },
 }
 
-local notch_width = 250 -- フォールバック
+local notch_width = 310 -- フォールバック
 
 local spec = MODELS[model_id]
 if spec and logical_width > 0 then
@@ -135,7 +136,7 @@ end
 sbar.add("item", "center.notch", {
 	position = "center",
 	display = builtin_display,
-	width = 220,
+	width = notch_width, -- default: 310
 	icon = { drawing = false },
 	label = { drawing = false },
 	background = { color = colors.transparent },

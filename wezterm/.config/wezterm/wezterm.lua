@@ -31,9 +31,10 @@ config.font = wezterm.font_with_fallback({
 		family = "UDEV Gothic NF",
 		weight = "Bold",
 	},
-	-- "JetBrainsMono Nerd Font",
+	{
+		family = "Symbols Nerd Font Mono",
+	},
 })
---
 
 config.use_ime = true -- IME有効化
 config.window_padding = {
@@ -96,6 +97,7 @@ require("workspace").apply_to_config(config)
 require("appearance").apply_to_config(config)
 require("tab").apply_to_config(config)
 require("statusbar").apply_to_config(config)
+-- require("tmux").apply(config)
 
 -- オプショナルモジュール（keymapsの後に読み込む）
 require("modules.opacity").apply_to_config(config)

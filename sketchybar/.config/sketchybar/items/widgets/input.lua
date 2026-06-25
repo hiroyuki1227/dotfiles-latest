@@ -6,9 +6,9 @@ local input_source = sbar.add("item", "input_source", {
 	icon = {
 		string = "🇺🇸", -- 初期値
 		font = {
-			family = settings.font.text,
+			family = settings.font.text_round,
 			style = settings.font.style_map["Regular"],
-			size = 20.0,
+			size = 14.0,
 		},
 		color = colors.white,
 	},
@@ -31,6 +31,7 @@ local function update_input_icon()
 			.. " | cut -d '>' -f2 | cut -d '<' -f1",
 		function(current_input)
 			local icon = (current_input:gsub("%s+", "") == "ABC") and "🇺🇸" or "🇯🇵"
+			-- local icon = (current_input:gsub("%s+", "") == "ABC") and "󰌌:🇺🇸" or "󰌌:🇯🇵"
 			sbar.set("input_source", { icon = { string = icon } })
 		end
 	)

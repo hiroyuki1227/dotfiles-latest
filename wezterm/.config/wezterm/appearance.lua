@@ -49,9 +49,9 @@ local appearance = {
 
 	-- Pane - 非アクティブPaneを暗くする
 	inactive_pane_hsb = {
-		hue = 1.0, -- 色相変更なし
-		saturation = 0.5, -- 彩度を少し下げる
-		brightness = 0.6, -- 明るさを40%下げて暗くする
+		hue = 0.9, -- 色相変更なし
+		saturation = 0.9, -- 彩度を少し下げる
+		brightness = 1.0, -- 明るさを40%下げて暗くする
 	},
 
 	-- Tab

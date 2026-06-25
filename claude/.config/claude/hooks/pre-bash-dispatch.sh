@@ -1,0 +1,43 @@
+#!/bin/bash
+# PreToolUse dispatcher: コマンド内容に応じて必要なフックのみ実行する
+
+INPUT=$(cat)
+COMMAND=$(jq -r '.tool_input.command // empty' <<<"$INPUT")
+
+[ -z "$COMMAND" ] && exit 0
+
+# フック結果を伝播する共通ランナー
+# - exit 2 で終了したスクリプト → そのまま exit 2 で伝播
+# - {"hookSpecificOutput":{...}} を出力したスクリプト → そのまま stdout に流して exit 0
+# - {"decision":"block",...} を出力したスクリプト（旧形式）→ そのまま stdout に流して exit 0
+run_check() {
+  local output exit_code
+  output=$(echo "$INPUT" | "$@" 2>&1)
+  exit_code=$?
+  if [ "$exit_code" -eq 2 ]; then
+    echo "$output"
+    exit 2
+  fi
+  if [ -n "$output" ] && echo "$output" | jq -e 'has("hookSpecificOutput") or has("decision")' >/dev/null 2>&1; then
+    echo "$output"
+    exit 0
+  fi
+}
+
+# git コマンドのみ git push チェックを実行
+# コマンドとしての git にのみマッチ（ファイルパス中の git* は除外）
+if echo "$COMMAND" | grep -qE '(^|[;&|] *)git\b'; then
+  run_check python3 ~/.config/claude/hooks/prevent-git-push.py
+  # git commit 時のみコミットスタイルを検出して注入
+  if echo "$COMMAND" | grep -qE 'git\s+commit\b'; then
+    run_check ~/.config/claude/hooks/detect-commit-style.sh
+  fi
+fi
+
+# terraform / terragrunt コマンドのみ apply チェックと Docker ルーティングを実行
+# コマンドとしての terraform にのみマッチ（ファイルパス中の terraform.tf 等は除外）
+if echo "$COMMAND" | grep -qE '(^|[;&|] *)(terraform|terragrunt)\b'; then
+  run_check python3 ~/.config/claude/scripts/terraform-hook.py
+fi
+
+exit 0
