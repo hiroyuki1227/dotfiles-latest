@@ -96,7 +96,7 @@ on-mode-changed = []
     inner.vertical =   20
     outer.left =       20
     outer.bottom =     [{monitor.'^Built-in.Display$' = 10}, {monitor.'^built-in retina display$' = 10}, 20]
-    outer.top =        [{monitor.'^Built-in.Display$' = 10}, {monitor.'^build-in retina display$' = 10}, 65]
+    outer.top =        [{monitor.'^Built-in.Display$' = 10}, {monitor.'^build-in retina display$' = 10}, 60]
     outer.right =      20
 
 
@@ -376,4 +376,10 @@ run = ['move-node-to-workspace 5']
 if.app-id = 'com.splashtop.stb.macosx'
 run = ['layout floating', 'move-node-to-workspace 6']
 
-## End of file
+[[on-window-detected]]
+if.app-id = 'com.adobe.Acrobat.Pro'
+run = ['move-node-to-workspace 7']
+
+[[on-window-detected]]
+if.app-id = 'com.anthropic.claudefordisktop'
+run = ['move-node-to-workspace 3']

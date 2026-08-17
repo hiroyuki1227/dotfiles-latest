@@ -18,7 +18,8 @@
     "itsmingjie",
     "xmok",
     "0xdhrv",
-    "erikjs"
+    "erikjs",
+    "alexi.build"
   ],
   "pastContributors": [
     "mathieudutour",
@@ -274,6 +275,13 @@
           "body": {
             "type": "string",
             "description": "The comment content in markdown format"
+          },
+          "attachmentPaths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of absolute local file paths to upload and append to the comment"
           }
         },
         "required": [
@@ -292,6 +300,13 @@
           "body": {
             "type": "string",
             "description": "The comment content in markdown format"
+          },
+          "attachmentPaths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of absolute local file paths to upload and append to the comment"
           },
           "id": {
             "type": "string",

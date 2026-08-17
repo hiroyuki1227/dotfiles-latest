@@ -21,15 +21,15 @@ require("items.brew")
 -- BRACKETS — drawn after all items are created
 -- ══════════════════════════════════════════════════════════════
 
-CORNER_RADIUS = 16
-
+HEIGHT_SIZE = 32
+CORNER_RADIUS = 32
 -- Left pill: Apple logo + Aerospace workspaces
 sbar.add("bracket", "bracket.left", { "apple.logo", "/space\\..*/", "spaces.right_pad", "front_apps" }, {
 	background = {
 		color = colors.bg5,
 		border_color = colors.bg1,
 		corner_radius = CORNER_RADIUS,
-		height = 28,
+		height = HEIGHT_SIZE,
 		border_width = 1,
 	},
 })
@@ -45,7 +45,7 @@ sbar.set("bracket", "bracket.media", "/^center.media.*/", {
 	background = {
 		color = colors.bg5,
 		corner_radius = CORNER_RADIUS,
-		height = 28,
+		height = HEIGHT_SIZE,
 		border_width = 1,
 	},
 })
@@ -68,7 +68,7 @@ sbar.add("bracket", "bracket.right", {
 		color = colors.bg5,
 		border_color = colors.bg1,
 		corner_radius = CORNER_RADIUS,
-		height = 28,
+		height = HEIGHT_SIZE,
 		border_width = 1,
 	},
 })
