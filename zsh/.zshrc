@@ -50,6 +50,7 @@ if command -v nvim &> /dev/null; then
   nvim_appnames=(
     neovim
     neovim/mozumasu
+    neovim/craftzdog
     neovim/CodeOps
     neovim/AstroNvim
     neovim/nvchad
