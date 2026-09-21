@@ -64,13 +64,36 @@ keymap.set("n", "<C-w><down>", "<C-w>-")
 -- end, opts)
 
 keymap.set("n", "<leader>r", function()
-	require("craftzdog.hsl").replaceHexWithHSL()
+  require("craftzdog.hsl").replaceHexWithHSL()
 end)
 
 keymap.set("n", "<leader>i", function()
-	require("craftzdog.lsp").toggleInlayHints()
+  require("craftzdog.lsp").toggleInlayHints()
 end)
 
 vim.api.nvim_create_user_command("ToggleAutoformat", function()
-	require("craftzdog.lsp").toggleAutoformat()
+  require("craftzdog.lsp").toggleAutoformat()
 end, {})
+
+vim.diagnostic.config({
+  signs = {
+    text = {
+      [vim.diagnostic.severity.HINT] = "",
+      [vim.diagnostic.severity.INFO] = "",
+      [vim.diagnostic.severity.WARN] = "",
+      [vim.diagnostic.severity.ERROR] = "",
+    },
+  },
+  virtual_text = false,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
+  float = {
+    focusable = false,
+    style = "minimal",
+    border = "rounded",
+    -- source = "always",
+    header = "",
+    prefix = "",
+  },
+})
